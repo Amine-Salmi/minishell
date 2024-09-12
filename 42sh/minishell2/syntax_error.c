@@ -6,7 +6,7 @@
 /*   By: bbadda <bbadda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 14:12:57 by bbadda            #+#    #+#             */
-/*   Updated: 2024/09/11 15:00:28 by bbadda           ###   ########.fr       */
+/*   Updated: 2024/09/13 00:55:02 by bbadda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,21 +17,21 @@ int	redir_error(t_token *token, int j)
 	int	i;
 
 	i = 0;
-	printf("j = %d\n", j);
     while (i < j)
     {
-		printf("token [%d] = %s\n", i, token[i].command);
-        if (token[i].cmd_type == REDIR_IN || token[i].cmd_type == REDIR_OUT)
+        if (cmp(token[i].command, ">") || cmp(token[i].command, "<"))
         {
             i++;
-            while (token[i].cmd_type == SPACE)
+			if (i >= j)
+				__error('\n', 1);
+            while (cmp(token[i].command, " "))
 			{
+				i++;
 				if (i >= j)
 				{
                  	__error('\n', 1);
 					break ;
 				}
-                i++;
 			}
             if (token[i].cmd_type == REDIR_IN || token[i].cmd_type == REDIR_OUT)
 			{
@@ -74,14 +74,21 @@ int	qoutes_error(t_token *token, int j)
 	int	i;
 
 	i = 0;
-	while (i++ < j)
+	while (i < j)
 	{
-		if (token[i].cmd_type == WORD)
+		if (cmp(token[i].command, "'"))
 		{
-			if (token[i].command[0] == '\'' && token[i].command[ft_strlen(token[i].command) - 1] != '\'')
-				__error(' ', 1);
-			if (token[i].command[0] == '\"' && token[i].command[ft_strlen(token[i].command) - 1] != '\"')
-				__error(' ', 1);
+			i++;
+			i++;
+			if (i >= j || !cmp(token[i].command, "'"))
+				__error('\'', 1);
+		}
+		else if (cmp(token[i].command, "\""))
+		{
+			i++;
+			i++;
+			if (i >= j || !cmp(token[i].command, "\""))
+				__error('"', 1);
 		}
 		// if (token[i].cmd_type == SPACE)
 		// 	printf("SPACE\n");
@@ -89,6 +96,7 @@ int	qoutes_error(t_token *token, int j)
 		// 	printf("OPTION\n");
 		// if (token[i].cmd_type == ENV)
 		// 	printf("ENV\n");
+		i++;
 	}
 	return (0);
 }

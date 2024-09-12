@@ -6,7 +6,7 @@
 /*   By: bbadda <bbadda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 10:14:11 by bbadda            #+#    #+#             */
-/*   Updated: 2024/09/11 15:11:12 by bbadda           ###   ########.fr       */
+/*   Updated: 2024/09/13 00:03:19 by bbadda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,8 @@ enum e_token_type
 	PIPE = '|',
 	REDIR_IN = '<',
 	REDIR_OUT = '>',
-	// HERE_DOC,
-	// DREDIR_OUT,
+	HERE_DOC,
+	DREDIR_OUT,
 };
 
 enum e_state
@@ -71,18 +71,23 @@ int			cmp(const char *s1, const char *s2);
 char		*get_pipe(char *line);
 int			ft_strlen(const char *str);
 int			is_special_char(char c);
-t_list		*creat_list(t_token *is);
-void		add_list_back(t_list **lst, t_token *is);
+t_list		*creat_list(t_token *token);
+void		add_list_back(t_list **lst, t_token *token);
+// void		get_command(int j, t_token *token, t_list *command);
 void	    __error(char c, int i);
+void		*__calloc(size_t count, size_t size);
+int			is_special_char(char c);
 // --------------------tokenization_functions-----------------//
-int			tokenization(char *command, t_token	*token);
-int			classify_token_type(t_token *token);
+int			tokenization(const char *command, t_token	*token);
+void		classify_token_type(t_token *token);
+void		get_command(int j, t_token *token, t_list **f_cmd);
 // --------------------syntax_error_functions-----------------//
 int			syntax_error(t_token *token, int j);
 int			qoutes_error(t_token *token, int j);
 int			pipe_error(t_token *token, int j);
+void		__free(t_list **lst);
 
 
-void print_full_command(int j, t_token *token);
+void 		print_full_command(int j, t_list *list);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: bbadda <bbadda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 10:15:23 by bbadda            #+#    #+#             */
-/*   Updated: 2024/09/09 17:25:47 by bbadda           ###   ########.fr       */
+/*   Updated: 2024/09/13 00:01:53 by bbadda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,3 +50,62 @@ void	__error(char c, int i)
 	}
 }
 
+static void	__bzero(void *s, size_t n)
+{
+	while (n--)
+		*((unsigned char *)(s + n)) = 0;
+}
+
+void	*__calloc(size_t count, size_t size)
+{
+	void	*res;
+
+	res = malloc(size * count);
+	if (!res)
+		return (0);
+	__bzero(res, size * count);
+	return (res);
+}
+
+// is redir function < > >> <<
+int	is_special_char(char c)
+{
+	if (c == '|' || c == '>' || c == '<'
+		|| c == '$' || c == '\'')
+		return (0);
+	return (1);
+}
+
+void	__free(t_list **lst)
+{
+	t_list	*head;
+	t_list	*tmp;
+
+	if (!*lst)
+		return ;
+	head = *lst;
+	while (head)
+	{
+		tmp = head;
+		head = head->next;
+		free(tmp);
+	}
+	*lst = NULL;
+}
+
+void	get_command(int j, t_token *token, t_list **lst)
+{
+	int i;
+
+	i = -1;
+	while(++i < j)
+		add_list_back(lst, &token[i]);
+	t_list *tmp;
+	tmp = *lst;
+	
+	while (tmp)
+	{
+		printf("command = %s\n", tmp->content->command);
+		tmp = tmp->next;
+	}
+}
