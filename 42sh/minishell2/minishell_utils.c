@@ -6,7 +6,7 @@
 /*   By: bbadda <bbadda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 10:15:23 by bbadda            #+#    #+#             */
-/*   Updated: 2024/09/13 00:01:53 by bbadda           ###   ########.fr       */
+/*   Updated: 2024/09/13 11:48:30 by bbadda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,12 +100,4 @@ void	get_command(int j, t_token *token, t_list **lst)
 	i = -1;
 	while(++i < j)
 		add_list_back(lst, &token[i]);
-	t_list *tmp;
-	tmp = *lst;
-	
-	while (tmp)
-	{
-		printf("command = %s\n", tmp->content->command);
-		tmp = tmp->next;
-	}
 }
