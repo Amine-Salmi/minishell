@@ -14,6 +14,7 @@
 typedef struct s_env {
     char **var;
     char **value;
+    char *path;
 }           t_env;
 
 typedef struct s_command
@@ -22,5 +23,8 @@ typedef struct s_command
     char **args;
     struct s_command *next;
 }              t_command;
+
+t_env *copy_env(char **env);
+void    check_path(t_env *env);
 
 #endif
