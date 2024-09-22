@@ -30,14 +30,14 @@ t_env *copy_env(char **env)
     return (my_env);
 }
 
-void search_dir(char *path)
-{
-    char **res = ft_split(path, ':');
-    for (int i = 0; res[i] != NULL; i++)
-        printf("%s\n", res[i]);
-}
+// void split_path(char *path)
+// {
+//     char **res = ft_split(path, ':');
+//     for (int i = 0; res[i] != NULL; i++)
+//         printf("%s\n", res[i]);
+// }
 
-void    check_path(t_env *env)
+void    find_path(t_env *env)
 {
     int i;
     char *equel_sing;
@@ -52,5 +52,4 @@ void    check_path(t_env *env)
         }
         i++;
     }
-    search_dir(env->path);
 }

@@ -6,7 +6,7 @@
 /*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/15 13:17:42 by asalmi            #+#    #+#             */
-/*   Updated: 2024/09/21 16:52:28 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/09/22 18:06:28 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,12 +33,30 @@ t_command test_token(char *input_line)
     return cmd;
 }
 
+char *find_exec(char **dirs, char *command)
+{
+    char *path;
+    int i;
+
+    i = 0;
+    while (dirs[i])
+    {
+        path = ft_strjoin(ft_strjoin(dirs[i], "/"), command);
+        if (access(path, F_OK | X_OK) == 0)
+            return path;
+        free(path);
+        i++;
+    }
+    return NULL;
+}
+
 int main(int ac, char **av, char **env)
 {
     t_command cmd;
     t_env *my_env;
     pid_t pid;
     char *input_line;
+    int status;
 
     while (1)
     {
@@ -50,15 +68,27 @@ int main(int ac, char **av, char **env)
         }
         cmd = test_token(input_line);
         my_env = copy_env(env);
-        for (int i = 0; my_env->var[i]; i++)
-            printf("%s=%s\n", my_env->var[i], my_env->value[i]);
-        check_path(my_env);
-        // pid = fork();
-        // if (pid == 0)
-        // {
-        //     execve(path, cmd.args, env);
-        //     exit(0);
-        // }
+        // for (int i = 0; my_env->var[i]; i++)
+        //     printf("%s=%s\n", my_env->var[i], my_env->value[i]);
+        find_path(my_env);
+        char **dirs = ft_split(my_env->path, ':');
+        char *executable_path = find_exec(dirs, cmd.command);
+        pid = fork();
+        if (pid == 0)
+        {
+            if (executable_path)
+            {
+                execve(executable_path, cmd.args, NULL);
+            }
+            else
+                printf("command not Found\n");
+            exit(0);
+        }
+        else if (pid > 0)
+        {
+            int status;
+            waitpid(pid, &status, 0);
+        }
         free(input_line);
     }
     return EXIT_SUCCESS;

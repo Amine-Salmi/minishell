@@ -25,6 +25,6 @@ typedef struct s_command
 }              t_command;
 
 t_env *copy_env(char **env);
-void    check_path(t_env *env);
+void    find_path(t_env *env);
 
 #endif
