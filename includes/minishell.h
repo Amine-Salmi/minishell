@@ -25,6 +25,7 @@ typedef struct s_command
 }              t_command;
 
 t_env *copy_env(char **env);
-void    find_path(t_env *env);
+char    *find_path(t_env *env);
+int *execute_external_command(char **args, char **env);
 
 #endif

@@ -30,26 +30,20 @@ t_env *copy_env(char **env)
     return (my_env);
 }
 
-// void split_path(char *path)
-// {
-//     char **res = ft_split(path, ':');
-//     for (int i = 0; res[i] != NULL; i++)
-//         printf("%s\n", res[i]);
-// }
-
-void    find_path(t_env *env)
+char     *find_path(t_env *env)
 {
     int i;
-    char *equel_sing;
+    char *path;
 
     i = 0;
     while (env->var[i])
     {
         if (!ft_strncmp(env->var[i], "PATH", ft_strlen("PATH")))
         {
-            env->path = ft_substr(env->value[i], 0, ft_strlen(env->value[i]));
-            break;
+            path = ft_substr(env->value[i], 0, ft_strlen(env->value[i]));
+            return (path);
         }
         i++;
     }
+    return (NULL);
 }
