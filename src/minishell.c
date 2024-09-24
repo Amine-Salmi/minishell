@@ -6,36 +6,44 @@
 /*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/15 13:17:42 by asalmi            #+#    #+#             */
-/*   Updated: 2024/09/23 16:32:14 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/09/24 03:46:02 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-t_command test_token(char *input_line)
+t_command *test_token(char *input_line)
 {
-    t_command cmd;
+    t_command *cmd;
     char *token;
     int i = 0;
-
-    cmd.args = malloc(sizeof(char *) * 10);
-    if (cmd.args == NULL)
+    
+    cmd = malloc(sizeof(t_command));
+    cmd->args = malloc(sizeof(char *) * 10);
+    if (cmd == NULL || cmd->args == NULL)
         exit(EXIT_FAILURE);
     token = strtok(input_line, " ");
-    cmd.command = token;
+    cmd->command = token;
     while (token != NULL)
     {
-        cmd.args[i] = token;
+        if (!(ft_strncmp(token, "|", ft_strlen("|"))))
+        {
+            cmd->args[i] = NULL;
+            cmd->next = test_token(NULL);
+            return cmd;
+        }
+        cmd->args[i] = token;
         i++;
         token = strtok(NULL, " ");
     }
-    cmd.args[i] = NULL;
+    cmd->args[i] = NULL;
+    cmd->next = NULL;
     return cmd;
 }
 
 int main(int ac, char **av, char **env)
 {
-    t_command cmd;
+    t_command *cmd;
     t_env *my_env;
     pid_t pid;
     char *input_line;
@@ -50,7 +58,7 @@ int main(int ac, char **av, char **env)
             exit(1);
         }
         cmd = test_token(input_line);
-        execute_external_command(cmd.args, env);
+        execute_external_command(cmd->args, env);
         free(input_line);
     }
     return EXIT_SUCCESS;

@@ -14,7 +14,6 @@
 typedef struct s_env {
     char **var;
     char **value;
-    char *path;
 }           t_env;
 
 typedef struct s_command
