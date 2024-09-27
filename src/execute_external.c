@@ -19,7 +19,7 @@ char *find_executable_file(char *command, char *path)
     return (NULL);
 }
 
-int *execute_external_command(char **args, char **env)
+int *execute_external_command(t_command *cmd, char **env)
 {
     t_env *my_env;
     pid_t pid;
@@ -29,13 +29,13 @@ int *execute_external_command(char **args, char **env)
 
     my_env = copy_env(env);
     path = find_path(my_env);
-    executable_path = find_executable_file(args[0] ,path);
+    executable_path = find_executable_file(cmd->args[0] ,path);
     pid = fork();
     if (pid == 0)
     {
         if (executable_path)
         {
-            execve(executable_path, args, NULL);
+            execve(executable_path, cmd->args, NULL);
         }
         else
         {
@@ -46,4 +46,11 @@ int *execute_external_command(char **args, char **env)
     else if (pid > 0)
         waitpid(pid, &status, 0);
     return (0);
+}
+
+void execute_piped_commands(t_command *cmd, char **env)
+{
+    int fd[2];
+    int pid;
+    // printf("kayna pipe\n");
 }

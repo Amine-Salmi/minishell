@@ -6,7 +6,7 @@
 /*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/15 13:17:42 by asalmi            #+#    #+#             */
-/*   Updated: 2024/09/24 03:46:02 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/09/26 23:12:38 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,15 +22,18 @@ t_command *test_token(char *input_line)
     cmd->args = malloc(sizeof(char *) * 10);
     if (cmd == NULL || cmd->args == NULL)
         exit(EXIT_FAILURE);
+    cmd->has_pipe = false;
     token = strtok(input_line, " ");
     cmd->command = token;
     while (token != NULL)
     {
         if (!(ft_strncmp(token, "|", ft_strlen("|"))))
         {
-            cmd->args[i] = NULL;
-            cmd->next = test_token(NULL);
-            return cmd;
+            cmd->has_pipe = true;
+            // cmd->args[i] = NULL;
+            // token = strtok(NULL, " ");
+            // cmd->next = test_token(NULL);
+            // return cmd;
         }
         cmd->args[i] = token;
         i++;
@@ -58,7 +61,13 @@ int main(int ac, char **av, char **env)
             exit(1);
         }
         cmd = test_token(input_line);
-        execute_external_command(cmd->args, env);
+        // for (int i = 0; cmd->args[i] != NULL; i++)
+        //     printf("command: %s\nargs: %s\n", cmd->command, cmd->args[i]);
+        // printf("has pipe: %d\n", cmd->has_pipe);
+        if (cmd->has_pipe == true)
+            execute_piped_commands(cmd, env);
+        else
+            execute_external_command(cmd, env);
         free(input_line);
     }
     return EXIT_SUCCESS;
