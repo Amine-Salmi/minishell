@@ -11,11 +11,12 @@
 #include <string.h>
 #include <stdbool.h>
 #include "../lib/Libft/libft.h"
+#include <fcntl.h>
 
-// typedef enum s_type_cmd {
-//     cmd_nomral,
-//     cmd_pipe,
-// } t_type_cmd;
+typedef enum s_type {
+    CMD,
+    PIPE,
+} t_type;
 
 typedef struct s_env {
     char **var;
@@ -26,7 +27,7 @@ typedef struct s_command
 {
     char *command;
     char **args;
-    bool has_pipe;
+    t_type type;
     struct s_command *next;
     struct s_command *prev;  
 }              t_command;
