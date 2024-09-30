@@ -6,7 +6,7 @@
 /*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/15 13:17:42 by asalmi            #+#    #+#             */
-/*   Updated: 2024/09/27 22:30:48 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/09/30 22:57:35 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,13 +64,10 @@ int main(int ac, char **av, char **env)
             exit(1);
         }
         cmd = test_token(input_line);
-        // for (int i = 0; cmd->args[i] != NULL; i++)
-        //     printf("command: %s\nargs: %s\n", cmd->command, cmd->args[i]);
-        // printf("has pipe: %d\n", cmd->has_pipe);
-        if (cmd->next != NULL && cmd->next->type == PIPE)
+    //    if (cmd->next != NULL && cmd->next->type == PIPE)
             execute_piped_commands(cmd, env);
-        else
-            execute_external_command(cmd, env);
+    //    else
+    //        execute_external_command(cmd, env);
         free(input_line);
     }
     return EXIT_SUCCESS;
