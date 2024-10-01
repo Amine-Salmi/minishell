@@ -6,7 +6,7 @@
 /*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/15 13:17:42 by asalmi            #+#    #+#             */
-/*   Updated: 2024/10/01 17:33:41 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/10/01 23:41:27 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,10 +61,10 @@ int main(int ac, char **av, char **env)
         if (input_line == NULL)
         {
             free(input_line);
-            exit(1);
+            exit(EXIT_FAILURE);
         }
         cmd = test_token(input_line);
-        ft_execute(cmd, env);
+        execute_piped_commands(cmd, env);
         free(input_line);
     }
     return EXIT_SUCCESS;

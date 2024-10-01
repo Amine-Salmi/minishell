@@ -102,7 +102,9 @@ void execute_piped_commands(t_command *cmd, char **env)
     }
 }
 
-void ft_execute(t_command *cmd, char **env)
-{
-	execute_piped_commands(cmd, env);
-}
+// void ft_execute(t_command *cmd, char **env)
+// {
+// 	printf("----- start -----\n");
+// 	execute_piped_commands(cmd, env);
+// 	printf("----- end -----\n");
+// }
