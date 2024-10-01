@@ -34,7 +34,8 @@ typedef struct s_command
 
 t_env *copy_env(char **env);
 char    *find_path(t_env *env);
-int *execute_external_command(t_command *cmd, char **env);
+// int *execute_external_command(t_command *cmd, char **env);
 void execute_piped_commands(t_command *cmd, char **env);
+void ft_execute(t_command *cmd, char **env);
 
 #endif
