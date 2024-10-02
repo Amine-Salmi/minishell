@@ -52,13 +52,14 @@ void execute_piped_commands(t_command *cmd, char **env)
 {
     int fd[2];
     int pipeLine;
-    pid_t pid;
 	char *path;
 	char *executable_path;
 	int status;
 	t_env *my_env;
+	t_command *head;
 
 	my_env = copy_env(env);
+	head = cmd;
 	pipeLine = -1;
     while (cmd)
     {
@@ -66,8 +67,8 @@ void execute_piped_commands(t_command *cmd, char **env)
 			cmd = cmd->next;
 		if (cmd->next != NULL)
 			pipe(fd);
-		pid = fork();
-		if (pid == 0)
+		cmd->pid = fork();
+		if (cmd->pid == 0)
 		{
 			if (pipeLine != -1)
 			{
@@ -89,9 +90,8 @@ void execute_piped_commands(t_command *cmd, char **env)
 				exit(EXIT_FAILURE);
 			}
 		}
-		else if (pid > 0)
+		else if (cmd->pid > 0)
 		{
-			waitpid(pid, &status, 0);
 			if (pipeLine != -1)
 				close(pipeLine);
 			pipeLine = dup(fd[0]);
@@ -100,6 +100,13 @@ void execute_piped_commands(t_command *cmd, char **env)
 		}
         cmd = cmd->next;
     }
+	cmd = head;
+	while (cmd)
+	{
+		if (cmd->pid > 0)
+			waitpid(cmd->pid, &status, 0);
+		cmd = cmd->next;
+	}
 }
 
 // void ft_execute(t_command *cmd, char **env)

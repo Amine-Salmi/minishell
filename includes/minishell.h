@@ -27,6 +27,7 @@ typedef struct s_command
 {
     char *command;
     char **args;
+    pid_t pid;
     t_type type;
     struct s_command *next;
     struct s_command *prev;  
