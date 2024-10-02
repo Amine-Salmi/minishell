@@ -6,7 +6,7 @@
 /*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/15 13:17:42 by asalmi            #+#    #+#             */
-/*   Updated: 2024/10/02 16:13:36 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/10/02 23:23:15 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,26 @@ t_command *test_token(char *input_line)
     cmd->type = CMD;
     while (token != NULL)
     {
+        if (strcmp(token, "<") == 0)
+        {
+            token = strtok(NULL, " ");
+            if (token != NULL)
+            {
+                cmd->infile = token;
+                cmd->type = REDIR_IN;
+            }
+            continue;
+        }
+        if (strcmp(token, ">") == 0)
+        {
+            token = strtok(NULL, " ");
+            if (token != NULL)
+            {
+                cmd->outfile = token;
+                cmd->type = REDIR_OUT;
+            }
+            continue;
+        }
         if (strcmp(token, "|") == 0)
         {
             cmd->args[i] = NULL;

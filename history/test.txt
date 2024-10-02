@@ -1,0 +1,29 @@
+// int *execute_external_command(t_command *cmd, char **env)
+// {
+//     t_env *my_env;
+//     pid_t pid;
+//     char *path;
+//     char *executable_path;
+//     int status;
+
+//     my_env = copy_env(env);
+//     path = find_path(my_env);
+//     executable_path = find_executable_file(cmd->args[0] ,path);
+//     pid = fork();
+//     if (pid == 0)
+//     {
+//         if (executable_path)
+//         {
+//             execve(executable_path, cmd->args, NULL);
+//         }
+//         else
+//         {
+//             printf("command not found\n");
+//             exit(EXIT_FAILURE);
+//         }
+//     }
+//     else if (pid > 0)
+//         waitpid(pid, &status, 0);
+//     return (0);
+// }
+

@@ -16,37 +16,15 @@ char *find_executable_file(char *command, char *path)
         free(executable_path);
         i++;
     }
+	i = 0;
+	while (dirs[i])
+	{
+		free(dirs[i]);
+		i++;
+	}
+	free(dirs);
     return (NULL);
 }
-
-// int *execute_external_command(t_command *cmd, char **env)
-// {
-//     t_env *my_env;
-//     pid_t pid;
-//     char *path;
-//     char *executable_path;
-//     int status;
-
-//     my_env = copy_env(env);
-//     path = find_path(my_env);
-//     executable_path = find_executable_file(cmd->args[0] ,path);
-//     pid = fork();
-//     if (pid == 0)
-//     {
-//         if (executable_path)
-//         {
-//             execve(executable_path, cmd->args, NULL);
-//         }
-//         else
-//         {
-//             printf("command not found\n");
-//             exit(EXIT_FAILURE);
-//         }
-//     }
-//     else if (pid > 0)
-//         waitpid(pid, &status, 0);
-//     return (0);
-// }
 
 void execute_piped_commands(t_command *cmd, char **env)
 {
@@ -75,11 +53,13 @@ void execute_piped_commands(t_command *cmd, char **env)
 				dup2(pipeLine, STDIN_FILENO);
 				close(pipeLine);
 			}
-			if (cmd->next != NULL)
+			if (cmd->next != NULL && cmd->outfile == NULL)
 			{
 				dup2(fd[1], STDOUT_FILENO);
 				close(fd[1]);
 			}
+			if (cmd->outfile != NULL)
+				redirection_handler(cmd);
 			close(fd[0]);
 			close(fd[1]);
 			path = find_path(my_env);

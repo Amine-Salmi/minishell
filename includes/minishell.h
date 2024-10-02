@@ -16,6 +16,8 @@
 typedef enum s_type {
     CMD,
     PIPE,
+    REDIR_IN,
+    REDIR_OUT,
 } t_type;
 
 typedef struct s_env {
@@ -29,6 +31,8 @@ typedef struct s_command
     char **args;
     pid_t pid;
     t_type type;
+    char *infile;
+    char *outfile;
     struct s_command *next;
     struct s_command *prev;  
 }              t_command;
@@ -37,6 +41,7 @@ t_env *copy_env(char **env);
 char    *find_path(t_env *env);
 // int *execute_external_command(t_command *cmd, char **env);
 void execute_piped_commands(t_command *cmd, char **env);
-void ft_execute(t_command *cmd, char **env);
+void redirection_handler(t_command *cmd);
+// void ft_execute(t_command *cmd, char **env);
 
 #endif
