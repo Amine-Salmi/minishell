@@ -6,7 +6,7 @@
 /*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/15 13:17:42 by asalmi            #+#    #+#             */
-/*   Updated: 2024/10/02 23:23:15 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/10/04 14:27:28 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,25 +27,39 @@ t_command *test_token(char *input_line)
     cmd->type = CMD;
     while (token != NULL)
     {
-        if (strcmp(token, "<") == 0)
-        {
-            token = strtok(NULL, " ");
-            if (token != NULL)
-            {
-                cmd->infile = token;
-                cmd->type = REDIR_IN;
-            }
-            continue;
-        }
         if (strcmp(token, ">") == 0)
         {
+            t_redirection *new_redirection = malloc(sizeof(t_redirection));
+            if (new_redirection == NULL)
+                exit(EXIT_FAILURE);
             token = strtok(NULL, " ");
-            if (token != NULL)
-            {
-                cmd->outfile = token;
-                cmd->type = REDIR_OUT;
+            new_redirection->file_name = token;
+            new_redirection->red_type = REDIR_OUT;
+            if (cmd->redirection == NULL)
+                cmd->redirection = new_redirection;
+            else {
+                t_redirection *current = cmd->redirection;
+                while (current->next != NULL)
+                    current = current->next;
+                current->next = new_redirection;
             }
-            continue;
+        }
+        if (strcmp(token, "<") == 0)
+        {
+            t_redirection *new_redirection = malloc(sizeof(t_redirection));
+            if (new_redirection == NULL)
+                exit(EXIT_FAILURE);
+            token = strtok(NULL, " ");
+            new_redirection->file_name = token;
+            new_redirection->red_type = REDIR_IN;
+            if (cmd->redirection == NULL)
+                cmd->redirection = new_redirection;
+            else {
+                t_redirection *current = cmd->redirection;
+                while (current->next != NULL)
+                    current = current->next;
+                current->next = new_redirection;
+            }
         }
         if (strcmp(token, "|") == 0)
         {

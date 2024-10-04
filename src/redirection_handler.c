@@ -3,16 +3,20 @@
 void redirection_handler(t_command *cmd)
 {
     int fd;
-
-    if (cmd->outfile != NULL)
+    while (cmd->redirection)
     {
-        fd = open(cmd->outfile, O_CREAT | O_WRONLY | O_TRUNC, 0644);
-        if (fd < 0)
+        if(cmd->redirection->red_type == REDIR_OUT)
         {
-            perror("open");
-            exit(EXIT_FAILURE);
+            fd = open(cmd->redirection->file_name, O_CREAT | O_WRONLY | O_TRUNC, 0644);
+            if (fd < 0)
+            {
+                perror("open");
+                exit(EXIT_FAILURE);
+            }
+            printf("im here\n");
+            dup2(fd, STDOUT_FILENO);
+            close(fd);
         }
-        dup2(fd, STDOUT_FILENO);
-        close(fd);
+        cmd->redirection = cmd->redirection->next;
     }
 }

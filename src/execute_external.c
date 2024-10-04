@@ -53,13 +53,13 @@ void execute_piped_commands(t_command *cmd, char **env)
 				dup2(pipeLine, STDIN_FILENO);
 				close(pipeLine);
 			}
-			if (cmd->next != NULL && cmd->outfile == NULL)
+			if (cmd->redirection)
+				redirection_handler(cmd);
+			if (cmd->next != NULL)
 			{
 				dup2(fd[1], STDOUT_FILENO);
 				close(fd[1]);
 			}
-			if (cmd->outfile != NULL)
-				redirection_handler(cmd);
 			close(fd[0]);
 			close(fd[1]);
 			path = find_path(my_env);
