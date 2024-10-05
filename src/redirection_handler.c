@@ -34,7 +34,7 @@ void redirection_handler(t_command *cmd)
         }
         if (cmd->redirection->red_type == APPEND)
         {
-            fd = open(cmd1->redirection->file_name, O_WRONLY | O_APPEND, 0666);
+            fd = open(cmd1->redirection->file_name, O_WRONLY | O_CREAT | O_APPEND, 0666);
             if (fd < 0)
             {
                 perror("open");

@@ -6,7 +6,7 @@
 /*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/15 13:17:42 by asalmi            #+#    #+#             */
-/*   Updated: 2024/10/05 20:00:47 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/10/05 21:58:56 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,13 +96,13 @@ t_command *fill_cmd(void)
     cmd = malloc(sizeof(t_command));
     if (!cmd)
         exit(EXIT_FAILURE);
-    cmd->command = "echo";
+    cmd->command = "ls";
     cmd->args = malloc(sizeof(char *) * 3);
     if (!cmd->args)
         exit(EXIT_FAILURE);
-    cmd->args[0] = "echo";
-    cmd->args[1] = "HELLO";
-    cmd->args[2] = NULL;
+    cmd->args[0] = "ls";
+    cmd->args[1] = NULL;
+    // cmd->args[2] = NULL;
     cmd->type = CMD;
     
     cmd->redirection = NULL;
