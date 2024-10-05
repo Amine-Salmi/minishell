@@ -18,6 +18,7 @@ typedef enum s_type {
     PIPE,
     REDIR_IN,
     REDIR_OUT,
+    APPEND,
 } t_type;
 
 typedef struct s_env {

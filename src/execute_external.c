@@ -41,10 +41,10 @@ void execute_piped_commands(t_command *cmd, char **env)
 	pipeLine = -1;
     while (cmd)
     {
-		if (cmd->type == PIPE)
-			cmd = cmd->next;
 		if (cmd->next != NULL)
 			pipe(fd);
+		if (cmd->type == PIPE)
+			cmd = cmd->next;
 		cmd->pid = fork();
 		if (cmd->pid == 0)
 		{
@@ -53,8 +53,6 @@ void execute_piped_commands(t_command *cmd, char **env)
 				dup2(pipeLine, STDIN_FILENO);
 				close(pipeLine);
 			}
-			if (cmd->redirection)
-				redirection_handler(cmd);
 			if (cmd->next != NULL)
 			{
 				dup2(fd[1], STDOUT_FILENO);
@@ -62,6 +60,8 @@ void execute_piped_commands(t_command *cmd, char **env)
 			}
 			close(fd[0]);
 			close(fd[1]);
+			if (cmd->redirection)
+				redirection_handler(cmd);
 			path = find_path(my_env);
 			executable_path = find_executable_file(cmd->command, path);
 			if (execve(executable_path, cmd->args, NULL) == -1)

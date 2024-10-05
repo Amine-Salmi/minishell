@@ -6,79 +6,124 @@
 /*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/15 13:17:42 by asalmi            #+#    #+#             */
-/*   Updated: 2024/10/04 14:27:28 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/10/05 20:00:47 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-t_command *test_token(char *input_line)
+// t_command *test_token(char *input_line)
+// {
+//     t_command *cmd;
+//     char *token;
+//     int i = 0;
+
+//     cmd = malloc(sizeof(t_command));
+//     cmd->args = malloc(sizeof(char *) * 100);
+//     if (cmd == NULL || cmd->args == NULL)
+//         exit(EXIT_FAILURE);
+//     token = strtok(input_line, " ");
+//     cmd->command = token;
+//     cmd->type = CMD;
+//     while (token != NULL)
+//     {
+//         if (strcmp(token, ">") == 0)
+//         {
+//             t_redirection *new_redirection = malloc(sizeof(t_redirection));
+//             if (new_redirection == NULL)
+//                 exit(EXIT_FAILURE);
+//             token = strtok(NULL, " ");
+//             new_redirection->file_name = token;
+//             new_redirection->red_type = REDIR_OUT;
+//             new_redirection->next = NULL;
+//             if (cmd->redirection == NULL)
+//                 cmd->redirection = new_redirection;
+//             else {
+//                 t_redirection *current = cmd->redirection;
+//                 while (current->next != NULL)
+//                     current = current->next;
+//                 current->next = new_redirection;
+//             }
+//             token = strtok(NULL, " ");
+//             continue;
+//         }
+//         if (strcmp(token, "<") == 0)
+//         {
+//             t_redirection *new_redirection = malloc(sizeof(t_redirection));
+//             if (new_redirection == NULL)
+//                 exit(EXIT_FAILURE);
+//             token = strtok(NULL, " ");
+//             new_redirection->file_name = token;
+//             new_redirection->red_type = REDIR_IN;
+//             new_redirection->next = NULL;
+//             if (cmd->redirection == NULL)
+//                 cmd->redirection = new_redirection;
+//             else {
+//                 t_redirection *current = cmd->redirection;
+//                 while (current->next != NULL)
+//                     current = current->next;
+//                 current->next = new_redirection;
+//             }
+//             token = strtok(NULL, " ");
+//             continue;
+//         }
+//         if (strcmp(token, "|") == 0)
+//         {
+//             cmd->args[i] = NULL;
+//             cmd->next = malloc(sizeof(t_command));
+//             if (cmd->next == NULL)
+//                 exit(EXIT_FAILURE);
+//             cmd->next->prev = cmd;
+//             cmd->next->type = PIPE;
+//             cmd->next->next = test_token(NULL);
+//             return cmd;
+//         }
+//         cmd->args[i] = token;
+//         i++;
+//         token = strtok(NULL, " ");
+//     }
+//     cmd->args[i] = NULL;
+//     cmd->next = NULL;
+//     return cmd;
+// }
+
+t_command *fill_cmd(void)
 {
     t_command *cmd;
-    char *token;
-    int i = 0;
+    t_redirection *redirection;
+    // t_redirection *redirection2;
     
     cmd = malloc(sizeof(t_command));
-    cmd->args = malloc(sizeof(char *) * 10);
-    if (cmd == NULL || cmd->args == NULL)
+    if (!cmd)
         exit(EXIT_FAILURE);
-    token = strtok(input_line, " ");
-    cmd->command = token;
+    cmd->command = "echo";
+    cmd->args = malloc(sizeof(char *) * 3);
+    if (!cmd->args)
+        exit(EXIT_FAILURE);
+    cmd->args[0] = "echo";
+    cmd->args[1] = "HELLO";
+    cmd->args[2] = NULL;
     cmd->type = CMD;
-    while (token != NULL)
-    {
-        if (strcmp(token, ">") == 0)
-        {
-            t_redirection *new_redirection = malloc(sizeof(t_redirection));
-            if (new_redirection == NULL)
-                exit(EXIT_FAILURE);
-            token = strtok(NULL, " ");
-            new_redirection->file_name = token;
-            new_redirection->red_type = REDIR_OUT;
-            if (cmd->redirection == NULL)
-                cmd->redirection = new_redirection;
-            else {
-                t_redirection *current = cmd->redirection;
-                while (current->next != NULL)
-                    current = current->next;
-                current->next = new_redirection;
-            }
-        }
-        if (strcmp(token, "<") == 0)
-        {
-            t_redirection *new_redirection = malloc(sizeof(t_redirection));
-            if (new_redirection == NULL)
-                exit(EXIT_FAILURE);
-            token = strtok(NULL, " ");
-            new_redirection->file_name = token;
-            new_redirection->red_type = REDIR_IN;
-            if (cmd->redirection == NULL)
-                cmd->redirection = new_redirection;
-            else {
-                t_redirection *current = cmd->redirection;
-                while (current->next != NULL)
-                    current = current->next;
-                current->next = new_redirection;
-            }
-        }
-        if (strcmp(token, "|") == 0)
-        {
-            cmd->args[i] = NULL;
-            cmd->next = malloc(sizeof(t_command));
-            if (cmd->next == NULL)
-                exit(EXIT_FAILURE);
-            cmd->next->prev = cmd;
-            cmd->next->type = PIPE;
-            cmd->next->next = test_token(NULL);
-            return cmd;
-        }
-        cmd->args[i] = token;
-        i++;
-        token = strtok(NULL, " ");
-    }
-    cmd->args[i] = NULL;
+    
+    cmd->redirection = NULL;
+    redirection = malloc(sizeof(t_redirection));
+    if (!redirection)
+        exit(EXIT_FAILURE);
+    redirection->file_name = "file_1";
+    redirection->red_type = APPEND;
+    redirection->next = NULL;
+
+    // redirection2 = malloc(sizeof(t_redirection));
+    // if (!redirection2)
+    //     exit(EXIT_FAILURE);
+    // redirection2->file_name = "file_2";
+    // redirection2->red_type = REDIR_IN;
+    // redirection2->next = NULL;
+    // redirection->next = redirection2;
+    
+    cmd->redirection = redirection;
     cmd->next = NULL;
-    return cmd;
+    return (cmd);
 }
 
 int main(int ac, char **av, char **env)
@@ -97,7 +142,7 @@ int main(int ac, char **av, char **env)
             free(input_line);
             exit(EXIT_FAILURE);
         }
-        cmd = test_token(input_line);
+        cmd = fill_cmd();
         execute_piped_commands(cmd, env);
         free(input_line);
     }
