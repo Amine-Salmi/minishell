@@ -40,7 +40,9 @@ void execute_piped_commands(t_command *cmd, char **env)
 	head = cmd;
 	pipeLine = -1;
     while (cmd)
-    {
+    {	
+		if (cmd->redirection->red_type == HEREDOC && cmd->redirection->delimiter != NULL)
+			handle_heredoc(cmd);
 		if (cmd->next != NULL)
 			pipe(fd);
 		if (cmd->type == PIPE)

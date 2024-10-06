@@ -6,7 +6,7 @@
 /*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/15 13:17:42 by asalmi            #+#    #+#             */
-/*   Updated: 2024/10/05 21:58:56 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/10/06 19:26:25 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,16 +91,16 @@ t_command *fill_cmd(void)
 {
     t_command *cmd;
     t_redirection *redirection;
-    // t_redirection *redirection2;
+    t_redirection *redirection2;
     
     cmd = malloc(sizeof(t_command));
     if (!cmd)
         exit(EXIT_FAILURE);
-    cmd->command = "ls";
-    cmd->args = malloc(sizeof(char *) * 3);
+    cmd->command = "cat";
+    cmd->args = malloc(sizeof(char *) * 2);
     if (!cmd->args)
         exit(EXIT_FAILURE);
-    cmd->args[0] = "ls";
+    cmd->args[0] = "cat";
     cmd->args[1] = NULL;
     // cmd->args[2] = NULL;
     cmd->type = CMD;
@@ -109,17 +109,19 @@ t_command *fill_cmd(void)
     redirection = malloc(sizeof(t_redirection));
     if (!redirection)
         exit(EXIT_FAILURE);
-    redirection->file_name = "file_1";
-    redirection->red_type = APPEND;
+    redirection->file_name = NULL;
+    redirection->red_type = HEREDOC;
+    redirection->delimiter = "1";
     redirection->next = NULL;
 
-    // redirection2 = malloc(sizeof(t_redirection));
-    // if (!redirection2)
-    //     exit(EXIT_FAILURE);
-    // redirection2->file_name = "file_2";
-    // redirection2->red_type = REDIR_IN;
-    // redirection2->next = NULL;
-    // redirection->next = redirection2;
+    redirection2 = malloc(sizeof(t_redirection));
+    if (!redirection2)
+        exit(EXIT_FAILURE);
+    redirection2->file_name = NULL;
+    redirection2->red_type = HEREDOC;
+    redirection2->next = NULL;
+    redirection->delimiter = "A";
+    redirection->next = redirection2;
     
     cmd->redirection = redirection;
     cmd->next = NULL;

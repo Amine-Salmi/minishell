@@ -19,6 +19,7 @@ typedef enum s_type {
     REDIR_IN,
     REDIR_OUT,
     APPEND,
+    HEREDOC,
 } t_type;
 
 typedef struct s_env {
@@ -29,6 +30,7 @@ typedef struct s_env {
 typedef struct s_redirection {
     char *file_name;
     t_type red_type;
+    char *delimiter;
     struct s_redirection *next;
 } t_redirection;
 
@@ -43,11 +45,12 @@ typedef struct s_command
     struct s_command *prev;  
 }              t_command;
 
-t_env *copy_env(char **env);
+t_env   *copy_env(char **env);
 char    *find_path(t_env *env);
 // int *execute_external_command(t_command *cmd, char **env);
-void execute_piped_commands(t_command *cmd, char **env);
-void redirection_handler(t_command *cmd);
+void    execute_piped_commands(t_command *cmd, char **env);
+void    redirection_handler(t_command *cmd);
+void    handle_heredoc(t_command *cmd);
 // void ft_execute(t_command *cmd, char **env);
 
 #endif
