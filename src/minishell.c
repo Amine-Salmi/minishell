@@ -6,7 +6,7 @@
 /*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/15 13:17:42 by asalmi            #+#    #+#             */
-/*   Updated: 2024/10/06 19:26:25 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/10/07 18:09:21 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,7 @@ t_command *fill_cmd(void)
         exit(EXIT_FAILURE);
     redirection->file_name = NULL;
     redirection->red_type = HEREDOC;
-    redirection->delimiter = "1";
+    redirection->delimiter = "A";
     redirection->next = NULL;
 
     redirection2 = malloc(sizeof(t_redirection));
@@ -120,7 +120,7 @@ t_command *fill_cmd(void)
     redirection2->file_name = NULL;
     redirection2->red_type = HEREDOC;
     redirection2->next = NULL;
-    redirection->delimiter = "A";
+    redirection2->delimiter = "B";
     redirection->next = redirection2;
     
     cmd->redirection = redirection;
