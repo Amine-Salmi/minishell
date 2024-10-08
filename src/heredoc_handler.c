@@ -7,6 +7,8 @@ void    handle_heredoc(t_command *cmd)
     const char *home_dir;
     t_redirection *redi = cmd->redirection;
 
+
+    unlink("/tmp/herdoc_file.txt");
     fd = open("/tmp/herdoc_file.txt", O_WRONLY | O_CREAT | O_TRUNC, 0644);
     if(fd < 0)
     {
@@ -20,6 +22,7 @@ void    handle_heredoc(t_command *cmd)
             input_line = readline("> ");
             if (input_line == NULL)
             {
+                // printf("<<<<<<<<< NULL INPUT\n");
                 free(input_line);
                 exit(EXIT_FAILURE);
             }

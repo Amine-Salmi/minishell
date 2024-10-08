@@ -41,8 +41,7 @@ void execute_piped_commands(t_command *cmd, char **env)
 	pipeLine = -1;
     while (cmd)
     {	
-		if (cmd->redirection->red_type == HEREDOC && cmd->redirection->delimiter != NULL)
-			handle_heredoc(cmd);
+		// printf(">>> check\n");
 		if (cmd->next != NULL)
 			pipe(fd);
 		if (cmd->type == PIPE)
@@ -50,6 +49,8 @@ void execute_piped_commands(t_command *cmd, char **env)
 		cmd->pid = fork();
 		if (cmd->pid == 0)
 		{
+			if (cmd->redirection->red_type == HEREDOC && cmd->redirection->delimiter != NULL)
+				handle_heredoc(cmd);
 			if (pipeLine != -1)
 			{
 				dup2(pipeLine, STDIN_FILENO);
