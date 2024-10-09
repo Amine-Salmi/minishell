@@ -6,7 +6,7 @@
 /*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/15 13:17:42 by asalmi            #+#    #+#             */
-/*   Updated: 2024/10/08 18:38:16 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/10/09 23:11:48 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,14 +91,14 @@ t_command *fill_cmd(void)
 {
     t_command *cmd;
     t_command *cmd2;
-    t_command *cmd3;
+    // t_command *cmd3;
     t_redirection *redirection;
-    t_redirection *redirection2;
+    // t_redirection *redirection2;
     
     cmd = malloc(sizeof(t_command));
     cmd2 = malloc(sizeof(t_command));
-    cmd3 = malloc(sizeof(t_command));
-    if (!cmd || !cmd2 || !cmd3)
+    // cmd3 = malloc(sizeof(t_command));
+    if (!cmd || !cmd2)
         exit(EXIT_FAILURE);
     cmd->command = "cat";
     cmd->args = malloc(sizeof(char *) * 2);
@@ -106,44 +106,48 @@ t_command *fill_cmd(void)
         exit(EXIT_FAILURE);
     cmd->args[0] = "cat";
     cmd->args[1] = NULL;
-    cmd->type = CMD;
+    // cmd->args[2] = NULL;
+    // cmd->type = CMD;
 
-    cmd3->command = "wc";
-    cmd3->args = malloc(sizeof(char *) * 2);
-    if (!cmd3->args)
+    // cmd3->command = "wc";
+    // cmd3->args = malloc(sizeof(char *) * 2);
+    // if (!cmd3->args)
+    //     exit(EXIT_FAILURE);
+    // cmd3->args[0] = "wc";
+    // cmd3->args[1] = NULL;
+    // cmd3->type = CMD;
+    // cmd3->next = NULL;
+    
+    cmd2->command = "wc";
+    cmd2->args = malloc(sizeof(char *) * 3);
+    if (!cmd2->args)
         exit(EXIT_FAILURE);
-    cmd3->args[0] = "wc";
-    cmd3->args[1] = NULL;
-    cmd3->type = CMD;
-    cmd3->next = NULL;
-    
-    cmd2->command = NULL;
-    cmd2->args = malloc(sizeof(char *) * 1);
-    cmd2->args[0] = NULL;
-    cmd2->type = PIPE;
-    cmd2->next = cmd3;
+    cmd2->args[0] = "wc";
+    cmd2->args[1] = "-l";
+    cmd2->args[2] = NULL;
+    // cmd2->type = PIPE;
+    cmd2->next = NULL;
 
     
-    cmd->redirection = NULL;
     redirection = malloc(sizeof(t_redirection));
     if (!redirection)
         exit(EXIT_FAILURE);
     redirection->file_name = NULL;
-    redirection->red_type = HEREDOC;
-    redirection->delimiter = "A";
+    redirection->opr = "<<";
+    redirection->delimiter = "EOF";
     redirection->next = NULL;
 
-    redirection2 = malloc(sizeof(t_redirection));
-    if (!redirection2)
-        exit(EXIT_FAILURE);
-    redirection2->file_name = NULL;
-    redirection2->red_type = HEREDOC;
-    redirection2->next = NULL;
-    redirection2->delimiter = "B";
-    redirection->next = redirection2;
+    // redirection2 = malloc(sizeof(t_redirection));
+    // if (!redirection2)
+    //     exit(EXIT_FAILURE);
+    // redirection2->file_name = NULL;
+    // redirection2->red_type = HEREDOC;
+    // redirection2->next = NULL;
+    // redirection2->delimiter = "B";
+    // redirection->next = redirection2;
     
     cmd->redirection = redirection;
-    cmd->next = cmd2;
+    cmd->next = NULL;
 
     return (cmd);
 }
@@ -165,6 +169,14 @@ int main(int ac, char **av, char **env)
             exit(EXIT_FAILURE);
         }
         cmd = fill_cmd();
+        // printf("command: %s\n", cmd->command);
+        // for (int i = 0; cmd->args[i]; i++)
+        //     printf("args cmd[%d]: %s\n", i, cmd->args[i]);
+        // printf("redirection: %s\n", cmd->redirection->file_name);
+        // printf("redirection: %s\n", cmd->redirection->opr);
+        // printf("command 2: %s\n", cmd->next->command);
+        // for (int j = 0; cmd->next->args[j]; j++)
+        //     printf("args cmd 2: %s\n", cmd->next->args[j]);
         execute_piped_commands(cmd, env);
         free(input_line);
     }

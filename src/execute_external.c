@@ -44,17 +44,17 @@ void execute_piped_commands(t_command *cmd, char **env)
 		// printf("command: %s\n", cmd->command);
 		// for (int i = 0; cmd->args[i] != NULL; i++)
 		// 	printf("arg[%d]: %s\n", i, cmd->args[i]);
-		// printf("type: %u\n", cmd->type);
 		// printf("================\n");
 		// printf("%p\n", cmd->next);
 		if (cmd->next != NULL)
 			pipe(fd);
-		if (cmd->type == PIPE)
-			cmd = cmd->next;
+		// if (cmd->type == PIPE)
+		// 	cmd = cmd->next;
 		cmd->pid = fork();
 		if (cmd->pid == 0)
 		{
-			if (cmd->redirection->red_type == HEREDOC && cmd->redirection->delimiter != NULL)
+			// printf("d: %s\n", cmd->redirection->delimiter);
+			if (!ft_strncmp(cmd->redirection->opr, "<<", ft_strlen(cmd->redirection->opr)) && cmd->redirection->delimiter != NULL)
 				handle_heredoc(cmd);
 			if (pipeLine != -1)
 			{

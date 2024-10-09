@@ -8,7 +8,7 @@ void redirection_handler(t_command *cmd)
     cmd1 = cmd;
     while (cmd1->redirection)
     {
-        if (cmd1->redirection->red_type == REDIR_OUT)
+        if (!ft_strncmp(cmd->redirection->opr, ">", ft_strlen(cmd->redirection->opr)))
         {
             fd = open(cmd1->redirection->file_name, O_WRONLY | O_CREAT | O_TRUNC, 0666);
             if (fd < 0)
@@ -20,7 +20,7 @@ void redirection_handler(t_command *cmd)
                 dup2(fd, STDOUT_FILENO);
             close(fd);
         }
-        if (cmd1->redirection->red_type == REDIR_IN)
+        if (!ft_strncmp(cmd->redirection->opr, "<", ft_strlen(cmd->redirection->opr)))
         {
             fd = open(cmd1->redirection->file_name, O_RDONLY);
             if (fd < 0)
@@ -32,7 +32,7 @@ void redirection_handler(t_command *cmd)
                 dup2(fd, STDIN_FILENO);
             close(fd);
         }
-        if (cmd->redirection->red_type == APPEND)
+        if (!ft_strncmp(cmd->redirection->opr, ">>", ft_strlen(cmd->redirection->opr)))
         {
             fd = open(cmd1->redirection->file_name, O_WRONLY | O_CREAT | O_APPEND, 0666);
             if (fd < 0)

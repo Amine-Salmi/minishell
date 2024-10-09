@@ -29,7 +29,8 @@ typedef struct s_env {
 
 typedef struct s_redirection {
     char *file_name;
-    t_type red_type;
+    // t_type red_type;
+    char *opr;
     char *delimiter;
     struct s_redirection *next;
 } t_redirection;
@@ -39,7 +40,7 @@ typedef struct s_command
     char *command;
     char **args;
     pid_t pid;
-    t_type type;
+    // t_type type;
     t_redirection *redirection;
     struct s_command *next;
     struct s_command *prev;  
