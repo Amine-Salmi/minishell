@@ -22,14 +22,11 @@ void    handle_heredoc(t_command *cmd)
             input_line = readline("> ");
             if (input_line == NULL)
             {
-                // printf("<<<<<<<<< NULL INPUT\n");
                 free(input_line);
                 exit(EXIT_FAILURE);
             }
-            // printf(">>>>>>> before if d:%s\n", redi->delimiter);
             if (redi->delimiter != NULL && ft_strncmp(input_line, redi->delimiter, ft_strlen(redi->delimiter)) == 0)
             {
-                // printf(">>>>> after if\n");
                 free(input_line);
                 break;
             }

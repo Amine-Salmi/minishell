@@ -41,7 +41,12 @@ void execute_piped_commands(t_command *cmd, char **env)
 	pipeLine = -1;
     while (cmd)
     {	
-		// printf(">>> check\n");
+		// printf("command: %s\n", cmd->command);
+		// for (int i = 0; cmd->args[i] != NULL; i++)
+		// 	printf("arg[%d]: %s\n", i, cmd->args[i]);
+		// printf("type: %u\n", cmd->type);
+		// printf("================\n");
+		// printf("%p\n", cmd->next);
 		if (cmd->next != NULL)
 			pipe(fd);
 		if (cmd->type == PIPE)

@@ -6,7 +6,7 @@
 /*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/15 13:17:42 by asalmi            #+#    #+#             */
-/*   Updated: 2024/10/07 18:09:21 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/10/08 18:38:16 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,11 +90,15 @@
 t_command *fill_cmd(void)
 {
     t_command *cmd;
+    t_command *cmd2;
+    t_command *cmd3;
     t_redirection *redirection;
     t_redirection *redirection2;
     
     cmd = malloc(sizeof(t_command));
-    if (!cmd)
+    cmd2 = malloc(sizeof(t_command));
+    cmd3 = malloc(sizeof(t_command));
+    if (!cmd || !cmd2 || !cmd3)
         exit(EXIT_FAILURE);
     cmd->command = "cat";
     cmd->args = malloc(sizeof(char *) * 2);
@@ -102,8 +106,23 @@ t_command *fill_cmd(void)
         exit(EXIT_FAILURE);
     cmd->args[0] = "cat";
     cmd->args[1] = NULL;
-    // cmd->args[2] = NULL;
     cmd->type = CMD;
+
+    cmd3->command = "wc";
+    cmd3->args = malloc(sizeof(char *) * 2);
+    if (!cmd3->args)
+        exit(EXIT_FAILURE);
+    cmd3->args[0] = "wc";
+    cmd3->args[1] = NULL;
+    cmd3->type = CMD;
+    cmd3->next = NULL;
+    
+    cmd2->command = NULL;
+    cmd2->args = malloc(sizeof(char *) * 1);
+    cmd2->args[0] = NULL;
+    cmd2->type = PIPE;
+    cmd2->next = cmd3;
+
     
     cmd->redirection = NULL;
     redirection = malloc(sizeof(t_redirection));
@@ -124,7 +143,8 @@ t_command *fill_cmd(void)
     redirection->next = redirection2;
     
     cmd->redirection = redirection;
-    cmd->next = NULL;
+    cmd->next = cmd2;
+
     return (cmd);
 }
 
