@@ -6,11 +6,18 @@
 /*   By: bbadda <bbadda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 14:12:57 by bbadda            #+#    #+#             */
-/*   Updated: 2024/09/13 10:51:28 by bbadda           ###   ########.fr       */
+/*   Updated: 2024/10/08 12:06:10 by bbadda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int __is_redir(char c)
+{
+	if (c == '>' || c == '<')
+		return (1);
+	return (0);
+}
 
 static int	check_end_of_command(int i, int j)
 {
@@ -22,62 +29,89 @@ static int	check_end_of_command(int i, int j)
 	return (0);
 }
 
-int	redir_error(t_token *token, int j)
+int	redir_error(char *command)
 {
+	bool in_quotes = false;
+	bool in_single_quotes = false;
 	int	i;
+	int	j;
 
-	i = 0;
-    while (i < j)
+	i = -1;
+	j = ft_strlen(command);
+    while (++i < j)
     {
-        if (cmp(token[i].command, ">") || cmp(token[i].command, "<") 
-			|| cmp(token[i].command, ">>") || cmp(token[i].command, "<<"))
+		if (!in_quotes && command[i] == '\'')
+			in_single_quotes = !in_single_quotes;
+		else if (!in_single_quotes && command[i] == '\"')
+			in_quotes = !in_quotes;
+        if (__is_redir(command[i]) && !in_quotes && !in_single_quotes)
         {
-            i++;
+			i++;
 			if (check_end_of_command(i, j))
-				break ;
-			if (!cmp(token[i].command, token[i - 1].command))
+					return (1);
+			if (command[i] && command[i] == '>' && command[i] != command[i - 1])
 			{
-				if (cmp(token[i].command, "<"))
-                	__error('<', 1);
-				else
-					__error('\n', 1);	
-				break ;
+                __error(command[i], 1);
+				return (1);
 			}
-            if (cmp(token[i].command, " "))
+			if (command[i] && command[i] == command[i - 1])
 			{
 				i++;
 				if (check_end_of_command(i, j))
-					break ;
+					return (1);
+				if (__is_redir(command[i]))
+				{
+					i++;
+					if (command[i] && command[i] == command[i - 1])
+						__error(command[i] , 2);
+					else
+                		__error(command[i - 1], 1);
+					return (1);
+				}
 			}
-            if (token[i].cmd_type == REDIR_IN || token[i].cmd_type == REDIR_OUT)
+            if (command[i] == ' ')
 			{
-                __error(token[i].cmd_type, 1);
-					break ;
+				while (command[i] == ' ')
+					i++;
+				if (check_end_of_command(i, j))
+					return (1);
+				if (__is_redir(command[i]))
+				{
+                	__error(command[i], 1);
+					return (1);
+				}
 			}
         }
-        i++;
     }
 	return (0);
 }
 
-int	pipe_error(t_token *token, int j)
+int	pipe_error(char *command, int j)
 {
 	int	i;
 
 	i = 0;
-	if (token[0].cmd_type == PIPE)
+	while (command[i] == ' ')
+		i++;
+	if (command[i] == '|')
+	{
 		__error('|', 1);
+		return (1);
+	}
 	else
 	{
 		while (i < j)
 		{
-			if (token[i].cmd_type == PIPE)
+			if (command[i] == '|')
 			{
 				i++;
-				while (token[i].cmd_type == SPACE)
+				while (command[i] == ' ')
 					i++;
-				if (token[i].cmd_type == PIPE || i >= j)
+				if (command[i] == '|' || i >= j)
+				{
 					__error('|', 1);
+					return (1);
+				}
 			}
 			i++;
 		}
@@ -85,42 +119,40 @@ int	pipe_error(t_token *token, int j)
 	return (0);
 }
 
-int	qoutes_error(t_token *token, int j)
+int	qoutes_error(char *command)
 {
+	bool in_quotes = false;
+	bool in_single_quotes = false;
 	int	i;
+	int	j;
 
-	i = 0;
-	while (i < j)
+	j = ft_strlen(command);
+	i = -1;
+	while (++i < j)
 	{
-		if (cmp(token[i].command, "'"))
-		{
-			i++;
-			i++;
-			if (i >= j || !cmp(token[i].command, "'"))
-				__error('\'', 1);
-		}
-		else if (cmp(token[i].command, "\""))
-		{
-			i++;
-			i++;
-			if (i >= j || !cmp(token[i].command, "\""))
-				__error('"', 1);
-		}
-		// if (token[i].cmd_type == SPACE)
-		// 	printf("SPACE\n");
-		// if (token[i].cmd_type == OPTION)
-		// 	printf("OPTION\n");
-		// if (token[i].cmd_type == ENV)
-		// 	printf("ENV\n");
-		i++;
+		if (!in_quotes && command[i] == '\'')
+			in_single_quotes = !in_single_quotes;
+		else if (!in_single_quotes && command[i] == '\"')
+			in_quotes = !in_quotes;
+	}
+	if (in_single_quotes)
+	{
+		__error('\'', 1);
+		return (1);
+	}
+	if (in_quotes)
+	{
+		__error('\"', 1);
+		return (1);
 	}
 	return (0);
 }
 
-int	syntax_error(t_token *token, int j)
+int	syntax_error(char *command)
 {
-	qoutes_error(token, j);
-	pipe_error(token, j);
-	redir_error(token, j);
+	if (qoutes_error(command))
+		return (1);
+	if (redir_error(command))
+		return (1);
 	return (0);
 }

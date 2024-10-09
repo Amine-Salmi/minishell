@@ -6,7 +6,7 @@
 /*   By: bbadda <bbadda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 13:32:45 by bbadda            #+#    #+#             */
-/*   Updated: 2024/09/13 09:20:51 by bbadda           ###   ########.fr       */
+/*   Updated: 2024/10/09 10:36:02 by bbadda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ void print_full_command(int j, t_token *token)
 		}
 		i = 0;
 		printf("|");
-		printf("Token_type : '%c'", token[i].cmd_type);
 		while (i++ < 12)
 			printf(" ");
 		while (r > 9)
@@ -81,7 +80,6 @@ void print_full_command_new(int j, t_list *list)
 			printf(" ");
 		i = 0;
 		printf("|");
-		printf("Token_type : '%c'", tmp->content->cmd_type);
 		while (i++ < 12)
 			printf(" ");
 		while (r > 9)

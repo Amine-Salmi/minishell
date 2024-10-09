@@ -6,7 +6,7 @@
 /*   By: bbadda <bbadda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 10:14:11 by bbadda            #+#    #+#             */
-/*   Updated: 2024/09/23 14:13:16 by bbadda           ###   ########.fr       */
+/*   Updated: 2024/10/09 15:31:43 by bbadda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,20 +22,27 @@
 
 # define ARGS_ERROR  "number of arguments"
 
+typedef struct s_index
+{
+	int	i;
+	int	j;
+	int	k;
+}t_index;
+
 enum e_token_type
 {
-	WORD = 'W',
-	OPTION = '-',
-	SPACE = ' ',
-	NEW_LINE = '\n',
-	QUOTES = '\'',
-	DOUBLE_QUOTES = '\"',
-	ENV = '$',
-	PIPE = '|',
-	REDIR_IN = '<',
-	REDIR_OUT = '>',
-	HERE_DOC,
-	DREDIR_OUT,
+	CMD = 1,
+	ARG = 2,
+	SPACE = 3,
+	NEW_LINE = 4,
+	QUOTES = 5,
+	DOUBLE_QUOTES = 6,
+	ENV = 7,
+	PIPE = 8,
+	REDIR_IN = 9,
+	REDIR_OUT = 10,
+	HERE_DOC = 11,
+	DREDIR_OUT = 12,
 };
 
 enum e_state
@@ -45,28 +52,35 @@ enum e_state
 	GENERAL,
 };
 
-typedef struct s_token
-{
-	char	command[1000];
-	enum e_token_type		cmd_type;
-	enum e_state			state;
-}t_token;
-
-// for the excution part
-typedef struct s_test {
-	char *command;
-	char **arg;
-	struct s_test *next;
-} t_test;
-// >>>>>>>>>>>>>>>>>>>>
-
-
-// workiingg
 typedef struct s_opr
 {
 	char	*opr;
 	char	*file_name;
+	// next;
 }t_opr;
+
+typedef struct s_con 
+{	
+	char	*command;
+	char	**arg;
+	t_opr	*file;
+}t_con;
+
+
+typedef struct s_token
+{
+	char				*command;
+	char				**arg;
+	t_opr				*file;
+	// pid
+	struct s_token		*next;
+	struct s_token		*prev;
+}t_token;
+
+
+
+
+// workiingg
 
 typedef struct s_minishell
 {
@@ -107,24 +121,28 @@ int			cmp(const char *s1, const char *s2);
 char		*get_pipe(char *line);
 int			ft_strlen(const char *str);
 int			is_special_char(char c);
-t_list		*creat_list(t_token *token);
-void		add_list_back(t_list **lst, t_token *token);
+t_token		*creat_list(char *command, char **arg);
+void		add_list_back(t_token **token, t_con *c);
 // void		get_command(int j, t_token *token, t_list *command);
 void	    __error(char c, int i);
 void		*__calloc(size_t count, size_t size);
 int			is_special_char(char c);
+void		check_quotes(char c, bool in_quotes, bool in_single_quotes);
 // --------------------tokenization_functions-----------------//
-int			tokenization(const char *command, t_token	*token);
-void		classify_token_type(t_token *token);
-void		get_command(int j, t_token *token, t_list **f_cmd);
+int			tokenization(const char *command, t_token *main);
+void 		classify_token_type(t_con *c, char *command);
+void		get_command(int j, t_token *token, t_con *c);
 // --------------------syntax_error_functions-----------------//
-int			syntax_error(t_token *token, int j);
-int			qoutes_error(t_token *token, int j);
-int			pipe_error(t_token *token, int j);
+int			syntax_error(char *command);
+int			qoutes_error(char *command);
 void		__free(t_list **lst);
 // ---------------------get_env_function----------------------//
-t_env   *		get_env( char **env);
+t_env   	*get_env( char **env);
 
+// --------------------add_spaces----------------------------//
+char		*add_spaces(char *cmd);
+int 		__is_redir(char c);
+int			pipe_error(char *command, int j);
 
 void 		print_full_command(int j, t_token *token);
 

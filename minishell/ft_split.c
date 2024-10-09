@@ -6,7 +6,7 @@
 /*   By: bbadda <bbadda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/04 15:27:02 by bbadda            #+#    #+#             */
-/*   Updated: 2024/07/05 12:33:56 by bbadda           ###   ########.fr       */
+/*   Updated: 2024/10/09 13:13:54 by bbadda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,32 +39,50 @@ char	*ft_substr(char const *str, unsigned int start, size_t len)
 
 static int	count_word(char *s, char set)
 {
+	bool in_quotes = false;
+	bool in_single_quotes = false;
 	int	i;
 	int	count;
 
 	i = 0;
 	count = 0;
+	while (s[i] == set && s[i])
+		i++;
+	if(s[0])
+		count++;
 	while (s[i])
 	{
-		while (s[i] == set && s[i])
-			i++;
-		if (s[i] != set && s[i])
+		if (!in_quotes && s[i] == '\'')
+			in_single_quotes = !in_single_quotes;
+		else if (!in_single_quotes && s[i] == '\"')
+			in_quotes = !in_quotes;
+		if (s[i] && s[i] == set && !in_single_quotes && !in_quotes)
 		{
-			count++;
+			while (s[i + 1] && s[i + 1] == set)
+				i++;
+			if (s[i + 1])
+				count++;
 		}
-		while (s[i] != set && s[i])
-			i++;
+		i++;
 	}
 	return (count);
 }
 
 static int	len_word(char *s, char set, int start)
 {
+	bool in_quotes = false;
+	bool in_single_quotes = false;
 	int	i;
 
 	i = 0;
-	while (s[start] && s[start] != set)
+	while (s[start])
 	{
+		if(s[start] == set && (!in_single_quotes && !in_quotes))
+			break;
+		if (!in_quotes && s[start] == '\'')
+			in_single_quotes = !in_single_quotes;
+		else if (!in_single_quotes && s[start] == '\"')
+			in_quotes = !in_quotes;
 		start++;
 		i++;
 	}

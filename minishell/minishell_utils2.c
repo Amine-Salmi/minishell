@@ -6,44 +6,45 @@
 /*   By: bbadda <bbadda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 11:04:33 by bbadda            #+#    #+#             */
-/*   Updated: 2024/09/12 23:47:50 by bbadda           ###   ########.fr       */
+/*   Updated: 2024/10/09 11:13:58 by bbadda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_list	*creat_list(t_token *token)
+t_token	*creat_list(char *command, char **arg)
 {
-	t_list	*node;
+	t_token	*node;
 
-	node = malloc(sizeof(t_list));
+	node = malloc(sizeof(t_token));
 	if(!node)
 		return (NULL);
 	if (node)
 	{
-		node->content = token;
+		node->command = command;
+		node->arg = arg;
 		node->next = NULL;
 		node->prev = NULL;
 	}
 	return (node);
 }
 
-void	add_list_back(t_list **lst, t_token *token)
+void	add_list_back(t_token **token, t_con *c)
 {
-	t_list	*tmp;
-	t_list	*new;
+	t_token	*tmp;
+	t_token	*new;
 
-	new = creat_list(token);
-	if (new && lst)
+	new = creat_list(c->command, c->arg);
+	if (new && token)
 	{
-		if (*lst == NULL)
+		if (*token == NULL)
 		{			
-			*lst = __calloc(1, sizeof(t_list));
-			*lst = new;
+			*token = __calloc(1, sizeof(t_token));
+			*token = new;
 		}
 		else
 		{
-			tmp = *lst;
+			tmp = *token;
 			while (tmp->next )
 				tmp = tmp->next;
 			tmp->next = new;

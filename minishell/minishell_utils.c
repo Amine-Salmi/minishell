@@ -6,7 +6,7 @@
 /*   By: bbadda <bbadda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 10:15:23 by bbadda            #+#    #+#             */
-/*   Updated: 2024/09/13 11:48:30 by bbadda           ###   ########.fr       */
+/*   Updated: 2024/10/07 17:54:35 by bbadda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,11 @@ void	__error(char c, int i)
 			printf("42sh: syntax error near unexpected token ");
 			printf("`%c'\n", c);
 		}
+	}
+	if (i == 2)
+	{
+			printf("42sh: syntax error near unexpected token ");
+			printf("`%c%c'\n", c,c);
 	}
 }
 
@@ -93,11 +98,4 @@ void	__free(t_list **lst)
 	*lst = NULL;
 }
 
-void	get_command(int j, t_token *token, t_list **lst)
-{
-	int i;
 
-	i = -1;
-	while(++i < j)
-		add_list_back(lst, &token[i]);
-}
