@@ -6,7 +6,7 @@
 /*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/15 13:17:42 by asalmi            #+#    #+#             */
-/*   Updated: 2024/10/09 23:11:48 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/10/10 23:13:34 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ t_command *fill_cmd(void)
     t_command *cmd2;
     // t_command *cmd3;
     t_redirection *redirection;
-    // t_redirection *redirection2;
+    t_redirection *redirection2;
     
     cmd = malloc(sizeof(t_command));
     cmd2 = malloc(sizeof(t_command));
@@ -106,6 +106,7 @@ t_command *fill_cmd(void)
         exit(EXIT_FAILURE);
     cmd->args[0] = "cat";
     cmd->args[1] = NULL;
+    cmd->next = NULL;
     // cmd->args[2] = NULL;
     // cmd->type = CMD;
 
@@ -118,11 +119,11 @@ t_command *fill_cmd(void)
     // cmd3->type = CMD;
     // cmd3->next = NULL;
     
-    cmd2->command = "wc";
+    cmd2->command = "ls";
     cmd2->args = malloc(sizeof(char *) * 3);
     if (!cmd2->args)
         exit(EXIT_FAILURE);
-    cmd2->args[0] = "wc";
+    cmd2->args[0] = "ls";
     cmd2->args[1] = "-l";
     cmd2->args[2] = NULL;
     // cmd2->type = PIPE;
@@ -134,20 +135,21 @@ t_command *fill_cmd(void)
         exit(EXIT_FAILURE);
     redirection->file_name = NULL;
     redirection->opr = "<<";
-    redirection->delimiter = "EOF";
+    redirection->delimiter = "A";
     redirection->next = NULL;
 
-    // redirection2 = malloc(sizeof(t_redirection));
-    // if (!redirection2)
-    //     exit(EXIT_FAILURE);
-    // redirection2->file_name = NULL;
-    // redirection2->red_type = HEREDOC;
-    // redirection2->next = NULL;
-    // redirection2->delimiter = "B";
-    // redirection->next = redirection2;
+    redirection2 = malloc(sizeof(t_redirection));
+    if (!redirection2)
+        exit(EXIT_FAILURE);
+    redirection2->file_name = NULL;
+    redirection2->opr = "<<";
+    redirection2->delimiter = "B";
+    redirection2->next = NULL;
+    
+    redirection->next = redirection2;
     
     cmd->redirection = redirection;
-    cmd->next = NULL;
+    cmd->next = cmd2;
 
     return (cmd);
 }

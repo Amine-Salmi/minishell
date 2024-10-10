@@ -39,22 +39,15 @@ void execute_piped_commands(t_command *cmd, char **env)
 	my_env = copy_env(env);
 	head = cmd;
 	pipeLine = -1;
+
     while (cmd)
-    {	
-		// printf("command: %s\n", cmd->command);
-		// for (int i = 0; cmd->args[i] != NULL; i++)
-		// 	printf("arg[%d]: %s\n", i, cmd->args[i]);
-		// printf("================\n");
-		// printf("%p\n", cmd->next);
+    {
 		if (cmd->next != NULL)
 			pipe(fd);
-		// if (cmd->type == PIPE)
-		// 	cmd = cmd->next;
 		cmd->pid = fork();
 		if (cmd->pid == 0)
 		{
-			// printf("d: %s\n", cmd->redirection->delimiter);
-			if (!ft_strncmp(cmd->redirection->opr, "<<", ft_strlen(cmd->redirection->opr)) && cmd->redirection->delimiter != NULL)
+			if (!ft_strncmp(cmd->redirection->opr, "<<", ft_strlen(cmd->redirection->opr)) && cmd->redirection->delimiter != NULL) 
 				handle_heredoc(cmd);
 			if (pipeLine != -1)
 			{
@@ -97,9 +90,3 @@ void execute_piped_commands(t_command *cmd, char **env)
 	}
 }
 
-// void ft_execute(t_command *cmd, char **env)
-// {
-// 	printf("----- start -----\n");
-// 	execute_piped_commands(cmd, env);
-// 	printf("----- end -----\n");
-// }
