@@ -6,7 +6,7 @@
 /*   By: bbadda <bbadda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 10:14:11 by bbadda            #+#    #+#             */
-/*   Updated: 2024/10/09 15:31:43 by bbadda           ###   ########.fr       */
+/*   Updated: 2024/10/11 12:40:15 by bbadda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ typedef struct s_opr
 {
 	char	*opr;
 	char	*file_name;
+	char	*del;
 	// next;
 }t_opr;
 
@@ -121,7 +122,7 @@ int			cmp(const char *s1, const char *s2);
 char		*get_pipe(char *line);
 int			ft_strlen(const char *str);
 int			is_special_char(char c);
-t_token		*creat_list(char *command, char **arg);
+t_token		*creat_list(char *command, char **arg, t_opr *file);
 void		add_list_back(t_token **token, t_con *c);
 // void		get_command(int j, t_token *token, t_list *command);
 void	    __error(char c, int i);
@@ -142,6 +143,7 @@ t_env   	*get_env( char **env);
 // --------------------add_spaces----------------------------//
 char		*add_spaces(char *cmd);
 int 		__is_redir(char c);
+int 		__is_herdoc(char *s);
 int			pipe_error(char *command, int j);
 
 void 		print_full_command(int j, t_token *token);

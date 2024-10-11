@@ -6,7 +6,7 @@
 /*   By: bbadda <bbadda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 14:12:57 by bbadda            #+#    #+#             */
-/*   Updated: 2024/10/08 12:06:10 by bbadda           ###   ########.fr       */
+/*   Updated: 2024/10/10 16:53:25 by bbadda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,13 @@
 int __is_redir(char c)
 {
 	if (c == '>' || c == '<')
+		return (1);
+	return (0);
+}
+
+int __is_herdoc(char *s)
+{
+	if (cmp(s, ">>")|| cmp(s, "<<") || cmp(s, ">") || cmp(s, "<"))
 		return (1);
 	return (0);
 }

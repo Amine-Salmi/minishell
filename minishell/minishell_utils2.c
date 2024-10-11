@@ -6,26 +6,37 @@
 /*   By: bbadda <bbadda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 11:04:33 by bbadda            #+#    #+#             */
-/*   Updated: 2024/10/09 11:13:58 by bbadda           ###   ########.fr       */
+/*   Updated: 2024/10/10 16:46:05 by bbadda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_token	*creat_list(char *command, char **arg)
+t_token	*creat_list(char *command, char **arg, t_opr *file)
 {
 	t_token	*node;
 
 	node = malloc(sizeof(t_token));
 	if(!node)
 		return (NULL);
-	if (node)
-	{
-		node->command = command;
-		node->arg = arg;
-		node->next = NULL;
-		node->prev = NULL;
-	}
+	node->command = strdup(command);
+	node->arg = arg;
+	 if (file)
+	 {
+        node->file = malloc(sizeof(t_opr));
+        if (node->file)
+			node->file = file;
+		else
+		{
+			free(node->command);
+			free(node);
+            return (NULL);
+		}
+    } 
+	else
+        node->file = NULL;
+	node->next = NULL;
+	node->prev = NULL;
 	return (node);
 }
 
@@ -34,14 +45,11 @@ void	add_list_back(t_token **token, t_con *c)
 	t_token	*tmp;
 	t_token	*new;
 
-	new = creat_list(c->command, c->arg);
+	new = creat_list(c->command, c->arg, c->file);
 	if (new && token)
 	{
 		if (*token == NULL)
-		{			
-			*token = __calloc(1, sizeof(t_token));
 			*token = new;
-		}
 		else
 		{
 			tmp = *token;
@@ -74,13 +82,3 @@ int	is_cmd(char *str)
 	return (1);
 }
 
-// void	tokenize(t_token is, char *str)
-// {
-// 		is.command[0] = str;
-// 		if (is_cmd(str) == 1)
-// 			is.cmd_type = 1;
-// 		else
-// 			is.cmd_type = 2;
-	// else
-	// 	printf("(null)\n");
-// }

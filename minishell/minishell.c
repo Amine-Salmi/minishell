@@ -6,7 +6,7 @@
 /*   By: bbadda <bbadda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 10:14:08 by bbadda            #+#    #+#             */
-/*   Updated: 2024/10/09 13:18:38 by bbadda           ###   ########.fr       */
+/*   Updated: 2024/10/11 12:39:44 by bbadda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ void	__token(char **s_command, t_con *c)
 			index.j++;
 			if (s_command[index.j])
 				c->file[index.i ].file_name = strdup(s_command[index.j]);
-			index.i ++;
+			index.i++;
 		}
 		else if (s_command[index.j])
 		{
@@ -73,19 +73,18 @@ void	__token(char **s_command, t_con *c)
 	c->arg[index.k] = NULL;
 }
 
-void	toke_lexer(char **command, t_token *main)
+t_token	*toke_lexer(char **command, t_token *token)
 {
 	int		i;
 	t_con	c;
-	t_token	*token;
 	char	**s_command;
 	char	*s;
 	t_index	index;
 	
+	token = NULL;
 	i = -1;
 	while (command[++i])
 	{
-		printf("-----command |%d| -----\n", i);
 		s = add_spaces(command[i]);
 		syntax_error(s);
 		s_command = ft_split(s, ' ');
@@ -95,12 +94,37 @@ void	toke_lexer(char **command, t_token *main)
 		c.arg = malloc(index.k *sizeof(char *));
 		c.file[0].opr = NULL;
 		c.arg[0] = NULL;
-		c.command = s_command[0];
+		if (!__is_herdoc(s_command[0]))
+			c.command = s_command[0];
 		__token(s_command, &c);
 		add_list_back(&token, &c);
-		// free(s_command);
-		// free(s);
-		// free(&c);
+	}
+	return (token);
+}
+
+void	priiint(t_token *token)
+{
+	while (token)
+	{
+		int i = 0;
+		printf("command : %s\n", token->command);
+		while (token->arg[i])
+		{
+			printf("arg[%d] : %s\n", i, token->arg[i]);
+			// if (token->prev)
+			// 	printf("prev arg[%d] : %s\n", i, token->prev->arg[i]);
+			i++;
+		}
+		int j = 0;
+		while (token->file[j].opr)
+		{
+			printf("file name[%d] : %s\n", j, token->file[j].file_name);
+			printf("opr[%d] : %s\n", j, token->file[j].opr);
+			// if (token->prev)
+			// 	printf("prev namefile[%d] : %s\n", j, token->prev->file[j].file_name);
+			j++;
+		}
+		token = token->next;
 	}
 }
 
@@ -116,11 +140,10 @@ int main (int ac, char *av[], char **env)
 	t_token		*token;
 	t_con		*c;
 	t_env		*e;
-	t_token		*main;
 
 	e = NULL;
 	e = (t_env *)malloc(sizeof(t_env));
-	main = (t_token *)malloc(sizeof(t_token));
+	token = (t_token *)malloc(sizeof(t_token));
 	c = (t_con *)malloc(sizeof(t_con));
 	while (1)
 	{
@@ -130,7 +153,8 @@ int main (int ac, char *av[], char **env)
 		if (pipe_error(full_command, ft_strlen(full_command)))
 			continue ;
 		command = ft_split(full_command, '|');
-		toke_lexer(command, main);
+		token = toke_lexer(command, token);
+		priiint(token);
 	}
 	return (0);
 }
