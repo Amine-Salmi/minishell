@@ -29,6 +29,7 @@ typedef struct s_env {
 
 typedef struct s_redirection {
     char *file_name;
+    int fd;
     // t_type red_type;
     char *opr;
     char *delimiter;

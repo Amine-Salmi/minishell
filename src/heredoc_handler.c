@@ -4,44 +4,49 @@ void    handle_heredoc(t_command *cmd)
 {
     int fd;
     char *input_line;
-    const char *home_dir;
+    const char  *heredoc_file;
     t_redirection *redi = cmd->redirection;
+    pid_t pid;
+    int status;
+    t_redirection *node;
 
-    unlink("/tmp/herdoc_file.txt");
-    fd = open("/tmp/herdoc_file.txt", O_WRONLY | O_CREAT | O_TRUNC, 0644);
-    if(fd < 0)
+    heredoc_file = "/tmp/herdoc_file.txt";
+    pid = fork();
+    if (pid == 0)
     {
-        perror("open");
-        exit(EXIT_FAILURE);
-    }
-    while (redi)
-    {
-        while (1)
+        unlink(heredoc_file);
+        fd = open(heredoc_file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+        if(fd < 0)
         {
-            input_line = readline("> ");
-            if (input_line == NULL)
-            {
-                free(input_line);
-                exit(EXIT_FAILURE);
-            }
-            if (redi->delimiter != NULL && ft_strncmp(input_line, redi->delimiter, ft_strlen(redi->delimiter)) == 0)
-            {
-                free(input_line);
-                break;
-            }
-            if (redi->next == NULL)
-                ft_putendl_fd(input_line, fd);
-            free(input_line);
+            perror("open");
+            exit(EXIT_FAILURE);
         }
-        redi = redi->next;
+        while (cmd->redirection)
+        {
+            while (1)
+            {
+                input_line = readline("> ");
+                if (input_line == NULL)
+                {
+                    free(input_line);
+                    exit(EXIT_FAILURE);
+                }
+                if (cmd->redirection->delimiter != NULL && ft_strncmp(input_line, cmd->redirection->delimiter, ft_strlen(cmd->redirection->delimiter)) == 0)
+                {
+                    free(input_line);
+                    break;
+                }
+                ft_putendl_fd(input_line, fd);
+                free(input_line);
+                // node = cmd->redirection;
+            }
+            cmd->redirection = cmd->redirection->next;
+        }
     }
-    close(fd);
-    fd = open("/tmp/herdoc_file.txt", O_RDONLY);
-    if(fd < 0)
+    else if (pid > 0)
     {
-        perror("open");
-        exit(EXIT_FAILURE);
+        waitpid(pid, &status, 0);
+        close(fd);
     }
-    dup2(fd, STDIN_FILENO);
-    close(fd);
+    cmd->redirection->file_name = ft_strdup(heredoc_file);
 }

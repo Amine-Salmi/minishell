@@ -6,7 +6,7 @@
 /*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/15 13:17:42 by asalmi            #+#    #+#             */
-/*   Updated: 2024/10/10 23:13:34 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/10/11 21:41:43 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -171,14 +171,10 @@ int main(int ac, char **av, char **env)
             exit(EXIT_FAILURE);
         }
         cmd = fill_cmd();
-        // printf("command: %s\n", cmd->command);
-        // for (int i = 0; cmd->args[i]; i++)
-        //     printf("args cmd[%d]: %s\n", i, cmd->args[i]);
-        // printf("redirection: %s\n", cmd->redirection->file_name);
-        // printf("redirection: %s\n", cmd->redirection->opr);
-        // printf("command 2: %s\n", cmd->next->command);
-        // for (int j = 0; cmd->next->args[j]; j++)
-        //     printf("args cmd 2: %s\n", cmd->next->args[j]);
+        // printf("%p\n", cmd->redirection);
+        if (!ft_strncmp(cmd->redirection->opr, "<<", ft_strlen(cmd->redirection->opr)) && cmd->redirection->delimiter != NULL)
+			handle_heredoc(cmd);
+		// dprintf(2, "aaaaaa %p\n", cmd->redirection);
         execute_piped_commands(cmd, env);
         free(input_line);
     }

@@ -43,12 +43,12 @@ void execute_piped_commands(t_command *cmd, char **env)
     while (cmd)
     {
 		if (cmd->next != NULL)
+		{
 			pipe(fd);
+		}
 		cmd->pid = fork();
 		if (cmd->pid == 0)
 		{
-			if (!ft_strncmp(cmd->redirection->opr, "<<", ft_strlen(cmd->redirection->opr)) && cmd->redirection->delimiter != NULL) 
-				handle_heredoc(cmd);
 			if (pipeLine != -1)
 			{
 				dup2(pipeLine, STDIN_FILENO);
