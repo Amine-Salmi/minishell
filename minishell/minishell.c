@@ -6,11 +6,32 @@
 /*   By: bbadda <bbadda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 10:14:08 by bbadda            #+#    #+#             */
-/*   Updated: 2024/10/11 12:39:44 by bbadda           ###   ########.fr       */
+/*   Updated: 2024/10/12 19:49:42 by bbadda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int	check_env(char *cmd)
+{
+	if (cmd[0] == '$')
+	{
+		if (cmd[1] && cmd[1] != '?')
+		return (1);
+	}
+	return (0);	
+}
+
+char	*replace_env(t_env *e, char *s)
+{
+	while (e)
+	{
+		if (cmp(e->content->var, s))
+			return (strdup(e->content->value));
+		e = e->next;
+	}
+	return (NULL);
+}
 
 void	check_quotes(char c, bool in_quotes, bool in_single_quotes)
 {
@@ -43,7 +64,7 @@ t_index	max_files_args(char **s_command)
 	return (index);
 }
 
-void	__token(char **s_command, t_con *c)
+void	__token(char **s_command, t_con *c, t_env *e)
 {
 	t_index	index;
 
@@ -52,13 +73,22 @@ void	__token(char **s_command, t_con *c)
 	index.k = 0;
 	while (s_command[index.j])
 	{
+		if (check_env(s_command[index.j]))
+			s_command[index.j] = strdup(replace_env(e, s_command[index.j] + 1));
 		if (s_command[index.j] &&(!strcmp(s_command[index.j], "<") || !strcmp(s_command[index.j], ">") 
 			|| !strcmp(s_command[index.j], "<<") || !strcmp(s_command[index.j], ">>")))
 		{
-			c->file[index.i ].opr = strdup(s_command[index.j]);
+			c->file[index.i].opr = strdup(s_command[index.j]);
 			index.j++;
+			if (check_env(s_command[index.j]))
+				s_command[index.j] = strdup(replace_env(e, s_command[index.j] + 1));
 			if (s_command[index.j])
-				c->file[index.i ].file_name = strdup(s_command[index.j]);
+			{
+				// if (cmp(c->file[index.i].opr, "<<"))
+				// 	c->file[index.i].file_name = strdup(replace_env(e, s_command[index.j]));
+				// else
+					c->file[index.i].file_name = strdup(s_command[index.j]);
+			}
 			index.i++;
 		}
 		else if (s_command[index.j])
@@ -69,11 +99,21 @@ void	__token(char **s_command, t_con *c)
 		if (s_command[index.j])
 			index.j++;	
 	}
-	c->file[index.i ].opr = NULL;
+	c->file[index.i].opr = NULL;
 	c->arg[index.k] = NULL;
+	// printf("c.cmd : %d\n", c->command);
+	// int i = 0;
+	// while (c->file[i].opr)
+	// {
+	// 	if (cmp(c->file[i].opr, "<<"))
+	// 	{
+	// 		c->file[i].file_name = strdup("bilalll");
+	// 	}
+	// 	i++;
+	// }
 }
 
-t_token	*toke_lexer(char **command, t_token *token)
+t_token	*toke_lexer(char **command, t_token *token, t_env *e)
 {
 	int		i;
 	t_con	c;
@@ -96,7 +136,7 @@ t_token	*toke_lexer(char **command, t_token *token)
 		c.arg[0] = NULL;
 		if (!__is_herdoc(s_command[0]))
 			c.command = s_command[0];
-		__token(s_command, &c);
+		__token(s_command, &c, e);
 		add_list_back(&token, &c);
 	}
 	return (token);
@@ -118,6 +158,7 @@ void	priiint(t_token *token)
 		int j = 0;
 		while (token->file[j].opr)
 		{
+			printf("j === %d\n", j);
 			printf("file name[%d] : %s\n", j, token->file[j].file_name);
 			printf("opr[%d] : %s\n", j, token->file[j].opr);
 			// if (token->prev)
@@ -153,7 +194,7 @@ int main (int ac, char *av[], char **env)
 		if (pipe_error(full_command, ft_strlen(full_command)))
 			continue ;
 		command = ft_split(full_command, '|');
-		token = toke_lexer(command, token);
+		token = toke_lexer(command, token, e);
 		priiint(token);
 	}
 	return (0);

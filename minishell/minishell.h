@@ -6,7 +6,7 @@
 /*   By: bbadda <bbadda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 10:14:11 by bbadda            #+#    #+#             */
-/*   Updated: 2024/10/11 12:40:15 by bbadda           ###   ########.fr       */
+/*   Updated: 2024/10/12 10:02:19 by bbadda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ typedef struct s_opr
 {
 	char	*opr;
 	char	*file_name;
-	char	*del;
+	// char	*del;
 	// next;
 }t_opr;
 
@@ -147,5 +147,7 @@ int 		__is_herdoc(char *s);
 int			pipe_error(char *command, int j);
 
 void 		print_full_command(int j, t_token *token);
+char		*ft_substr(char const *str, unsigned int start, size_t len);
+char		*ft_strtrim(char const *str, char const *set);
 
 #endif
