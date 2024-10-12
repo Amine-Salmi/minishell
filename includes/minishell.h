@@ -48,6 +48,7 @@ typedef struct s_command
 
 t_env   *copy_env(char **env);
 char    *find_path(t_env *env);
+char *find_executable_file(char *command, char *path);
 // int *execute_external_command(t_command *cmd, char **env);
 void    execute_piped_commands(t_command *cmd, char **env);
 void    redirection_handler(t_command *cmd);
