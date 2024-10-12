@@ -6,7 +6,7 @@
 /*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/15 13:17:42 by asalmi            #+#    #+#             */
-/*   Updated: 2024/10/12 21:44:54 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/10/12 22:01:54 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,7 +137,7 @@ int main(int ac, char **av, char **env)
             free(input_line);
             exit(EXIT_FAILURE);
         }
-        cmd = fill_cmd();
+        // cmd = fill_cmd();
         ft_execute(cmd, env);
         free(input_line);
     }
