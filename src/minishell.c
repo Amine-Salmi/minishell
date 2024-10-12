@@ -6,7 +6,7 @@
 /*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/15 13:17:42 by asalmi            #+#    #+#             */
-/*   Updated: 2024/10/12 19:05:37 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/10/12 19:20:32 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ t_command *fill_cmd(void)
     redirection->next = NULL;
     
     cmd->redirection = NULL;
-    cmd->next = cmd2;
+    cmd->next = NULL;
 
     return (cmd);
 }
@@ -112,12 +112,12 @@ void ft_execute(t_command *cmd, char **env)
 {
     if (cmd->next == NULL)
     {
-        if (execute_simple_command(cmd, env) != 0)
+        if (execute_simple_command(cmd, env) != 0) // should free memory in find_executable_file and path.
             exit(EXIT_FAILURE);
     }
     else if (cmd->next != NULL)
     {
-        execute_piped_commands(cmd, env);
+        execute_piped_commands(cmd, env); // // should free memory in find_executable_file and path.
     }
         
 }

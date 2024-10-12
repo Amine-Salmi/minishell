@@ -1,31 +1,5 @@
 #include "../includes/minishell.h"
 
-char *find_executable_file(char *command, char *path)
-{
-    char *executable_path;
-    char **dirs;
-    int i;
-
-    dirs = ft_split(path, ':');
-    i = 0;
-    while (dirs[i])
-    {
-        executable_path = ft_strjoin(ft_strjoin(dirs[i], "/"), command);
-        if (access(executable_path, F_OK | X_OK) == 0)
-            return (executable_path);
-        free(executable_path);
-        i++;
-    }
-	i = 0;
-	while (dirs[i])
-	{
-		free(dirs[i]);
-		i++;
-	}
-	free(dirs);
-    return (NULL);
-}
-
 void execute_piped_commands(t_command *cmd, char **env)
 {
     int fd[2];
