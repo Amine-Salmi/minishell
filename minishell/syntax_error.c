@@ -6,7 +6,7 @@
 /*   By: bbadda <bbadda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 14:12:57 by bbadda            #+#    #+#             */
-/*   Updated: 2024/10/10 16:53:25 by bbadda           ###   ########.fr       */
+/*   Updated: 2024/10/12 21:29:35 by bbadda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int	redir_error(char *command)
 	int	j;
 
 	i = -1;
-	j = ft_strlen(command);
+	j = parse_strlen(command);
     while (++i < j)
     {
 		if (!in_quotes && command[i] == '\'')
@@ -133,7 +133,7 @@ int	qoutes_error(char *command)
 	int	i;
 	int	j;
 
-	j = ft_strlen(command);
+	j = parse_strlen(command);
 	i = -1;
 	while (++i < j)
 	{

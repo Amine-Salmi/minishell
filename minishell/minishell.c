@@ -6,7 +6,7 @@
 /*   By: bbadda <bbadda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 10:14:08 by bbadda            #+#    #+#             */
-/*   Updated: 2024/10/12 19:49:42 by bbadda           ###   ########.fr       */
+/*   Updated: 2024/10/12 21:30:50 by bbadda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,7 +127,7 @@ t_token	*toke_lexer(char **command, t_token *token, t_env *e)
 	{
 		s = add_spaces(command[i]);
 		syntax_error(s);
-		s_command = ft_split(s, ' ');
+		s_command = parse_split(s, ' ');
 		free(s);
 		index = max_files_args(s_command);
 		c.file = malloc(index.i * sizeof(t_opr));
@@ -191,9 +191,9 @@ int main (int ac, char *av[], char **env)
 		e = get_env(env);
 		full_command = readline("⑉➤minishell-$");
 		add_history(full_command);
-		if (pipe_error(full_command, ft_strlen(full_command)))
+		if (pipe_error(full_command, parse_strlen(full_command)))
 			continue ;
-		command = ft_split(full_command, '|');
+		command = parse_split(full_command, '|');
 		token = toke_lexer(command, token, e);
 		priiint(token);
 	}

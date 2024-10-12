@@ -6,7 +6,7 @@
 /*   By: bbadda <bbadda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 11:04:33 by bbadda            #+#    #+#             */
-/*   Updated: 2024/10/10 16:46:05 by bbadda           ###   ########.fr       */
+/*   Updated: 2024/10/12 21:32:33 by bbadda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ t_token	*creat_list(char *command, char **arg, t_opr *file)
 	node = malloc(sizeof(t_token));
 	if(!node)
 		return (NULL);
-	node->command = strdup(command);
+	node->command = parse_strdup(command);
 	node->arg = arg;
 	 if (file)
 	 {
@@ -65,7 +65,7 @@ char	*get_pipe(char *line)
 {
 	int i = 0;
 	char	**str;
-	str = ft_split(line, ' ');
+	str = parse_split(line, ' ');
 	while (str[i])
 	{
 		if (cmp(str[i], "|") && !str[i + 1])

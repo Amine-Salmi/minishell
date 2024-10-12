@@ -6,24 +6,16 @@
 /*   By: bbadda <bbadda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 10:15:23 by bbadda            #+#    #+#             */
-/*   Updated: 2024/10/07 17:54:35 by bbadda           ###   ########.fr       */
+/*   Updated: 2024/10/12 21:35:43 by bbadda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	ft_strlen(const char *str)
-{
-	int i = 0;
-	while (str[i])
-		i++;
-	return (i);
-}
-
 int	cmp(const char *s1, const char *s2)
 {
 	int i = 0;
-	if (ft_strlen(s1) != ft_strlen(s2))
+	if (parse_strlen(s1) != parse_strlen(s2))
 		return (0);
 	while (s1[i] && s2[i])
 	{
@@ -97,5 +89,3 @@ void	__free(t_list **lst)
 	}
 	*lst = NULL;
 }
-
-

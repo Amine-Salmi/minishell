@@ -1,28 +1,55 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_split.c                                         :+:      :+:    :+:   */
+/*   parse_split.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bbadda <bbadda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/04 15:27:02 by bbadda            #+#    #+#             */
-/*   Updated: 2024/10/09 13:13:54 by bbadda           ###   ########.fr       */
+/*   Updated: 2024/10/12 21:31:32 by bbadda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*ft_substr(char const *str, unsigned int start, size_t len)
+int	parse_strlen(const char *str)
+{
+	int	len;
+
+	len = 0;
+	while (str[len])
+		len++;
+	return (len);
+}
+
+char	*parse_strdup(const char *src)
+{
+	char	*dst;
+	int		i;
+	int		len; 
+
+	i = -1;
+	len = parse_strlen(src);
+	dst = (char *)malloc(len + 1);
+	if (dst == 0)
+		return (NULL);
+	while (++i < len)
+		dst[i] = src[i];
+	dst[i] = '\0';
+	return (dst);
+}
+
+char	*parse_substr(char const *str, unsigned int start, size_t len)
 {
 	char	*sub;
 	size_t	i;
 
 	if (!str)
 		return (NULL);
-	if (start > strlen(str))
-		return (strdup(""));
-	if (len > strlen(str) - start)
-		len = strlen(str) - start;
+	if (start > parse_strlen(str))
+		return (parse_strdup(""));
+	if (len > parse_strlen(str) - start)
+		len = parse_strlen(str) - start;
 	sub = (char *)malloc(len + 1);
 	if (sub == NULL)
 		return (NULL);
@@ -118,7 +145,7 @@ static char	**str_alloc(char const *s, char c, int fix_c, char **list)
 		while (s[start] == c && s[start])
 			start++;
 		end = len_word((char *)s, c, start);
-		list[i] = ft_substr(s, start, end);
+		list[i] = parse_substr(s, start, end);
 		if (!list[i])
 		{
 			free_list(list);
@@ -131,7 +158,7 @@ static char	**str_alloc(char const *s, char c, int fix_c, char **list)
 	return (list);
 }
 
-char	**ft_split(char const *s, char c)
+char	**parse_split(char const *s, char c)
 {
 	char	**list;
 	int		fix_c;

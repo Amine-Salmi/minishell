@@ -6,7 +6,7 @@
 /*   By: bbadda <bbadda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 11:26:36 by bbadda            #+#    #+#             */
-/*   Updated: 2024/10/09 11:27:12 by bbadda           ###   ########.fr       */
+/*   Updated: 2024/10/12 21:32:52 by bbadda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ char	*add_spaces(char *cmd)
 		return (NULL);
 	i = 0;
 	j = 0;
-	new_cmd = malloc(ft_strlen(cmd) * 3);
+	new_cmd = malloc(parse_strlen(cmd) * 3);
 	if (new_cmd == NULL)
 		return (NULL);
 	while (cmd[i])
