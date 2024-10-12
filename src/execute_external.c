@@ -61,8 +61,10 @@ void execute_piped_commands(t_command *cmd, char **env)
 			}
 			close(fd[0]);
 			close(fd[1]);
-			if (cmd->redirection)
-				redirection_handler(cmd);
+			// dprintf(2, "------> file heredoc: %s\n", cmd->redirection->file_name);
+			// dprintf(2, "======> %p\n", cmd->redirection);
+			// if (cmd->redirection)
+			// 	redirection_handler(cmd);
 			path = find_path(my_env);
 			executable_path = find_executable_file(cmd->command, path);
 			if (execve(executable_path, cmd->args, NULL) == -1)

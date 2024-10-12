@@ -5,12 +5,13 @@ void    handle_heredoc(t_command *cmd)
     int fd;
     char *input_line;
     const char  *heredoc_file;
-    t_redirection *redi = cmd->redirection;
+    t_redirection *redi;
     pid_t pid;
     int status;
     t_redirection *node;
 
     heredoc_file = "/tmp/herdoc_file.txt";
+    redi = cmd->redirection;
     pid = fork();
     if (pid == 0)
     {
@@ -21,7 +22,7 @@ void    handle_heredoc(t_command *cmd)
             perror("open");
             exit(EXIT_FAILURE);
         }
-        while (cmd->redirection)
+        while (redi)
         {
             while (1)
             {
@@ -31,22 +32,23 @@ void    handle_heredoc(t_command *cmd)
                     free(input_line);
                     exit(EXIT_FAILURE);
                 }
-                if (cmd->redirection->delimiter != NULL && ft_strncmp(input_line, cmd->redirection->delimiter, ft_strlen(cmd->redirection->delimiter)) == 0)
+                if (redi->delimiter != NULL && ft_strncmp(input_line, redi->delimiter, ft_strlen(redi->delimiter)) == 0)
                 {
                     free(input_line);
                     break;
                 }
                 ft_putendl_fd(input_line, fd);
                 free(input_line);
-                // node = cmd->redirection;
+                // node = redi;
             }
-            cmd->redirection = cmd->redirection->next;
+            redi = redi->next;
         }
     }
     else if (pid > 0)
     {
-        waitpid(pid, &status, 0);
         close(fd);
+        wait(NULL);
     }
-    cmd->redirection->file_name = ft_strdup(heredoc_file);
+
+    redi->file_name = ft_strdup(heredoc_file);
 }

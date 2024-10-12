@@ -6,7 +6,7 @@
 /*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/15 13:17:42 by asalmi            #+#    #+#             */
-/*   Updated: 2024/10/11 21:41:43 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/10/12 15:29:02 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,11 +100,11 @@ t_command *fill_cmd(void)
     // cmd3 = malloc(sizeof(t_command));
     if (!cmd || !cmd2)
         exit(EXIT_FAILURE);
-    cmd->command = "cat";
+    cmd->command = "ls";
     cmd->args = malloc(sizeof(char *) * 2);
     if (!cmd->args)
         exit(EXIT_FAILURE);
-    cmd->args[0] = "cat";
+    cmd->args[0] = "ls";
     cmd->args[1] = NULL;
     cmd->next = NULL;
     // cmd->args[2] = NULL;
@@ -133,23 +133,23 @@ t_command *fill_cmd(void)
     redirection = malloc(sizeof(t_redirection));
     if (!redirection)
         exit(EXIT_FAILURE);
-    redirection->file_name = NULL;
-    redirection->opr = "<<";
-    redirection->delimiter = "A";
+    redirection->file_name = "file";
+    redirection->opr = ">";
+    redirection->delimiter = NULL;
     redirection->next = NULL;
 
-    redirection2 = malloc(sizeof(t_redirection));
-    if (!redirection2)
-        exit(EXIT_FAILURE);
-    redirection2->file_name = NULL;
-    redirection2->opr = "<<";
-    redirection2->delimiter = "B";
-    redirection2->next = NULL;
+    // redirection2 = malloc(sizeof(t_redirection));
+    // if (!redirection2)
+    //     exit(EXIT_FAILURE);
+    // redirection2->file_name = NULL;
+    // redirection2->opr = "<<";
+    // redirection2->delimiter = "B";
+    // redirection2->next = NULL;
     
-    redirection->next = redirection2;
+    redirection->next = NULL;
     
     cmd->redirection = redirection;
-    cmd->next = cmd2;
+    cmd->next = NULL;
 
     return (cmd);
 }
@@ -171,10 +171,8 @@ int main(int ac, char **av, char **env)
             exit(EXIT_FAILURE);
         }
         cmd = fill_cmd();
-        // printf("%p\n", cmd->redirection);
-        if (!ft_strncmp(cmd->redirection->opr, "<<", ft_strlen(cmd->redirection->opr)) && cmd->redirection->delimiter != NULL)
+        if (cmd->redirection->delimiter != NULL && !ft_strncmp(cmd->redirection->opr, "<<", ft_strlen(cmd->redirection->opr)))
 			handle_heredoc(cmd);
-		// dprintf(2, "aaaaaa %p\n", cmd->redirection);
         execute_piped_commands(cmd, env);
         free(input_line);
     }

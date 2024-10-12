@@ -2,28 +2,27 @@
 
 void redirection_handler(t_command *cmd)
 {
-    t_command *cmd1;
     int fd;
+    int i;
 
-    cmd1 = cmd;
-    while (cmd1->redirection)
+    i = 0;
+    while (i < 2)
     {
-        if (!ft_strncmp(cmd1->redirection->opr, ">", ft_strlen(cmd1->redirection->opr)))
+        if (!ft_strncmp(cmd->redirection[i].opr, ">", ft_strlen(cmd->redirection[i].opr)))
         {
-            fd = open(cmd1->redirection->file_name, O_WRONLY | O_CREAT | O_TRUNC, 0666);
+            fd = open(cmd->redirection[i].file_name, O_WRONLY | O_CREAT | O_TRUNC, 0666);
             if (fd < 0)
             {
                 perror("open");
                 exit(EXIT_FAILURE);
             }
-            if (cmd1->redirection->next == NULL)
+            if (cmd->redirection[i].file_name == NULL)
                 dup2(fd, STDOUT_FILENO);
             close(fd);
         }
-        if (!ft_strncmp(cmd1->redirection->opr, "<<", ft_strlen(cmd1->redirection->opr)))
+        if (!ft_strncmp(cmd->redirection[i].opr, "<<", ft_strlen(cmd->redirection[i].opr)))
         {
-            dprintf(2, "AAAAAAAAA -> %p\n", cmd1->redirection->file_name);
-            fd = open(cmd1->redirection->file_name, O_RDONLY);
+            fd = open(cmd->redirection[i].file_name, O_RDONLY);
             if (fd < 0)
             {
                 perror("open test");
@@ -32,31 +31,31 @@ void redirection_handler(t_command *cmd)
             dup2(fd, STDIN_FILENO);
             close(fd);
         }
-        if (!ft_strncmp(cmd1->redirection->opr, "<", ft_strlen(cmd1->redirection->opr)))
+        if (!ft_strncmp(cmd->redirection[i].opr, "<", ft_strlen(cmd->redirection[i].opr)))
         {
-            fd = open(cmd1->redirection->file_name, O_RDONLY);
+            fd = open(cmd->redirection[i].file_name, O_RDONLY);
             if (fd < 0)
             {
                 perror("open");
                 exit(EXIT_FAILURE);
             }
-            if (cmd1->redirection->next == NULL)
+            if (cmd->redirection[i].next == NULL)
                 dup2(fd, STDIN_FILENO);
             close(fd);
         }
        
-        if (!ft_strncmp(cmd1->redirection->opr, ">>", ft_strlen(cmd1->redirection->opr)))
+        if (!ft_strncmp(cmd->redirection[i].opr, ">>", ft_strlen(cmd->redirection[i].opr)))
         {
-            fd = open(cmd1->redirection->file_name, O_WRONLY | O_CREAT | O_APPEND, 0666);
+            fd = open(cmd->redirection[i].file_name, O_WRONLY | O_CREAT | O_APPEND, 0666);
             if (fd < 0)
             {
                 perror("open");
                 exit(EXIT_FAILURE);
             }
-            if (cmd1->redirection->next == NULL)
+            if (cmd->redirection[i].next == NULL)
                 dup2(fd, STDOUT_FILENO);
             close(fd);
         }
-        cmd1->redirection = cmd1->redirection->next;
+        i++;
     }
 }
