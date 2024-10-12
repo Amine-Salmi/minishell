@@ -39,7 +39,6 @@ void    handle_heredoc(t_command *cmd)
                 }
                 ft_putendl_fd(input_line, fd);
                 free(input_line);
-                // node = redi;
             }
             redi = redi->next;
         }
