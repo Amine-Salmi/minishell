@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bbadda <bbadda@student.42.fr>              +#+  +:+       +#+        */
+/*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 10:14:08 by bbadda            #+#    #+#             */
-/*   Updated: 2024/10/12 21:30:50 by bbadda           ###   ########.fr       */
+/*   Updated: 2024/10/12 23:44:36 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -195,7 +195,7 @@ int main (int ac, char *av[], char **env)
 			continue ;
 		command = parse_split(full_command, '|');
 		token = toke_lexer(command, token, e);
-		priiint(token);
+		// priiint(token);
 	}
 	return (0);
 }

@@ -2,9 +2,9 @@ CC = cc
 
 NAME = minishell
 
-SRC = minishell.c minishell_utils.c minishell_utils2.c\
-		parse_split.c syntax_error.c tokenization.c print_things.c\
-		get_env.c get_command.c add_spaces.c\
+SRC = add_spaces.c get_env.c minishell_utils.c minishell.c \
+		minishell_utils2.c parse_split.c parse_strtrim.c print_things.c \
+		syntax_error.c tokenization.c
 
 OBJ = $(SRC:.c=.o)
 
