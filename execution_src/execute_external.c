@@ -1,6 +1,5 @@
 #include "../includes/minishell_merg.h"
 
-
 void execute_piped_commands(t_token *cmd, char **env)
 {
     int fd[2];
@@ -11,16 +10,14 @@ void execute_piped_commands(t_token *cmd, char **env)
 	t_env *my_env;
 	t_token *head;
 
-	// my_env = copy_env(env);
+	my_env = get_env(env);
 	head = cmd;
 	pipeLine = -1;
 
     while (cmd)
     {
 		if (cmd->next != NULL)
-		{
 			pipe(fd);
-		}
 		cmd->pid = fork();
 		if (cmd->pid == 0)
 		{
