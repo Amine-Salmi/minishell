@@ -4,7 +4,7 @@ NAME = minishell
 
 SRC = add_spaces.c get_env.c minishell_utils.c minishell.c \
 		minishell_utils2.c parse_split.c parse_strtrim.c print_things.c \
-		syntax_error.c tokenization.c
+		syntax_error.c
 
 OBJ = $(SRC:.c=.o)
 

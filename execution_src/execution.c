@@ -1,18 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.c                                        :+:      :+:    :+:   */
+/*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/15 13:17:42 by asalmi            #+#    #+#             */
-/*   Updated: 2024/10/12 23:03:28 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/10/13 18:21:14 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+// #include "../includes/minishell.h"
+#include "../includes/minishell_merg.h"
 
-int execute_simple_command(t_command *cmd, char **env)
+int execute_simple_command(t_token *cmd, char **env)
 {
     pid_t pid;
     int status;
@@ -20,15 +21,17 @@ int execute_simple_command(t_command *cmd, char **env)
     char *executable_path;
     t_env *my_env;
 
-    my_env = copy_env(env);
+    // my_env = copy_env(env);
+    my_env = get_env(env);
     pid = fork();
     if (pid == 0)
     {
         // if (cmd->redirection)
         //     redirection_handler(cmd);
         path = find_path(my_env);
+        printf("path : %s\n", path);
         executable_path = find_executable_file(cmd->command, path);
-        if (execve(executable_path, cmd->args, NULL) == -1)
+        if (execve(executable_path, cmd->arg, NULL) == -1)
         {
             perror("execve");
             return 1;
@@ -41,17 +44,20 @@ int execute_simple_command(t_command *cmd, char **env)
     return 0;
 }
 
-void ft_execute(t_command *cmd, char **env)
+void ft_execute(t_token *cmd, char **env)
 {
+    printf("command: %s\n", cmd->command);
+    for (int i = 0; cmd->arg[i] != NULL; i++)
+        printf("args: %s\n", cmd->arg[i]);
     if (cmd->next == NULL)
     {
         if (execute_simple_command(cmd, env) != 0) // should free memory in find_executable_file and path.
             exit(EXIT_FAILURE);
     }
-    else if (cmd->next != NULL)
-    {
-        execute_piped_commands(cmd, env); // // should free memory in find_executable_file and path.
-    }
+    // else if (cmd->next != NULL)
+    // {
+    //     execute_piped_commands(cmd, env); // // should free memory in find_executable_file and path.
+    // }
 }
 
 // int main(int ac, char **av, char **env)
