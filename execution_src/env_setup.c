@@ -66,14 +66,14 @@ char     *find_path(t_env *env)
     char *path;
 
     i = 0;
-    while (env->content[i].var)
+    while (env)
     {
         if (!ft_strncmp(env->content[i].var, "PATH", ft_strlen("PATH")))
         {
             path = ft_substr(env->content[i].value, 0, ft_strlen(env->content[i].value));
             return (path);
         }
-        i++;
+        env = env->next;
     }
     return (NULL);
 }

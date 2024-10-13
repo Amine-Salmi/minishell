@@ -6,7 +6,7 @@
 /*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 10:14:08 by bbadda            #+#    #+#             */
-/*   Updated: 2024/10/13 18:27:28 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/10/13 19:42:47 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -176,21 +176,21 @@ int main (int ac, char *av[], char **env)
 	char		*full_command;
 	t_token		*token;
 	t_con		*c;
-	t_env		*e;
+	t_env		*my_env;
 
-	e = NULL;
-	e = (t_env *)malloc(sizeof(t_env));
+	my_env = NULL;
+	my_env = (t_env *)malloc(sizeof(t_env));
 	token = (t_token *)malloc(sizeof(t_token));
 	c = (t_con *)malloc(sizeof(t_con));
 	while (1)
 	{
-		// e = get_env(env);
+		my_env = get_env(env);
 		full_command = readline("\033[1;31m-\033[0m  \033[1;32mminishell-0.1$\033[0m ");
 		add_history(full_command);
 		if (pipe_error(full_command, parse_strlen(full_command)))
 			continue ;
 		command = parse_split(full_command, '|');
-		token = toke_lexer(command, token, get_env(env));
+		token = toke_lexer(command, token, my_env);
 		ft_execute(token, env);
 		// priiint(token);
 		free(full_command);
