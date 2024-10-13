@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: bbadda <bbadda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/15 13:17:42 by asalmi            #+#    #+#             */
-/*   Updated: 2024/10/13 20:38:36 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/10/13 20:50:53 by bbadda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,9 +45,9 @@ int execute_simple_command(t_token *cmd, char **env)
 
 void ft_execute(t_token *cmd, char **env)
 {
-    printf("command: %s\n", cmd->command);
-    for (int i = 0; cmd->arg[i] != NULL; i++)
-        printf("args: %s\n", cmd->arg[i]);
+    // printf("command: %s\n", cmd->command);
+    // for (int i = 0; cmd->arg[i] != NULL; i++)
+    //     printf("args: %s\n", cmd->arg[i]);
     if (cmd->next == NULL)
     {
         if (execute_simple_command(cmd, env) != 0) // should free memory in find_executable_file and path.

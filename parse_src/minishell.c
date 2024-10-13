@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: bbadda <bbadda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 10:14:08 by bbadda            #+#    #+#             */
-/*   Updated: 2024/10/13 19:42:47 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/10/13 20:50:18 by bbadda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ void	__token(char **s_command, t_con *c, t_env *e)
 	t_index	index;
 
 	index.i = 0;
-	index.j = 1;
+	index.j = 0;
 	index.k = 0;
 	while (s_command[index.j])
 	{
