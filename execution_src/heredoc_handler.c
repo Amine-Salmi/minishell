@@ -2,7 +2,7 @@
 
 void    handle_heredoc(t_token *cmd)
 {
-    printf("hello world\n");
+    printf("hello\n");
     // int fd;
     // char *input_line;
     // const char  *heredoc_file;
