@@ -6,12 +6,12 @@
 /*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/04 15:27:02 by bbadda            #+#    #+#             */
-/*   Updated: 2024/10/13 17:21:20 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/10/14 22:47:34 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 // #include "minishell.h"
-#include "../includes/minishell_merg.h"
+#include "../includes/minishell.h"
 
 int	parse_strlen(const char *str)
 {

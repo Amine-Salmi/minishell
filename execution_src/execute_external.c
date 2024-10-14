@@ -1,4 +1,16 @@
-#include "../includes/minishell_merg.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   execute_external.c                                 :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/10/14 19:16:46 by asalmi            #+#    #+#             */
+/*   Updated: 2024/10/14 22:47:34 by asalmi           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../includes/minishell.h"
 
 void execute_piped_commands(t_token *cmd, t_env *env)
 {
@@ -38,6 +50,7 @@ void execute_piped_commands(t_token *cmd, t_env *env)
 			executable_path = find_executable_file(cmd->command, path);
 			if (execve(executable_path, cmd->arg, copy_env(env)) == -1)
 			{
+				// should free(array in copy_env if execve is faild)
 				perror("execve");
 				exit(EXIT_FAILURE);
 			}

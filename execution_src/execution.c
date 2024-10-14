@@ -6,12 +6,11 @@
 /*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/15 13:17:42 by asalmi            #+#    #+#             */
-/*   Updated: 2024/10/14 18:54:42 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/10/14 23:26:22 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-// #include "../includes/minishell.h"
-#include "../includes/minishell_merg.h"
+#include "../includes/minishell.h"
 
 int execute_simple_command(t_token *cmd, t_env *env)
 {
@@ -29,22 +28,18 @@ int execute_simple_command(t_token *cmd, t_env *env)
         executable_path = find_executable_file(cmd->command, path);
         if (execve(executable_path, cmd->arg, copy_env(env)) == -1)
         {
+			// should free(array in copy_env if execve is faild)
             perror("execve");
             return 1;
         }
     }
     else if (pid > 0)
         waitpid(pid, &status, 0);
-    else
-        return 1;
     return 0;
 }
 
 void ft_execute(t_token *cmd, t_env *env)
 {
-    // char **res = copy_env(env);
-    // for (int i = 0; res[i] != NULL; i++)
-    //     printf("%s\n", res[i]);
     if (cmd->next == NULL)
     {
         if (execute_simple_command(cmd, env) != 0) // should free memory in find_executable_file and path.
