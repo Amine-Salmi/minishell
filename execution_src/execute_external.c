@@ -10,7 +10,7 @@ void execute_piped_commands(t_token *cmd, char **env)
 	t_env *my_env;
 	t_token *head;
 
-	// my_env = copy_env(env);
+	my_env = get_env(env);
 	head = cmd;
 	pipeLine = -1;
 
