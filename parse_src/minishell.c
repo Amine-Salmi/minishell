@@ -6,7 +6,7 @@
 /*   By: bbadda <bbadda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 10:14:08 by bbadda            #+#    #+#             */
-/*   Updated: 2024/10/13 20:50:18 by bbadda           ###   ########.fr       */
+/*   Updated: 2024/10/14 14:42:57 by bbadda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,23 @@
 
 int	check_env(char *cmd)
 {
-	if (cmd[0] == '$')
+	int i;
+
+	i = 0;
+	
+	if (cmd[i] == '$')
 	{
-		if (cmd[1] && cmd[1] != '?')
+		if (cmd[i])
+			i++;
+		if (cmd[i] == '$')
+			return (0);
+		if (ft_isdigit(cmd[i]))
+			return (2);
+		if (cmd[i] == '\'' || cmd[i] == '\"')
+			return (3);
 		return (1);
 	}
-	return (0);	
+	return (-1);
 }
 
 char	*replace_env(t_env *e, char *s)
@@ -31,15 +42,23 @@ char	*replace_env(t_env *e, char *s)
 			return (strdup(e->content->value));
 		e = e->next;
 	}
-	return (NULL);
+	return (s);
 }
-
-void	check_quotes(char c, bool in_quotes, bool in_single_quotes)
+char	*check_and_replace_env(char *s_command, t_env *e)
 {
-	if (!in_quotes && c == '\'')
-			in_single_quotes = !in_single_quotes;
-	else if (!in_single_quotes && c == '\"')
-		in_quotes = !in_quotes;
+	int i;
+	if (s_command)
+	{
+		if (check_env(s_command) == 1)
+			s_command = parse_strdup(replace_env(e, s_command + 1));
+		if (check_env(s_command) == 0)
+			s_command = parse_strdup(s_command + 1);
+		if (check_env(s_command) == 2)
+			s_command = parse_strdup(s_command + 2);
+		if (check_env(s_command) == 3)
+			printf("baaad env \n");
+	}
+	return (s_command);
 }
 
 t_index	max_files_args(char **s_command)
@@ -47,12 +66,12 @@ t_index	max_files_args(char **s_command)
 	t_index	index;
 
 	index.i = 0;
-	index.j = 1;
+	index.j = 0;
 	index.k = 0;
 	while (s_command[index.j])
 	{
-		if (s_command[index.j] &&(!strcmp(s_command[index.j], "<") || !strcmp(s_command[index.j], ">") 
-			|| !strcmp(s_command[index.j], "<<") || !strcmp(s_command[index.j], ">>")))
+		if (s_command[index.j] &&(cmp(s_command[index.j], "<") || cmp(s_command[index.j], ">") 
+			|| cmp(s_command[index.j], "<<") || cmp(s_command[index.j], ">>")))
 		{
 			index.i++;
 			index.j++;	
@@ -60,7 +79,7 @@ t_index	max_files_args(char **s_command)
 		else if (s_command[index.j])
 			index.k++;
 		if (s_command[index.j])
-			index.j++;	
+			index.j++;
 	}
 	return (index);
 }
@@ -74,27 +93,24 @@ void	__token(char **s_command, t_con *c, t_env *e)
 	index.k = 0;
 	while (s_command[index.j])
 	{
-		if (check_env(s_command[index.j]))
-			s_command[index.j] = strdup(replace_env(e, s_command[index.j] + 1));
-		if (s_command[index.j] &&(!strcmp(s_command[index.j], "<") || !strcmp(s_command[index.j], ">") 
-			|| !strcmp(s_command[index.j], "<<") || !strcmp(s_command[index.j], ">>")))
+		s_command[index.j] = check_and_replace_env(s_command[index.j], e);
+		if (s_command[index.j] && (cmp(s_command[index.j], "<") || cmp(s_command[index.j], ">") 
+			|| cmp(s_command[index.j], "<<") || cmp(s_command[index.j], ">>")))
 		{
 			c->file[index.i].opr = strdup(s_command[index.j]);
 			index.j++;
-			if (check_env(s_command[index.j]))
-				s_command[index.j] = strdup(replace_env(e, s_command[index.j] + 1));
+
 			if (s_command[index.j])
 			{
-				// if (cmp(c->file[index.i].opr, "<<"))
-				// 	c->file[index.i].file_name = strdup(replace_env(e, s_command[index.j]));
-				// else
-					c->file[index.i].file_name = strdup(s_command[index.j]);
+				s_command[index.j] = check_and_replace_env(s_command[index.j], e);
+				c->file[index.i].file_name = strdup(s_command[index.j]);
 			}
 			index.i++;
 		}
 		else if (s_command[index.j])
 		{
-			c->arg[index.k]=  strdup(s_command[index.j]);
+			c->arg[index.k] =  strdup(s_command[index.j]);
+			// printf("----c->arg[%d]-->%s\n", index.k, c->arg[index.k]);
 			index.k++;
 		}
 		if (s_command[index.j])
@@ -102,17 +118,24 @@ void	__token(char **s_command, t_con *c, t_env *e)
 	}
 	c->file[index.i].opr = NULL;
 	c->arg[index.k] = NULL;
-	// printf("c.cmd : %d\n", c->command);
-	// int i = 0;
-	// while (c->file[i].opr)
+	// printf("k = %d\n", index.k);
+	// int p = 0;
+	// while (c->arg[p])
 	// {
-	// 	if (cmp(c->file[i].opr, "<<"))
-	// 	{
-	// 		c->file[i].file_name = strdup("bilalll");
-	// 	}
-	// 	i++;
+	// 	printf("c->arg[%d]-->%s\n", p, c->arg[p]);
+	// 	p++;
 	// }
 }
+// char	*get_without_q(char *cmd)
+// {
+// 	int i;
+
+// 	i = 0;
+// 	while (cmd[i])
+// 	{
+		
+// 	}
+// }
 
 t_token	*toke_lexer(char **command, t_token *token, t_env *e)
 {
@@ -132,7 +155,7 @@ t_token	*toke_lexer(char **command, t_token *token, t_env *e)
 		free(s);
 		index = max_files_args(s_command);
 		c.file = malloc(index.i * sizeof(t_opr));
-		c.arg = malloc(index.k *sizeof(char *));
+		c.arg = malloc((index.k + 1) * sizeof(char *));
 		c.file[0].opr = NULL;
 		c.arg[0] = NULL;
 		if (!__is_herdoc(s_command[0]))
@@ -145,10 +168,14 @@ t_token	*toke_lexer(char **command, t_token *token, t_env *e)
 
 void	priiint(t_token *token)
 {
+	int	i;
+	int	j;
+
 	while (token)
 	{
-		int i = 0;
-		printf("command : %s\n", token->command);
+		i = 0;
+		if (token->command)
+			printf("command : %s\n", token->command);
 		while (token->arg[i])
 		{
 			printf("arg[%d] : %s\n", i, token->arg[i]);
@@ -156,10 +183,9 @@ void	priiint(t_token *token)
 			// 	printf("prev arg[%d] : %s\n", i, token->prev->arg[i]);
 			i++;
 		}
-		int j = 0;
+		j = 0;
 		while (token->file[j].opr)
 		{
-			printf("j === %d\n", j);
 			printf("file name[%d] : %s\n", j, token->file[j].file_name);
 			printf("opr[%d] : %s\n", j, token->file[j].opr);
 			// if (token->prev)
@@ -193,7 +219,7 @@ int main (int ac, char *av[], char **env)
 		token = toke_lexer(command, token, my_env);
 		ft_execute(token, env);
 		// priiint(token);
-		free(full_command);
+		// free(full_command);
 	}
 	return (0);
 }
