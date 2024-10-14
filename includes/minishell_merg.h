@@ -6,7 +6,7 @@
 /*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 10:14:11 by bbadda            #+#    #+#             */
-/*   Updated: 2024/10/13 19:35:14 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/10/13 23:16:37 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,10 +60,9 @@ enum e_state
 
 typedef struct s_opr
 {
-	char	*opr;
 	char	*file_name;
+	char	*opr;
 	// char	*del;
-	// next;
 }t_opr;
 
 typedef struct s_con 
@@ -153,13 +152,13 @@ char		**parse_split(char const *s, char c);;
 char		*parse_strtrim(char const *str, char const *set);
 char		*parse_strdup(const char *src);
 
-void 		print_full_command(int j, t_token *token);
+// void 		print_full_command(int j, t_token *token);
 
 // -------------------- executions functions ------------------ //
 char    *find_path(t_env *env);
 char    *find_executable_file(char *command, char *path);
-// void    execute_piped_commands(t_token *cmd, char **env);
-// void    redirection_handler(t_token *cmd);
+void    execute_piped_commands(t_token *cmd, char **env);
+void    redirection_handler(t_token *cmd);
 // void    handle_heredoc(t_token *cmd);
 void    ft_execute(t_token *cmd, char **env);
 

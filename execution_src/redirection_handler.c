@@ -2,9 +2,16 @@
 
 void redirection_handler(t_token *cmd)
 {
-    printf("helllllo\n");
-    // int fd;
+    int fd;
+    int i;
 
+    i = 0;
+    while (cmd->file)
+    {
+        printf("file name: %s\n", cmd->file[i].file_name);
+        printf("operatore: %s\n", cmd->file[i].opr);
+        i++;
+    }
     // while (cmd->redirection)
     // {
     //     if (!ft_strncmp(cmd->redirection->opr, ">", ft_strlen(cmd->redirection->opr)))
