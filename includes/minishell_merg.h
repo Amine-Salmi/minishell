@@ -6,7 +6,7 @@
 /*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 10:14:11 by bbadda            #+#    #+#             */
-/*   Updated: 2024/10/13 23:16:37 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/10/14 15:55:19 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,12 +154,17 @@ char		*parse_strdup(const char *src);
 
 // void 		print_full_command(int j, t_token *token);
 
+
+
 // -------------------- executions functions ------------------ //
 char    *find_path(t_env *env);
 char    *find_executable_file(char *command, char *path);
-void    execute_piped_commands(t_token *cmd, char **env);
+char	**copy_env(t_env *env);
+void    execute_piped_commands(t_token *cmd, t_env *env);
 void    redirection_handler(t_token *cmd);
 // void    handle_heredoc(t_token *cmd);
-void    ft_execute(t_token *cmd, char **env);
+void    ft_execute(t_token *cmd, t_env *env);
+// -------------------- executions functions ------------------ //
+
 
 #endif

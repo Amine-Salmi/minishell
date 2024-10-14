@@ -1,6 +1,6 @@
 #include "../includes/minishell_merg.h"
 
-void execute_piped_commands(t_token *cmd, char **env)
+void execute_piped_commands(t_token *cmd, t_env *env)
 {
     int fd[2];
     int pipeLine;
@@ -10,7 +10,6 @@ void execute_piped_commands(t_token *cmd, char **env)
 	t_env *my_env;
 	t_token *head;
 
-	my_env = get_env(env);
 	head = cmd;
 	pipeLine = -1;
 
@@ -35,7 +34,7 @@ void execute_piped_commands(t_token *cmd, char **env)
 			close(fd[1]);
 			// if (cmd->redirection)
 			// 	redirection_handler(cmd);
-			path = find_path(my_env);
+			path = find_path(env);
 			executable_path = find_executable_file(cmd->command, path);
 			if (execve(executable_path, cmd->arg, NULL) == -1)
 			{

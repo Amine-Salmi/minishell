@@ -1,5 +1,45 @@
 #include "../includes/minishell_merg.h"
 
+size_t count_node(t_env *env)
+{
+    t_env *tmp;
+    size_t count;
+
+    tmp = env;
+    count = 0;
+    while (tmp)
+    {
+        count++;
+        tmp = tmp->next;
+    }
+    return (count);
+}
+char **copy_env(t_env *env)
+{
+    char **env_copy;
+    size_t size;
+    int i;
+    int j;
+
+    size = count_node(env);
+    env_copy = malloc(sizeof(char *) * (size + 1));
+    if (!env_copy)
+        return (NULL);
+    i = 0;
+    j = 0;
+    while (env)
+    {
+        env_copy[i] = ft_strdup(env->content->var);
+        env_copy[i] = ft_strjoin(env_copy[i], "=");
+        env_copy[i] = ft_strjoin(env_copy[i], env->content->value);
+        if (!env_copy[i])
+            return (NULL);
+        env = env->next;
+        i++;
+    }
+    env_copy[i] = NULL;
+    return (env_copy);
+}
 // t_env *copy_env(char **env)
 // {
 //     t_env *my_env;
