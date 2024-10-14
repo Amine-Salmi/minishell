@@ -36,7 +36,7 @@ void execute_piped_commands(t_token *cmd, t_env *env)
 			// 	redirection_handler(cmd);
 			path = find_path(env);
 			executable_path = find_executable_file(cmd->command, path);
-			if (execve(executable_path, cmd->arg, NULL) == -1)
+			if (execve(executable_path, cmd->arg, copy_env(env)) == -1)
 			{
 				perror("execve");
 				exit(EXIT_FAILURE);

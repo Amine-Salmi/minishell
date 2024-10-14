@@ -6,7 +6,7 @@
 /*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/15 13:17:42 by asalmi            #+#    #+#             */
-/*   Updated: 2024/10/14 18:40:04 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/10/14 18:54:42 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int execute_simple_command(t_token *cmd, t_env *env)
         //     redirection_handler(cmd);
         path = find_path(env);
         executable_path = find_executable_file(cmd->command, path);
-        if (execve(executable_path, cmd->arg, NULL) == -1)
+        if (execve(executable_path, cmd->arg, copy_env(env)) == -1)
         {
             perror("execve");
             return 1;
