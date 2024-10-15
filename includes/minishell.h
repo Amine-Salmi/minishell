@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bbadda <bbadda@student.42.fr>              +#+  +:+       +#+        */
+/*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 10:14:11 by bbadda            #+#    #+#             */
-/*   Updated: 2024/10/15 16:02:18 by bbadda           ###   ########.fr       */
+/*   Updated: 2024/10/16 00:16:21 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,12 +157,22 @@ char		*parse_strdup(const char *src);
 // void 		print_full_command(int j, t_token *token);
 
 // -------------------- executions functions ------------------ //
-char    *find_path(t_env *env);
+// ------------------------------------------------------------ //
+
+char     *find_var_env(t_env *env, char *var);
 char    *find_executable_file(char *command, char *path);
 char	**copy_env(t_env *env);
 void	execute_piped_commands(t_token *cmd, t_env *env);
+
 void    redirection_handler(t_token *cmd);
 // void    handle_heredoc(t_token *cmd);
-void ft_execute(t_token *cmd, t_env *env);
+
+int		is_builtin(const char *cmd);
+int		ft_echo(t_token *cmd);
+int 	ft_cd(t_token *cmd, t_env *env);
+void	ft_execute(t_token *cmd, t_env *env);
+
+// ------------------------------------------------------------ //
+// -------------------- executions functions ------------------ //
 
 #endif

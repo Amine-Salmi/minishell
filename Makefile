@@ -5,7 +5,7 @@ RM = rm -rf
 
 LIBFT = lib/Libft/libft.a
 
-SRC =  $(wildcard parse_src/*.c) $(wildcard execution_src/*.c)
+SRC =  $(wildcard parse_src/*.c) $(wildcard execution_src/*.c) $(wildcard execution_src/built-in/*.c)
 OBJS = $(SRC:.c=.o)
 
 all : $(LIBFT) $(NAME)

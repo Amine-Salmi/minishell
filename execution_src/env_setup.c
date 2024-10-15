@@ -6,7 +6,7 @@
 /*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 19:16:51 by asalmi            #+#    #+#             */
-/*   Updated: 2024/10/14 23:46:48 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/10/16 00:16:13 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,18 +82,16 @@ char *find_executable_file(char *command, char *path)
 
 // free memory in this function ----------------
 
-char     *find_path(t_env *env)
+char     *find_var_env(t_env *env, char *var)
 {
-    int i;
-    char *path;
+    char *var_value;
 
-    i = 0;
     while (env)
     {
-        if (!ft_strncmp(env->content[i].var, "PATH", ft_strlen("PATH")))
+        if (!ft_strncmp(env->content->var, var, ft_strlen(env->content->var)))
         {
-            path = ft_substr(env->content[i].value, 0, ft_strlen(env->content[i].value));
-            return (path);
+            var_value = ft_substr(env->content->value, 0, ft_strlen(env->content->value));
+            return (var_value);
         }
         env = env->next;
     }
