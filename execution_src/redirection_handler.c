@@ -1,4 +1,16 @@
-#include "../includes/minishell_merg.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   redirection_handler.c                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/10/14 19:16:59 by asalmi            #+#    #+#             */
+/*   Updated: 2024/10/14 22:47:34 by asalmi           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../includes/minishell.h"
 
 void redirection_handler(t_token *cmd)
 {
@@ -6,10 +18,11 @@ void redirection_handler(t_token *cmd)
     int i;
 
     i = 0;
-    while (cmd->file)
+    while (cmd->file[i].file_name)
     {
+        if (!cmd->file[i].opr){
         printf("file name: %s\n", cmd->file[i].file_name);
-        printf("operatore: %s\n", cmd->file[i].opr);
+        printf("operatore: %s\n", cmd->file[i].opr);}
         i++;
     }
     // while (cmd->redirection)

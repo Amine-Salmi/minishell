@@ -6,12 +6,12 @@
 /*   By: bbadda <bbadda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 10:14:11 by bbadda            #+#    #+#             */
-/*   Updated: 2024/10/12 21:35:25 by bbadda           ###   ########.fr       */
+/*   Updated: 2024/10/15 16:02:18 by bbadda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINI_H
-# define MINI_H
+#ifndef MINISHELL_H
+# define MINISHELL_H
 
 #include <stdio.h>
 #include <stdbool.h>
@@ -19,6 +19,12 @@
 #include <string.h>
 #include <readline/readline.h>
 #include <readline/history.h>
+#include <sys/types.h>
+#include <unistd.h>
+#include <string.h>
+#include <stdbool.h>
+#include <fcntl.h>
+#include "../lib/Libft/libft.h"
 
 # define ARGS_ERROR  "number of arguments"
 
@@ -54,10 +60,9 @@ enum e_state
 
 typedef struct s_opr
 {
-	char	*opr;
 	char	*file_name;
+	char	*opr;
 	// char	*del;
-	// next;
 }t_opr;
 
 typedef struct s_con 
@@ -73,13 +78,10 @@ typedef struct s_token
 	char				*command;
 	char				**arg;
 	t_opr				*file;
-	// pid
+	pid_t				pid;
 	struct s_token		*next;
 	struct s_token		*prev;
 }t_token;
-
-
-
 
 // workiingg
 
@@ -109,12 +111,12 @@ typedef struct s_split
 	char		c;
 }t_split;
 
-typedef struct s_list
-{
-	t_token			*content;
-	struct s_list	*next;
-	struct s_list	*prev;
-}t_list;
+// typedef struct s_list
+// {
+// 	t_token			*content;
+// 	struct s_list	*next;
+// 	struct s_list	*prev;
+// }t_list;
 
 
 int			cmp(const char *s1, const char *s2);
@@ -127,9 +129,12 @@ void		*__calloc(size_t count, size_t size);
 int			is_special_char(char c);
 void		check_quotes(char c, bool in_quotes, bool in_single_quotes);
 // --------------------tokenization_functions-----------------//
-// int			tokenization(const char *command, t_token *main);
-// void 		classify_token_type(t_con *c, char *command);
-void		get_command(int j, t_token *token, t_con *c);
+void		__token(char **s_command, t_con *c, t_env *e);
+t_index		max_files_args(char **s_command);
+char		*replace_env(t_env *e, char *s);
+int		check_env(char *cmd);
+char		*check_and_replace_env(char *s_command, t_env *e);
+
 // --------------------syntax_error_functions-----------------//
 int			syntax_error(char *command);
 int			qoutes_error(char *command);
@@ -144,11 +149,20 @@ int 		__is_herdoc(char *s);
 int			pipe_error(char *command, int j);
 // -------------------libft-----------------------------------//
 int			parse_strlen(const char *str);
-char		*parse_substr(char const *str, unsigned int start, size_t len);
+char		*parse_substr(char const *str,int start, int len);
 char		**parse_split(char const *s, char c);;
 char		*parse_strtrim(char const *str, char const *set);
 char		*parse_strdup(const char *src);
 
+// void 		print_full_command(int j, t_token *token);
 
-void 		print_full_command(int j, t_token *token);
+// -------------------- executions functions ------------------ //
+char    *find_path(t_env *env);
+char    *find_executable_file(char *command, char *path);
+char	**copy_env(t_env *env);
+void	execute_piped_commands(t_token *cmd, t_env *env);
+void    redirection_handler(t_token *cmd);
+// void    handle_heredoc(t_token *cmd);
+void ft_execute(t_token *cmd, t_env *env);
+
 #endif

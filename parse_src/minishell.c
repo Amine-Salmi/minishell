@@ -6,11 +6,13 @@
 /*   By: bbadda <bbadda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 10:14:08 by bbadda            #+#    #+#             */
-/*   Updated: 2024/10/15 13:58:02 by bbadda           ###   ########.fr       */
+/*   Updated: 2024/10/15 16:02:44 by bbadda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell_merg.h"
+// #include "minishell.h"
+#include "../includes/minishell.h"
+
 
 t_token	*toke_lexer(char **command, t_token *token, t_env *e)
 {
@@ -94,9 +96,9 @@ int main (int ac, char *av[], char **env)
 			continue ;
 		command = parse_split(full_command, '|');
 		token = toke_lexer(command, token, my_env);
-		// ft_execute(token, env);
-		priiint(token);
-		// free(full_command);
+		ft_execute(token, my_env);
+		// priiint(token);
+		free(full_command);
 	}
 	return (0);
 }

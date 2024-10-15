@@ -1,6 +1,18 @@
-#include "../includes/minishell_merg.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   execute_external.c                                 :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/10/14 19:16:46 by asalmi            #+#    #+#             */
+/*   Updated: 2024/10/14 22:47:34 by asalmi           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-void execute_piped_commands(t_token *cmd, char **env)
+#include "../includes/minishell.h"
+
+void execute_piped_commands(t_token *cmd, t_env *env)
 {
     int fd[2];
     int pipeLine;
@@ -10,7 +22,6 @@ void execute_piped_commands(t_token *cmd, char **env)
 	t_env *my_env;
 	t_token *head;
 
-	my_env = get_env(env);
 	head = cmd;
 	pipeLine = -1;
 
@@ -35,10 +46,11 @@ void execute_piped_commands(t_token *cmd, char **env)
 			close(fd[1]);
 			// if (cmd->redirection)
 			// 	redirection_handler(cmd);
-			path = find_path(my_env);
+			path = find_path(env);
 			executable_path = find_executable_file(cmd->command, path);
-			if (execve(executable_path, cmd->arg, NULL) == -1)
+			if (execve(executable_path, cmd->arg, copy_env(env)) == -1)
 			{
+				// should free(array in copy_env if execve is faild)
 				perror("execve");
 				exit(EXIT_FAILURE);
 			}

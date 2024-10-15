@@ -13,11 +13,11 @@ all : $(LIBFT) $(NAME)
 $(LIBFT) :
 	make -C lib/Libft
 
-$(NAME) : $(LIBFT) $(OBJS) includes/minishell_merg.h 
-	$(CC) $(CFLAGS) $(OBJS) $(LIBFT) -o $@ -lreadline
+$(NAME) : $(LIBFT) $(OBJS) includes/minishell.h 
+	$(CC) $(OBJS) $(LIBFT) -o $@ -lreadline
 
-%.o : %.c includes/minishell_merg.h 
-	$(CC) -c $(CFLAGS) $< -o $@
+%.o : %.c includes/minishell.h 
+	$(CC) -c $< -o $@
 
 clean :
 	$(RM) $(OBJS)

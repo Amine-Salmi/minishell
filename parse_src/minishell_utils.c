@@ -6,12 +6,12 @@
 /*   By: bbadda <bbadda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 10:15:23 by bbadda            #+#    #+#             */
-/*   Updated: 2024/10/15 11:56:59 by bbadda           ###   ########.fr       */
+/*   Updated: 2024/10/15 15:53:24 by bbadda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 // #include "minishell.h"
-#include "../includes/minishell_merg.h"
+#include "../includes/minishell.h"
 
 int	cmp(const char *s1, const char *s2)
 {

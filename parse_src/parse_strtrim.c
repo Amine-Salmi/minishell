@@ -6,12 +6,12 @@
 /*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/12 09:56:40 by bbadda            #+#    #+#             */
-/*   Updated: 2024/10/13 17:21:23 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/10/14 22:47:34 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 // #include "minishell.h"
-#include "../includes/minishell_merg.h"
+#include "../includes/minishell.h"
 
 static int	getcheck(char str, char *set)
 {

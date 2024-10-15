@@ -6,11 +6,12 @@
 /*   By: bbadda <bbadda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 11:58:05 by bbadda            #+#    #+#             */
-/*   Updated: 2024/10/15 13:54:27 by bbadda           ###   ########.fr       */
+/*   Updated: 2024/10/15 16:01:14 by bbadda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell_merg.h"
+// #include "minishell.h"
+#include "../includes/minishell.h"
 
 int	check_env(char *cmd)
 {

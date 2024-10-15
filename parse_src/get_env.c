@@ -6,12 +6,12 @@
 /*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 12:51:37 by bbadda            #+#    #+#             */
-/*   Updated: 2024/10/13 17:20:57 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/10/14 22:47:34 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 // #include "minishell.h"
-#include "../includes/minishell_merg.h"
+#include "../includes/minishell.h"
 
 static t_env	*__creat_list(t_content *content)
 {

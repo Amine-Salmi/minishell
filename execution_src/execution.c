@@ -6,43 +6,39 @@
 /*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/15 13:17:42 by asalmi            #+#    #+#             */
-/*   Updated: 2024/10/13 23:20:38 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/10/14 23:26:22 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-// #include "../includes/minishell.h"
-#include "../includes/minishell_merg.h"
+#include "../includes/minishell.h"
 
-int execute_simple_command(t_token *cmd, char **env)
+int execute_simple_command(t_token *cmd, t_env *env)
 {
     pid_t pid;
     int status;
     char *path;
     char *executable_path;
-    t_env *my_env;
 
-    my_env = get_env(env);
     pid = fork();
     if (pid == 0)
     {
         // if (cmd->file)
         //     redirection_handler(cmd);
-        path = find_path(my_env);
+        path = find_path(env);
         executable_path = find_executable_file(cmd->command, path);
-        if (execve(executable_path, cmd->arg, NULL) == -1)
+        if (execve(executable_path, cmd->arg, copy_env(env)) == -1)
         {
+			// should free(array in copy_env if execve is faild)
             perror("execve");
             return 1;
         }
     }
     else if (pid > 0)
         waitpid(pid, &status, 0);
-    else
-        return 1;
     return 0;
 }
 
-void ft_execute(t_token *cmd, char **env)
+void ft_execute(t_token *cmd, t_env *env)
 {
     if (cmd->next == NULL)
     {

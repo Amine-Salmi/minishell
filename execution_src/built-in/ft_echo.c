@@ -1,26 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstsize_bonus.c                                 :+:      :+:    :+:   */
+/*   ft_echo.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/13 17:23:01 by asalmi            #+#    #+#             */
-/*   Updated: 2024/10/14 16:52:04 by asalmi           ###   ########.fr       */
+/*   Created: 2024/10/14 22:46:38 by asalmi            #+#    #+#             */
+/*   Updated: 2024/10/14 23:23:53 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "../../includes/minishell.h"
 
-int	ft_lstsize(t_list *lst)
+int ft_echo(t_token *cmd)
 {
-	int	counter;
-
-	counter = 0;
-	while (lst != NULL)
-	{
-		counter++;
-		lst = lst->next;
-	}
-	return (counter);
+    printf("hello\n");
+    return (0);
 }
