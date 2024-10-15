@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_split.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: bbadda <bbadda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/04 15:27:02 by bbadda            #+#    #+#             */
-/*   Updated: 2024/10/13 17:21:20 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/10/15 13:13:38 by bbadda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	parse_strlen(const char *str)
 	int	len;
 
 	len = 0;
-	while (str[len])
+	while (str && str[len])
 		len++;
 	return (len);
 }
@@ -40,10 +40,10 @@ char	*parse_strdup(const char *src)
 	return (dst);
 }
 
-char	*parse_substr(char const *str, unsigned int start, size_t len)
+char	*parse_substr(char const *str,  int start, int len)
 {
 	char	*sub;
-	size_t	i;
+	int	i;
 
 	if (!str)
 		return (NULL);

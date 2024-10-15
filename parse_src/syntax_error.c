@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   syntax_error.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: bbadda <bbadda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 14:12:57 by bbadda            #+#    #+#             */
-/*   Updated: 2024/10/13 17:21:30 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/10/15 13:14:30 by bbadda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,9 +99,9 @@ int	pipe_error(char *command, int j)
 	int	i;
 
 	i = 0;
-	while (command[i] == ' ')
+	while (command && command[i] == ' ')
 		i++;
-	if (command[i] == '|')
+	if (command && command[i] == '|')
 	{
 		__error('|', 1);
 		return (1);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell_merg.h                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: bbadda <bbadda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 10:14:11 by bbadda            #+#    #+#             */
-/*   Updated: 2024/10/13 23:16:37 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/10/15 13:56:03 by bbadda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,19 +127,18 @@ void		add_list_back(t_token **token, t_con *c);
 void	    __error(char c, int i);
 void		*__calloc(size_t count, size_t size);
 int			is_special_char(char c);
-void		check_quotes(char c, bool in_quotes, bool in_single_quotes);
 // --------------------tokenization_functions-----------------//
-// int			tokenization(const char *command, t_token *main);
-// void 		classify_token_type(t_con *c, char *command);
-
-// void		get_command(int j, t_token *token, t_con *c);
+void		__token(char **s_command, t_con *c, t_env *e);
+t_index		max_files_args(char **s_command);
 // --------------------syntax_error_functions-----------------//
 int			syntax_error(char *command);
 int			qoutes_error(char *command);
 void		__free(t_list **lst);
 // ---------------------get_env_function----------------------//
 t_env   	*get_env( char **env);
-
+int			check_env(char *cmd);
+char		*replace_env(t_env *e, char *s);
+char		*check_and_replace_env(char *s_command, t_env *e);
 // --------------------add_spaces----------------------------//
 char		*add_spaces(char *cmd);
 int 		__is_redir(char c);
@@ -147,7 +146,7 @@ int 		__is_herdoc(char *s);
 int			pipe_error(char *command, int j);
 // -------------------libft-----------------------------------//
 int			parse_strlen(const char *str);
-char		*parse_substr(char const *str, unsigned int start, size_t len);
+char		*parse_substr(char const *str,  int start, int len);
 char		**parse_split(char const *s, char c);;
 char		*parse_strtrim(char const *str, char const *set);
 char		*parse_strdup(const char *src);

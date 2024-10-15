@@ -2,7 +2,7 @@
 
 void redirection_handler(t_token *cmd)
 {
-    int fd;
+    // int fd;
     int i;
 
     i = 0;

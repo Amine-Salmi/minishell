@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: bbadda <bbadda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 10:15:23 by bbadda            #+#    #+#             */
-/*   Updated: 2024/10/13 17:21:01 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/10/15 11:56:59 by bbadda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	cmp(const char *s1, const char *s2)
 	while (s1[i] && s2[i])
 	{
 		if (s1[i] != s2[i])
-			return 0;
+			return (0);
 		i++;
 	}
 	return (1);
