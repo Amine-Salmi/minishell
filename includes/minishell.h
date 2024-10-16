@@ -6,7 +6,7 @@
 /*   By: bbadda <bbadda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 10:14:11 by bbadda            #+#    #+#             */
-/*   Updated: 2024/10/15 16:02:18 by bbadda           ###   ########.fr       */
+/*   Updated: 2024/10/15 17:52:05 by bbadda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,8 @@ typedef struct s_opr
 {
 	char	*file_name;
 	char	*opr;
-	// char	*del;
+	int		index;
+	char	*del;
 }t_opr;
 
 typedef struct s_con 

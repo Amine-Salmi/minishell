@@ -6,11 +6,10 @@
 /*   By: bbadda <bbadda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 11:58:05 by bbadda            #+#    #+#             */
-/*   Updated: 2024/10/15 16:01:14 by bbadda           ###   ########.fr       */
+/*   Updated: 2024/10/15 18:22:42 by bbadda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-// #include "minishell.h"
 #include "../includes/minishell.h"
 
 int	check_env(char *cmd)
@@ -101,7 +100,12 @@ void	__token(char **s_command, t_con *c, t_env *e)
 			c->file[index.i].opr = parse_strdup(s_command[index.j]);
 			index.j++;
 			if (s_command[index.j])
-				c->file[index.i].file_name = parse_strdup(check_and_replace_env(s_command[index.j], e));
+			{
+				if (cmp(c->file[index.i].opr, "<<"))
+					c->file[index.i].del = parse_strdup(check_and_replace_env(s_command[index.j], e));
+				else
+					c->file[index.i].file_name = parse_strdup(check_and_replace_env(s_command[index.j], e));
+			}
 			index.i++;
 		}
 		else if (s_command[index.j])
@@ -111,5 +115,7 @@ void	__token(char **s_command, t_con *c, t_env *e)
 		}
 		index.j++;
 	}
+	// printf("c->arg[index.k] = %s\n", c->arg[0]);
 	c->arg[index.k] = NULL;
+	// printf("c->arg[index.k] = %s\n", c->arg[0]);
 }

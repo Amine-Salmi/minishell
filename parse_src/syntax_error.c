@@ -6,11 +6,10 @@
 /*   By: bbadda <bbadda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 14:12:57 by bbadda            #+#    #+#             */
-/*   Updated: 2024/10/15 15:52:29 by bbadda           ###   ########.fr       */
+/*   Updated: 2024/10/15 16:07:03 by bbadda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-// #include "minishell.h"
 #include "../includes/minishell.h"
 
 int __is_redir(char c)

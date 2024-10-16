@@ -6,11 +6,10 @@
 /*   By: bbadda <bbadda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/04 15:27:02 by bbadda            #+#    #+#             */
-/*   Updated: 2024/10/15 15:52:44 by bbadda           ###   ########.fr       */
+/*   Updated: 2024/10/15 16:06:55 by bbadda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-// #include "minishell.h"
 #include "../includes/minishell.h"
 
 int	parse_strlen(const char *str)

@@ -3,14 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   minishell_utils2.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: bbadda <bbadda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 11:04:33 by bbadda            #+#    #+#             */
-/*   Updated: 2024/10/14 22:47:34 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/10/15 18:21:52 by bbadda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-// #include "minishell.h"
 #include "../includes/minishell.h"
 
 t_token	*creat_list(char *command, char **arg, t_opr *file)
@@ -20,7 +19,8 @@ t_token	*creat_list(char *command, char **arg, t_opr *file)
 	node = malloc(sizeof(t_token));
 	if(!node)
 		return (NULL);
-	node->command = parse_strdup(command);
+	if (command)
+		node->command = parse_strdup(command);
 	node->arg = arg;
 	 if (file)
 	 {

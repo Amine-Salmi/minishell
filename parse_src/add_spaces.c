@@ -3,14 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   add_spaces.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: bbadda <bbadda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 11:26:36 by bbadda            #+#    #+#             */
-/*   Updated: 2024/10/14 22:47:34 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/10/15 16:06:30 by bbadda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-// #include "minishell.h"
 #include "../includes/minishell.h"
 
 char	*add_spaces(char *cmd)

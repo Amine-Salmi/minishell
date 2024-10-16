@@ -3,14 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   parse_strtrim.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: bbadda <bbadda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/12 09:56:40 by bbadda            #+#    #+#             */
-/*   Updated: 2024/10/14 22:47:34 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/10/15 16:06:57 by bbadda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-// #include "minishell.h"
 #include "../includes/minishell.h"
 
 static int	getcheck(char str, char *set)
