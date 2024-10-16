@@ -6,13 +6,13 @@
 /*   By: bbadda <bbadda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 11:04:33 by bbadda            #+#    #+#             */
-/*   Updated: 2024/10/15 18:21:52 by bbadda           ###   ########.fr       */
+/*   Updated: 2024/10/16 12:27:44 by bbadda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-t_token	*creat_list(char *command, char **arg, t_opr *file)
+t_token	*creat_list(char *command, char **arg, t_opr *file,int number_of_file )
 {
 	t_token	*node;
 
@@ -21,6 +21,7 @@ t_token	*creat_list(char *command, char **arg, t_opr *file)
 		return (NULL);
 	if (command)
 		node->command = parse_strdup(command);
+	node->number_of_file = number_of_file ;
 	node->arg = arg;
 	 if (file)
 	 {
@@ -41,12 +42,12 @@ t_token	*creat_list(char *command, char **arg, t_opr *file)
 	return (node);
 }
 
-void	add_list_back(t_token **token, t_con *c)
+void	add_list_back(t_token **token, t_con c ,int number_of_file )
 {
 	t_token	*tmp;
 	t_token	*new;
 
-	new = creat_list(c->command, c->arg, c->file);
+	new = creat_list(c.command, c.arg, c.file, number_of_file );
 	if (new && token)
 	{
 		if (*token == NULL)

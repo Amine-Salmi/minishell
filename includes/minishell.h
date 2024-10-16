@@ -6,7 +6,7 @@
 /*   By: bbadda <bbadda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 10:14:11 by bbadda            #+#    #+#             */
-/*   Updated: 2024/10/15 17:52:05 by bbadda           ###   ########.fr       */
+/*   Updated: 2024/10/16 12:24:20 by bbadda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,6 @@ typedef struct s_opr
 {
 	char	*file_name;
 	char	*opr;
-	int		index;
 	char	*del;
 }t_opr;
 
@@ -79,6 +78,7 @@ typedef struct s_token
 	char				*command;
 	char				**arg;
 	t_opr				*file;
+	int			number_of_file;
 	pid_t				pid;
 	struct s_token		*next;
 	struct s_token		*prev;
@@ -123,8 +123,8 @@ typedef struct s_split
 int			cmp(const char *s1, const char *s2);
 char		*get_pipe(char *line);
 int			is_special_char(char c);
-t_token		*creat_list(char *command, char **arg, t_opr *file);
-void		add_list_back(t_token **token, t_con *c);
+t_token		*creat_list(char *command, char **arg, t_opr *file, int i);
+void		add_list_back(t_token **token, t_con c, int i);
 void	    __error(char c, int i);
 void		*__calloc(size_t count, size_t size);
 int			is_special_char(char c);

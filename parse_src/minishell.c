@@ -6,7 +6,7 @@
 /*   By: bbadda <bbadda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 10:14:08 by bbadda            #+#    #+#             */
-/*   Updated: 2024/10/15 18:19:30 by bbadda           ###   ########.fr       */
+/*   Updated: 2024/10/16 13:21:31 by bbadda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,18 +32,12 @@ t_token	*toke_lexer(char **command, t_token *token, t_env *e)
 		index = max_files_args(s_command);
 		c.file = malloc(index.i * sizeof(t_opr));
 		c.arg = malloc((index.k + 1) * sizeof(char *));
-		c.file[0].opr = NULL;
-		c.file[0].del = NULL;
-		c.arg[0] = NULL;
 		if (!__is_herdoc(s_command[0]))
 			c.command = s_command[0];
 		else
 			c.command = NULL;
 		__token(s_command, &c, e);
-		// printf("c->arg[index.k] = %s\n", c.arg[0]);
-		c.file->index = index.i;
-		add_list_back(&token, &c);
-		// printf("c->arg[index.k] = %s\n", token->arg[0]);
+		add_list_back(&token, c, index.i);
 	}
 	return (token);
 }
@@ -58,14 +52,13 @@ void	priiint(t_token *token)
 		i = 0;
 		if (token->command)
 			printf("command : %s\n", token->command);
-		// printf("c->arg[index.k] = %s\n", token->arg[0]);
 		while (token->arg[i])
 		{
 			printf("arg[%d] : %s\n", i, token->arg[i]);
 			i++;
 		}
 		j = 0;
-		while (j < token->file->index)
+		while (j < token->number_of_file)
 		{
 			printf("opr[%d] : %s\n", j, token->file[j].opr);
 			if (token->file[j].del)
