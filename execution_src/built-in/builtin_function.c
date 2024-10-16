@@ -6,7 +6,7 @@
 /*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 22:46:38 by asalmi            #+#    #+#             */
-/*   Updated: 2024/10/16 17:32:04 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/10/16 22:02:37 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,8 @@ void ft_env(t_env *env)
 {
     while (env)
     {
+        if (env->content)
+            return ;
         printf("%s=", env->content->var);
         printf("%s\n", env->content->value);
         env = env->next;

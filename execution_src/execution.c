@@ -6,7 +6,7 @@
 /*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/15 13:17:42 by asalmi            #+#    #+#             */
-/*   Updated: 2024/10/16 17:31:47 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/10/16 21:14:03 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@ int is_builtin(const char *cmd)
         return (1);
     if (!ft_strncmp(cmd, "env", ft_strlen(cmd)))
         return (1);
+    if (!ft_strncmp(cmd, "export", ft_strlen(cmd)))
+        return (1);
     return (0);
 }
 
@@ -34,7 +36,8 @@ int execute_simple_command(t_token *cmd, t_env *env)
 
     if (is_builtin(cmd->command) != 0)
     {
-        ft_env(env);
+        if (ft_export(cmd, env) != 0)
+            exit(EXIT_FAILURE);
         return 0;
     }
     pid = fork();

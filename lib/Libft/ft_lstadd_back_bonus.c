@@ -6,7 +6,7 @@
 /*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 18:43:21 by asalmi            #+#    #+#             */
-/*   Updated: 2024/09/18 20:01:50 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/10/16 23:26:59 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ void	ft_lstadd_back(t_list **lst, t_list *new)
 	if (*lst == NULL)
 	{
 		*lst = new;
-		
 		return ;
 	}
 	last = ft_lstlast(*lst);

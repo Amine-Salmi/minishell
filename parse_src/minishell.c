@@ -6,7 +6,7 @@
 /*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 10:14:08 by bbadda            #+#    #+#             */
-/*   Updated: 2024/10/16 15:47:03 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/10/16 23:58:20 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,8 @@ int main (int ac, char *av[], char **env)
 			continue ;
 		command = parse_split(full_command, '|');
 		token = toke_lexer(command, token, my_env);
-		ft_execute(token, my_env);
+		if (token)
+			ft_execute(token, my_env);
 		// priiint(token);
 		free(full_command);
 	}
