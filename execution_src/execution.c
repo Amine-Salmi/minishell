@@ -6,11 +6,20 @@
 /*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/15 13:17:42 by asalmi            #+#    #+#             */
-/*   Updated: 2024/10/14 23:26:22 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/10/16 00:16:34 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+int is_builtin(const char *cmd)
+{
+    if (!ft_strncmp(cmd, "echo", ft_strlen(cmd)))
+        return (1);
+    if (!ft_strncmp(cmd, "cd", ft_strlen(cmd)))
+        return (1);
+    return (0);
+}
 
 int execute_simple_command(t_token *cmd, t_env *env)
 {
@@ -19,12 +28,17 @@ int execute_simple_command(t_token *cmd, t_env *env)
     char *path;
     char *executable_path;
 
+    if (is_builtin(cmd->command) != 0)
+    {
+        if(ft_cd(cmd, env) == 0)
+            return 0;
+    }
     pid = fork();
     if (pid == 0)
     {
         // if (cmd->file)
         //     redirection_handler(cmd);
-        path = find_path(env);
+        path = find_var_env(env, "PATH");
         executable_path = find_executable_file(cmd->command, path);
         if (execve(executable_path, cmd->arg, copy_env(env)) == -1)
         {

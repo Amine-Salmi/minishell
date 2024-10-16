@@ -6,7 +6,7 @@
 /*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 19:16:46 by asalmi            #+#    #+#             */
-/*   Updated: 2024/10/14 22:47:34 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/10/16 00:17:01 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void execute_piped_commands(t_token *cmd, t_env *env)
 			close(fd[1]);
 			// if (cmd->redirection)
 			// 	redirection_handler(cmd);
-			path = find_path(env);
+			path = find_var_env(env, "PATH");
 			executable_path = find_executable_file(cmd->command, path);
 			if (execve(executable_path, cmd->arg, copy_env(env)) == -1)
 			{
