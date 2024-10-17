@@ -37,28 +37,32 @@ t_env *create_new_elemnts(char *args, t_env *env)
     i = 0;
     new_node->content->var = elemnts[0];
     new_node->content->value = elemnts[1];
+    new_node->next = NULL;
     return (new_node);
 }
 t_env *lstlast(t_env *last)
 {
-    while (last)
-    {
+    while (last && last->next != NULL)
+    { 
         last = last->next;
     }
     return (last);
 }
 
-void add_to_env(t_env *env, t_env *new_node)
+void add_to_env(t_env **env, t_env *new_node)
 {
     t_env *last;
 
-    if (!env)
+    if (!*env)
     {
-        env = new_node;
+        *env = new_node;
         return ;
     }
-    last = lstlast(env);
-    last->next = new_node;
+    else
+    {
+        last = lstlast(*env);
+        last->next = new_node;
+    }
 }
 
 int ft_export(t_token *cmd, t_env *env)
@@ -76,8 +80,8 @@ int ft_export(t_token *cmd, t_env *env)
     while (cmd->arg[i])
     {
         new_node = create_new_elemnts(cmd->arg[i], env);
-        add_to_env(env, new_node);
-        i++;
+        add_to_env(&env, new_node);
+        i++; 
     }
     return 0;
 }
