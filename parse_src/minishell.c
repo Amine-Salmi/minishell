@@ -6,12 +6,11 @@
 /*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 10:14:08 by bbadda            #+#    #+#             */
-/*   Updated: 2024/10/17 16:32:05 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/10/17 16:38:55 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-
 
 t_token	*toke_lexer(char **command, t_token *token, t_env *e)
 {
@@ -92,7 +91,6 @@ int main (int ac, char *av[], char **env)
 		full_command = readline("\033[1;31m-\033[0m  \033[1;32mminishell-0.1$\033[0m ");
 		if (!full_command)
 			break;
-			
 		add_history(full_command);
 		if (pipe_error(full_command, parse_strlen(full_command)))
 			continue ;
