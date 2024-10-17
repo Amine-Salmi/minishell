@@ -6,7 +6,7 @@
 /*   By: bbadda <bbadda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 10:14:08 by bbadda            #+#    #+#             */
-/*   Updated: 2024/10/16 17:29:42 by bbadda           ###   ########.fr       */
+/*   Updated: 2024/10/17 10:24:19 by bbadda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,8 +96,8 @@ int main (int ac, char *av[], char **env)
 			continue ;
 		command = parse_split(full_command, '|');
 		token = toke_lexer(command, token, my_env);
-		// ft_execute(token, my_env); 
-		// priiint(token);
+		// ft_execute(token, my_env);
+		priiint(token);
 		free(full_command);
 	}
 	return (0);
