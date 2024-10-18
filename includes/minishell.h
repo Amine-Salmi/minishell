@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: bbadda <bbadda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 10:14:11 by bbadda            #+#    #+#             */
-/*   Updated: 2024/10/16 23:58:50 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/10/18 12:42:49 by bbadda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,7 +134,7 @@ void		check_quotes(char c, bool in_quotes, bool in_single_quotes);
 void		__token(char **s_command, t_con *c, t_env *e);
 t_index		max_files_args(char **s_command);
 char		*replace_env(t_env *e, char *s);
-int		check_env(char *cmd);
+int			check_env(char *cmd);
 char		*check_and_replace_env(char *s_command, t_env *e);
 
 // --------------------syntax_error_functions-----------------//

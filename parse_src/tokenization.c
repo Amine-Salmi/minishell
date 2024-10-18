@@ -6,7 +6,7 @@
 /*   By: bbadda <bbadda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 11:58:05 by bbadda            #+#    #+#             */
-/*   Updated: 2024/10/16 19:40:16 by bbadda           ###   ########.fr       */
+/*   Updated: 2024/10/18 14:37:12 by bbadda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,24 +38,23 @@ char	*replace_env(t_env *e, char *s)
 	while (e)
 	{
 		if (cmp(e->content->var, s))
-			return (strdup(e->content->value));
+			return (parse_strdup(e->content->value));
 		e = e->next;
 	}
-	return (s);
+	return (parse_strdup(""));
 }
 
 char	*remove_q(char *s_command)
 {
 	bool	in_single_quotes = false;
 	bool	in_quotes = false;
-	char	*buffer;
+	char	*buffer = malloc(parse_strlen(s_command));
 	int		buffer_index;
 	
 	int i = -1;
 	buffer_index = 0;
 	while (s_command[++i])
 	{
-		printf("c[i] = %c\n", s_command[i]);
 		if (!in_quotes && s_command[i] == '\'')
 			in_single_quotes = !in_single_quotes;
 		else if (!in_single_quotes && s_command[i] == '\"')
@@ -63,26 +62,114 @@ char	*remove_q(char *s_command)
 		else
 			buffer[buffer_index++] = s_command[i];
 	}
+	buffer[i] = '\0';
 	return (buffer);
 }
-char	*check_and_replace_env(char *s_command, t_env *e)
+
+char	*add_token(char *buffer, int *buffer_index)
 {
-	int i = -1;
-	while (s_command[++i])
+	char	*s;
+
+	if (*buffer_index > 0)
 	{
-		if (s_command[i] == '$')
-		{
-			if (check_env(s_command) == 1)
-				s_command = parse_strdup(replace_env(e, s_command + 1));
-			if (check_env(s_command) == 0)
-				s_command = parse_strdup(s_command + 1);
-			if (check_env(s_command) == 2)
-				s_command = parse_strdup(s_command + 2);
-			if (check_env(s_command) == 3)
-				printf("baaad env \n");
-		}
+		buffer[*buffer_index] = '\0';
+		s = parse_strdup(buffer);
+		*buffer_index = 0;
 	}
-	return (s_command);
+	return(s);
+}
+
+int	get_env_size(char *cmd, t_env *e)
+{
+	int		i;
+	int		j;
+	int		size;
+	char	var_name[256];
+
+	size = 0;
+	i = 0;
+	j = 0;
+	while (cmd[i])
+	{
+		if (cmd[i] == '$')
+		{
+			i++;
+			j = 0;
+			while (cmd[i] && (ft_isalnum(cmd[i]) || cmd[i] == '_'))
+				var_name[j++] = cmd[i++];
+			size += parse_strlen(replace_env(e, var_name));
+		}
+		i++;
+		size++;
+	}
+	return (size);
+}
+
+char	*check_and_replace_env(char *cmd, t_env *e)
+{
+	bool	in_single_quotes;
+	bool	in_quotes;
+	bool	in_the_first;
+	bool	pair;
+	char 	*buffer;
+	char 	*value;
+	char	var_name[256];
+	int		buffer_index;
+	int		i;
+	int		j;
+
+	pair = true;
+	in_single_quotes = false;
+	in_quotes = false;
+	in_the_first = true;
+	buffer = malloc(get_env_size(cmd, e) + 1);
+	buffer_index = 0;
+	i = 0;
+	while (cmd[i])
+	{
+		if (!in_quotes && cmd[i] == '\'')
+			in_single_quotes = !in_single_quotes;
+		else if (!in_single_quotes && cmd[i] == '\"')
+			in_quotes = !in_quotes;
+		if (cmd[i] == '$' && !in_single_quotes)
+		{
+			i++;
+			while (cmd[i] && cmd[i] == '$')
+			{
+				pair = !pair;
+				i++;
+			}
+			if (pair)
+			{
+				j = 0;
+				while (cmd[i])
+				{
+					if ((ft_isdigit(cmd[i]) || cmd[i] == '?') && in_the_first)
+					{
+						var_name[j++] = cmd[i++];
+						break;
+					}
+					else if (ft_isalnum(cmd[i]) || cmd[i] == '_')
+						var_name[j++] = cmd[i++];
+					else
+						break ;
+					in_the_first = false;
+				}
+				var_name[j] = '\0';
+				value = replace_env(e, var_name);
+				if (value)
+				{
+					strcpy(&buffer[buffer_index], value);
+					buffer_index += parse_strlen(value);
+					free(value);
+				}
+			}
+		}
+		else
+			buffer[buffer_index++] = cmd[i++];
+	}
+	buffer[buffer_index] = '\0';
+	return (remove_q(buffer));
 }
 
 t_index	max_files_args(char **s_command)
@@ -129,9 +216,7 @@ void	__token(char **s_command, t_con *c, t_env *e)
 	index.k = 0;
 	while (s_command[index.j])
 	{
-		printf("s1 = %s\n", s_command[index.j]);
 		s_command[index.j] = check_and_replace_env(s_command[index.j], e);
-		printf("s2 = %s\n", s_command[index.j]);
 		if (s_command[index.j] && (cmp(s_command[index.j], "<") || cmp(s_command[index.j], ">") 
 			|| cmp(s_command[index.j], "<<") || cmp(s_command[index.j], ">>")))
 		{
