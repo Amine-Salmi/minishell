@@ -6,8 +6,9 @@ void    print_env_var(t_env *env)
     {
         if (!env->content)
             return ;
-        printf("declare -x %s=", env->content->var);
-        printf("\"%s\"\n", env->content->value);
+        printf("declare -x %s", env->content->var);
+        if (env->content->value)
+            printf("=\"%s\"\n", env->content->value);
         env = env->next;
     }
 }
@@ -70,12 +71,16 @@ t_env *create_new_elemnts(char *args, t_env *env)
         return (NULL);
     }
     new_node->content->var = ft_strdup(elemnts[0]);
-    new_node->content->value = ft_strdup(elemnts[1]);
+    if (elemnts[1])
+        new_node->content->value = ft_strdup(elemnts[1]);
+    else
+        new_node->content->value = NULL;
     if (check_elements(new_node))
         return (NULL);
     // create function free double pointer
     free(elemnts[0]);
-    free(elemnts[1]);
+    if (elemnts[1])
+        free(elemnts[1]);
     free(elemnts);
     new_node->next = NULL;
     return (new_node);
