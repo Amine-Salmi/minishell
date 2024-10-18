@@ -6,7 +6,7 @@
 /*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/15 13:17:42 by asalmi            #+#    #+#             */
-/*   Updated: 2024/10/16 21:14:03 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/10/17 17:20:24 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,15 @@
 
 int is_builtin(const char *cmd)
 {
-    if (!ft_strncmp(cmd, "echo", ft_strlen(cmd)))
+    if (!ft_strncmp(cmd, "echo", ft_strlen("echo")))
         return (1);
-    if (!ft_strncmp(cmd, "cd", ft_strlen(cmd)))
+    if (!ft_strncmp(cmd, "cd", ft_strlen("cd")))
         return (1);
-    if (!ft_strncmp(cmd, "pwd", ft_strlen(cmd)))
+    if (!ft_strncmp(cmd, "pwd", ft_strlen("pwd")))
         return (1);
-    if (!ft_strncmp(cmd, "env", ft_strlen(cmd)))
+    if (!ft_strncmp(cmd, "env", ft_strlen("env")))
         return (1);
-    if (!ft_strncmp(cmd, "export", ft_strlen(cmd)))
+    if (!ft_strncmp(cmd, "export", ft_strlen("export")))
         return (1);
     return (0);
 }
@@ -37,7 +37,9 @@ int execute_simple_command(t_token *cmd, t_env *env)
     if (is_builtin(cmd->command) != 0)
     {
         if (ft_export(cmd, env) != 0)
-            exit(EXIT_FAILURE);
+            return 0;
+            // return 1;
+            // exit(EXIT_FAILURE);
         return 0;
     }
     pid = fork();

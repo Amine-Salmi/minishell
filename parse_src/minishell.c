@@ -6,7 +6,7 @@
 /*   By: bbadda <bbadda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 10:14:08 by bbadda            #+#    #+#             */
-/*   Updated: 2024/10/18 14:41:06 by bbadda           ###   ########.fr       */
+/*   Updated: 2024/10/18 14:43:11 by bbadda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,9 +85,9 @@ int main (int ac, char *av[], char **env)
 	my_env = (t_env *)malloc(sizeof(t_env));
 	token = (t_token *)malloc(sizeof(t_token));
 	c = (t_con *)malloc(sizeof(t_con));
+	my_env = get_env(env);
 	while (1)
 	{
-		my_env = get_env(env);
 		full_command = readline("\033[1;31m-\033[0m  \033[1;32mminishell-0.1$\033[0m ");
 		if (!full_command)
 			break;
@@ -96,8 +96,9 @@ int main (int ac, char *av[], char **env)
 			continue ;
 		command = parse_split(full_command, '|');
 		token = toke_lexer(command, token, my_env);
-		// ft_execute(token, my_env);
-		priiint(token);
+		if (token)
+			ft_execute(token, my_env);
+		// priiint(token);
 		free(full_command);
 	}
 	return (0);
