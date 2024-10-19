@@ -6,7 +6,7 @@
 /*   By: bbadda <bbadda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 10:14:08 by bbadda            #+#    #+#             */
-/*   Updated: 2024/10/18 14:43:11 by bbadda           ###   ########.fr       */
+/*   Updated: 2024/10/18 19:36:36 by bbadda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,14 +29,15 @@ t_token	*toke_lexer(char **command, t_token *token, t_env *e)
 		s_command = parse_split(s, ' ');
 		free(s);
 		index = max_files_args(s_command);
-		c.file = malloc(index.i * sizeof(t_opr));
+		c.file = malloc((index.i + index.j) * sizeof(t_opr));
 		c.arg = malloc((index.k + 1) * sizeof(char *));
 		if (!__is_herdoc(s_command[0]))
 			c.command = s_command[0];
 		else
 			c.command = NULL;
 		__token(s_command, &c, e);
-		add_list_back(&token, c, index.i);
+		int size = index.i + index.j;
+		add_list_back(&token, c, size);
 	}
 	return (token);
 }
@@ -60,8 +61,8 @@ void	priiint(t_token *token)
 		while (j < token->number_of_file)
 		{
 			printf("opr[%d] : %s\n", j, token->file[j].opr);
-			if (token->file[j].del)
-				printf("del[%d] : %s\n", j, token->file[j].del);
+			// if (token->file[j].del)
+				// printf("del[%d] : %s\n", j, token->file[j].del);
 			if (token->file[j].file_name)
 				printf("file name[%d] : %s\n", j, token->file[j].file_name);
 			j++;
@@ -96,9 +97,9 @@ int main (int ac, char *av[], char **env)
 			continue ;
 		command = parse_split(full_command, '|');
 		token = toke_lexer(command, token, my_env);
-		if (token)
-			ft_execute(token, my_env);
-		// priiint(token);
+		// if (token)
+		// 	ft_execute(token, my_env);
+		priiint(token);
 		free(full_command);
 	}
 	return (0);

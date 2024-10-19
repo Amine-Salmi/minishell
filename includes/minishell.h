@@ -6,7 +6,7 @@
 /*   By: bbadda <bbadda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 10:14:11 by bbadda            #+#    #+#             */
-/*   Updated: 2024/10/18 14:43:33 by bbadda           ###   ########.fr       */
+/*   Updated: 2024/10/19 13:37:35 by bbadda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ typedef struct s_con
 	char	*command;
 	char	**arg;
 	t_opr	*file;
-}t_con;
+}t_con;j
 
 
 typedef struct s_token
@@ -79,7 +79,7 @@ typedef struct s_token
 	char				*command;
 	char				**arg;
 	t_opr				*file;
-	int			number_of_file;
+	int					number_of_file;
 	pid_t				pid;
 	struct s_token		*next;
 	struct s_token		*prev;
