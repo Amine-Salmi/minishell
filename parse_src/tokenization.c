@@ -6,7 +6,7 @@
 /*   By: bbadda <bbadda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 11:58:05 by bbadda            #+#    #+#             */
-/*   Updated: 2024/10/18 14:43:28 by bbadda           ###   ########.fr       */
+/*   Updated: 2024/10/18 19:38:37 by bbadda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -175,22 +175,25 @@ char	*check_and_replace_env(char *cmd, t_env *e)
 t_index	max_files_args(char **s_command)
 {
 	t_index	index;
+	int		i;
 
 	index.i = 0;
 	index.j = 0;
 	index.k = 0;
-	while (s_command[index.j])
+	i = 0;
+	while (s_command[i])
 	{
-		if (s_command[index.j] &&(cmp(s_command[index.j], "<") || cmp(s_command[index.j], ">") 
-			|| cmp(s_command[index.j], "<<") || cmp(s_command[index.j], ">>")))
+		if (cmp(s_command[i], "<<"))
+			index.j++;
+		if (s_command[i] &&(cmp(s_command[i], "<") || cmp(s_command[i], ">") 
+			|| cmp(s_command[i], ">>")))
 		{
 			index.i++;
-			index.j++;	
+			i++;	
 		}
-		else if (s_command[index.j])
+		else if (s_command[i])
 			index.k++;
-		if (s_command[index.j])
-			index.j++;
+		i++;
 	}
 	return (index);
 }

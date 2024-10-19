@@ -6,7 +6,7 @@
 /*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/15 13:17:42 by asalmi            #+#    #+#             */
-/*   Updated: 2024/10/19 17:07:34 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/10/19 23:55:34 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,21 @@ int is_builtin(const char *cmd)
     return (0);
 }
 
+int execute_builtin(t_token *cmd, t_env *env)
+{
+    if (!strcmp(cmd->command, "echo"))
+        ft_echo(cmd);
+    if (!strcmp(cmd->command, "cd"))
+        ft_cd(cmd, env);
+    if (!strcmp(cmd->command, "pwd"))
+        ft_pwd(cmd);
+    if (!strcmp(cmd->command, "env"))
+        ft_env(env);
+    if (!strcmp(cmd->command, "export"))
+        ft_export(cmd, env);
+    return (0);
+}
+
 int execute_simple_command(t_token *cmd, t_env *env)
 {
     pid_t pid;
@@ -34,14 +49,11 @@ int execute_simple_command(t_token *cmd, t_env *env)
     char *path;
     char *executable_path;
 
-    // if (is_builtin(cmd->command) != 0)
-    // {
-    //     if (ft_export(cmd, env) != 0)
-    //         return 0;
-    //         // return 1;
-    //         // exit(EXIT_FAILURE);
-    //     return 0;
-    // }
+    if (is_builtin(cmd->command) != 0)
+    {
+        execute_builtin(cmd, env);
+        return 0;
+    }
     pid = fork();
     if (pid == 0)
     {

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bbadda <bbadda@student.42.fr>              +#+  +:+       +#+        */
+/*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 10:14:11 by bbadda            #+#    #+#             */
-/*   Updated: 2024/10/18 14:43:33 by bbadda           ###   ########.fr       */
+/*   Updated: 2024/10/19 17:48:09 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ typedef struct s_opr
 	char	*file_name;
 	char	*opr;
 	char	*del;
+	bool	expend;
 }t_opr;
 
 typedef struct s_con 
@@ -79,7 +80,7 @@ typedef struct s_token
 	char				*command;
 	char				**arg;
 	t_opr				*file;
-	int			number_of_file;
+	int					number_of_file;
 	pid_t				pid;
 	struct s_token		*next;
 	struct s_token		*prev;
@@ -175,6 +176,7 @@ int 	ft_cd(t_token *cmd, t_env *env);
 int 	ft_pwd(t_token *cmd);
 void	ft_env(t_env *env);
 int		ft_export(t_token *cmd, t_env *env);
+char	**split_first_eq(char const *s, char c);
 void	ft_execute(t_token *cmd, t_env *env);
 
 // ------------------------------------------------------------ //

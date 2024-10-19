@@ -6,7 +6,7 @@
 /*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 22:46:38 by asalmi            #+#    #+#             */
-/*   Updated: 2024/10/16 22:02:37 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/10/20 00:00:28 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,12 +79,16 @@ int ft_pwd(t_token *cmd)
 
 void ft_env(t_env *env)
 {
+    
     while (env)
     {
-        if (env->content)
+        if (!env->content)
             return ;
-        printf("%s=", env->content->var);
-        printf("%s\n", env->content->value);
+        if (env->content->value)
+        {
+            printf("%s=", env->content->var);
+            printf("%s\n", env->content->value);
+        }
         env = env->next;
     }
 }

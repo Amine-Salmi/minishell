@@ -66,7 +66,7 @@ t_env *create_new_elemnts(char *args, t_env *env)
         free(new_node);
         return (NULL);
     }
-    elemnts = ft_split(args, '=');
+    elemnts = split_first_eq(args, '=');
     if (!elemnts)
     {
         free(new_node);

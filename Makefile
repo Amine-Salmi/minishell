@@ -14,7 +14,7 @@ $(LIBFT) :
 	make -C lib/Libft
 
 $(NAME) : $(LIBFT) $(OBJS) includes/minishell.h 
-	$(CC) $(OBJS) $(LIBFT) -o $@ -lreadline
+	$(CC) $(CFLAGS) $(OBJS) $(LIBFT) -o $@ -lreadline
 
 %.o : %.c includes/minishell.h 
 	$(CC) -c $< -o $@
