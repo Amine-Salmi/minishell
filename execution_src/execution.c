@@ -6,7 +6,7 @@
 /*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/15 13:17:42 by asalmi            #+#    #+#             */
-/*   Updated: 2024/10/17 17:20:24 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/10/19 00:25:17 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,15 @@
 
 int is_builtin(const char *cmd)
 {
-    if (!ft_strncmp(cmd, "echo", ft_strlen("echo")))
+    if (!strcmp(cmd, "echo"))
         return (1);
-    if (!ft_strncmp(cmd, "cd", ft_strlen("cd")))
+    if (!strcmp(cmd, "cd"))
         return (1);
-    if (!ft_strncmp(cmd, "pwd", ft_strlen("pwd")))
+    if (!strcmp(cmd, "pwd"))
         return (1);
-    if (!ft_strncmp(cmd, "env", ft_strlen("env")))
+    if (!strcmp(cmd, "env"))
         return (1);
-    if (!ft_strncmp(cmd, "export", ft_strlen("export")))
+    if (!strcmp(cmd, "export"))
         return (1);
     return (0);
 }
