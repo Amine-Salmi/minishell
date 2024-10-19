@@ -6,7 +6,7 @@
 /*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/15 13:17:42 by asalmi            #+#    #+#             */
-/*   Updated: 2024/10/19 00:25:17 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/10/19 17:07:34 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,14 +34,14 @@ int execute_simple_command(t_token *cmd, t_env *env)
     char *path;
     char *executable_path;
 
-    if (is_builtin(cmd->command) != 0)
-    {
-        if (ft_export(cmd, env) != 0)
-            return 0;
-            // return 1;
-            // exit(EXIT_FAILURE);
-        return 0;
-    }
+    // if (is_builtin(cmd->command) != 0)
+    // {
+    //     if (ft_export(cmd, env) != 0)
+    //         return 0;
+    //         // return 1;
+    //         // exit(EXIT_FAILURE);
+    //     return 0;
+    // }
     pid = fork();
     if (pid == 0)
     {

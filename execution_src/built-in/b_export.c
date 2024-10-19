@@ -11,7 +11,7 @@ void    print_env_var(t_env *env)
             printf("=\"%s\"\n", env->content->value);
         else
             printf("\n");
-        env = env->next;
+        env = env->next; 
     }
 }
 
