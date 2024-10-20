@@ -11,7 +11,7 @@ void    print_env_var(t_env *env)
             printf("=\"%s\"\n", env->content->value);
         else
             printf("\n");
-        env = env->next;
+        env = env->next; 
     }
 }
 
@@ -66,7 +66,7 @@ t_env *create_new_elemnts(char *args, t_env *env)
         free(new_node);
         return (NULL);
     }
-    elemnts = ft_split(args, '=');
+    elemnts = split_first_eq(args, '=');
     if (!elemnts)
     {
         free(new_node);

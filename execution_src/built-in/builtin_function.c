@@ -6,7 +6,7 @@
 /*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 22:46:38 by asalmi            #+#    #+#             */
-/*   Updated: 2024/10/16 22:02:37 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/10/20 01:29:18 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,9 +41,15 @@ int ft_echo(t_token *cmd)
 int ft_cd(t_token *cmd, t_env *env)
 {
     char *path;
+    char oldpath[PATH_MAX];
     int i;
 
     i = 0;
+    if (getcwd(oldpath, sizeof(oldpath)) == NULL)
+    {
+        perror("pwd: ");
+        return (1);
+    }
     if (!cmd->arg[1])
     {
         path = find_var_env(env, "HOME");
@@ -58,8 +64,17 @@ int ft_cd(t_token *cmd, t_env *env)
     if (chdir(path) != 0)
     {
         perror("minishell-0.1: cd");
-        exit(EXIT_FAILURE); // problem in this part cs terminated the programme 
+        return (1);
     }
+    // while (env)
+    // {
+    //     if (!strcmp(env->content->var, "OLDPWD"))
+    //     {
+    //         env->content->value = oldpath;
+    //         return 0;
+    //     }
+    //     env = env->next;
+    // }
     return 0;
 }
 
@@ -81,10 +96,13 @@ void ft_env(t_env *env)
 {
     while (env)
     {
-        if (env->content)
+        if (!env->content)
             return ;
-        printf("%s=", env->content->var);
-        printf("%s\n", env->content->value);
+        if (env->content->value)
+        {
+            printf("%s=", env->content->var);
+            printf("%s\n", env->content->value);
+        }
         env = env->next;
     }
 }
