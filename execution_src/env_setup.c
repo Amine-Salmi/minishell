@@ -6,7 +6,7 @@
 /*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 19:16:51 by asalmi            #+#    #+#             */
-/*   Updated: 2024/10/16 00:16:13 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/10/20 16:43:32 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ size_t count_node(t_env *env)
     }
     return (count);
 }
+// free memory in this function ----------------
 char **copy_env(t_env *env)
 {
     char **env_copy;

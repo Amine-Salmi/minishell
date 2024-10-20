@@ -6,13 +6,13 @@
 /*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/15 13:17:42 by asalmi            #+#    #+#             */
-/*   Updated: 2024/10/20 00:06:43 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/10/20 16:59:57 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int execute_simple_command(t_token *cmd, t_env *env)
+int execute_simple_command(t_token *cmd, t_env **env)
 {
     pid_t pid;
     int status;
@@ -29,9 +29,9 @@ int execute_simple_command(t_token *cmd, t_env *env)
     {
         // if (cmd->file)
         //     redirection_handler(cmd);
-        path = find_var_env(env, "PATH");
+        path = find_var_env(*env, "PATH");
         executable_path = find_executable_file(cmd->command, path);
-        if (execve(executable_path, cmd->arg, copy_env(env)) == -1)
+        if (execve(executable_path, cmd->arg, copy_env(*env)) == -1)
         {
 			// should free(array in copy_env if execve is faild)
             perror("execve");
@@ -43,8 +43,9 @@ int execute_simple_command(t_token *cmd, t_env *env)
     return 0;
 }
 
-void ft_execute(t_token *cmd, t_env *env)
+void ft_execute(t_token *cmd, t_env **env)
 {
+    // printf("delemter: %s\n", cmd->file->del);
     if (cmd->next == NULL)
     {
         if (execute_simple_command(cmd, env) != 0) // should free memory in find_executable_file and path.

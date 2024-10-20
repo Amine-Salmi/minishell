@@ -6,13 +6,13 @@
 /*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 19:16:46 by asalmi            #+#    #+#             */
-/*   Updated: 2024/10/20 00:14:59 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/10/20 17:01:35 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void execute_piped_commands(t_token *cmd, t_env *env)
+void execute_piped_commands(t_token *cmd, t_env **env)
 {
     int fd[2];
     int pipeLine;
@@ -46,9 +46,9 @@ void execute_piped_commands(t_token *cmd, t_env *env)
 			close(fd[1]);
 			// if (cmd->redirection)
 			// 	redirection_handler(cmd);
-			path = find_var_env(env, "PATH");
+			path = find_var_env(*env, "PATH");
 			executable_path = find_executable_file(cmd->command, path);
-			if (execve(executable_path, cmd->arg, copy_env(env)) == -1)
+			if (execve(executable_path, cmd->arg, copy_env(*env)) == -1)
 			{
 				// should free(array in copy_env if execve is faild)
 				perror("execve");
