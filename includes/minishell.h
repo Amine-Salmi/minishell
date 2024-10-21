@@ -6,7 +6,7 @@
 /*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 10:14:11 by bbadda            #+#    #+#             */
-/*   Updated: 2024/10/20 17:03:33 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/10/21 01:07:47 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,8 +167,8 @@ char    *find_executable_file(char *command, char *path);
 char	**copy_env(t_env *env);
 void	execute_piped_commands(t_token *cmd, t_env **env);
 
-// void    redirection_handler(t_token *cmd);
-// void    handle_heredoc(t_token *cmd);
+void    redirection_handler(t_token *cmd);
+void    handle_heredoc(t_token *cmd);
 
 int		execute_builtin(t_token *cmd, t_env **env);
 int		is_builtin(const char *cmd);
