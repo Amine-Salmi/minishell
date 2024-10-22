@@ -6,7 +6,7 @@
 /*   By: bbadda <bbadda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 12:51:37 by bbadda            #+#    #+#             */
-/*   Updated: 2024/10/15 16:06:35 by bbadda           ###   ########.fr       */
+/*   Updated: 2024/10/20 09:42:13 by bbadda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static t_env	*__creat_list(t_content *content)
 	t_env	*node;
 
 	node = malloc(sizeof(t_env));
-	if(!node)
+	if (!node)
 		return (NULL);
 	if (node)
 	{
@@ -43,7 +43,6 @@ static void	__add_list_back(t_env **lst, t_env *new)
 		last->next = new;
 	}
 }
-
 
 static char	*get_var(char *str, int size)
 {
@@ -89,12 +88,13 @@ int	__lstsize(t_env *lst)
 	return (i);
 }
 
-t_env   *get_env( char **env)
+t_env	*get_env( char **env)
 {
 	t_content	*content;
+	t_env		*re;
 	int			i;
-	t_env *re =NULL;
 
+	re = NULL;
 	i = -1;
 	while (env[++i])
 	{
@@ -103,7 +103,5 @@ t_env   *get_env( char **env)
 		content->value = getenv(content->var);
 		__add_list_back(&re, __creat_list(content));
 	}
-	return re;
+	return (re);
 }
-
-

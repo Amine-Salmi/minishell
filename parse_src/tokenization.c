@@ -6,7 +6,7 @@
 /*   By: bbadda <bbadda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 11:58:05 by bbadda            #+#    #+#             */
-/*   Updated: 2024/10/18 19:38:37 by bbadda           ###   ########.fr       */
+/*   Updated: 2024/10/20 09:34:33 by bbadda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,11 +46,14 @@ char	*replace_env(t_env *e, char *s)
 
 char	*remove_q(char *s_command)
 {
-	bool	in_single_quotes = false;
-	bool	in_quotes = false;
-	char	*buffer = malloc(parse_strlen(s_command));
+	bool	in_single_quotes;
+	bool	in_quotes;
+	char	*buffer;
 	int		buffer_index;
-	
+
+	in_single_quotes = false;
+	in_quotes = false;
+	buffer = malloc(parse_strlen(s_command) + 1);
 	int i = -1;
 	buffer_index = 0;
 	while (s_command[++i])
@@ -62,7 +65,7 @@ char	*remove_q(char *s_command)
 		else
 			buffer[buffer_index++] = s_command[i];
 	}
-	buffer[i] = '\0';
+	buffer[buffer_index] = '\0';
 	return (buffer);
 }
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: bbadda <bbadda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 10:14:11 by bbadda            #+#    #+#             */
-/*   Updated: 2024/10/20 00:07:35 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/10/20 09:25:36 by bbadda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,6 +137,7 @@ t_index		max_files_args(char **s_command);
 char		*replace_env(t_env *e, char *s);
 int			check_env(char *cmd);
 char		*check_and_replace_env(char *s_command, t_env *e);
+char		*remove_q(char *s_command);
 
 // --------------------syntax_error_functions-----------------//
 int			syntax_error(char *command);
