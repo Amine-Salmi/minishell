@@ -6,7 +6,7 @@
 /*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 22:46:38 by asalmi            #+#    #+#             */
-/*   Updated: 2024/10/20 01:29:18 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/10/21 13:20:26 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int ft_echo(t_token *cmd)
     newline = 1;
     while (cmd->arg[i])
     {
-        if (!ft_strncmp(cmd->arg[i], "-n", ft_strlen(cmd->arg[i])))
+        if (!ft_strcmp(cmd->arg[i], "-n"))
         {
             i++;
             newline = 0;
@@ -68,7 +68,7 @@ int ft_cd(t_token *cmd, t_env *env)
     }
     // while (env)
     // {
-    //     if (!strcmp(env->content->var, "OLDPWD"))
+    //     if (!ft_strcmp(env->content->var, "OLDPWD"))
     //     {
     //         env->content->value = oldpath;
     //         return 0;

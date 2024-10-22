@@ -6,7 +6,7 @@
 /*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 10:14:11 by bbadda            #+#    #+#             */
-/*   Updated: 2024/10/21 01:07:47 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/10/22 01:23:14 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@
 #include <string.h>
 #include <stdbool.h>
 #include <fcntl.h>
+#include <sys/stat.h>
 #include "../lib/Libft/libft.h"
 
 # define ARGS_ERROR  "number of arguments"
@@ -164,6 +165,7 @@ char		*parse_strdup(const char *src);
 
 char    *find_var_env(t_env *env, char *var);
 char    *find_executable_file(char *command, char *path);
+char	*check_path(t_token *cmd, t_env *env);
 char	**copy_env(t_env *env);
 void	execute_piped_commands(t_token *cmd, t_env **env);
 
@@ -180,6 +182,8 @@ int		ft_export(t_token *cmd, t_env *env);
 int 	ft_unset(t_token *cmd, t_env **env);
 char	**split_first_eq(char const *s, char c);
 void	ft_execute(t_token *cmd, t_env **env);
+
+void	free_double_pointer(char **env);
 
 // ------------------------------------------------------------ //
 // -------------------- executions functions ------------------ //

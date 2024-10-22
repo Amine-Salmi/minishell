@@ -6,7 +6,7 @@
 /*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 14:43:30 by asalmi            #+#    #+#             */
-/*   Updated: 2024/10/20 21:37:50 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/10/21 13:18:57 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,17 +38,17 @@ void remove_elemnts(t_env **env, char *d_var)
     tmp = *env;
     if (!env || !*env)
         return ;
-    if (tmp && !strcmp(tmp->content->var, d_var))
+    if (tmp && !ft_strcmp(tmp->content->var, d_var))
     {
         (*env) = tmp->next;
         free(tmp);
         return ;
     }
-    while (tmp && strcmp(tmp->content->var, d_var))
+    while (tmp && ft_strcmp(tmp->content->var, d_var))
     {
         prev = tmp;
         tmp = tmp->next;
-        if (!strcmp(tmp->content->var, d_var))
+        if (!ft_strcmp(tmp->content->var, d_var))
         {
             prev->next = tmp->next;
             free(tmp);

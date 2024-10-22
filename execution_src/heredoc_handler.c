@@ -6,7 +6,7 @@
 /*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 19:16:56 by asalmi            #+#    #+#             */
-/*   Updated: 2024/10/21 00:56:34 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/10/21 13:18:57 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void    handle_heredoc(t_token *cmd)
 					free(input_line);
 					exit(EXIT_FAILURE);
 				}
-				if (cmd->file[i].del != NULL && !strcmp(input_line, cmd->file[i].del))
+				if (cmd->file[i].del != NULL && !ft_strcmp(input_line, cmd->file[i].del))
 				{
 					free(input_line);
 					break;
