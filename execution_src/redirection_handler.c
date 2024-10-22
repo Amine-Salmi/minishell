@@ -6,7 +6,7 @@
 /*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 19:16:59 by asalmi            #+#    #+#             */
-/*   Updated: 2024/10/16 23:51:39 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/10/21 01:17:16 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,16 +15,16 @@
 void redirection_handler(t_token *cmd)
 {
     // int fd;
-    // int i;
+    int i;
 
-    // i = 0;
-    // while (cmd->file[i].file_name)
-    // {
-    //     if (!cmd->file[i].opr){
-    //     printf("file name: %s\n", cmd->file[i].file_name);
-    //     printf("operatore: %s\n", cmd->file[i].opr);}
-    //     i++;
-    // }
+    i = 0;
+    // cmd->file[3].file_name = NULL;
+    while (cmd->file[i].file_name)
+    {
+        printf("file name: %s\n", cmd->file[i].file_name);
+        printf("operatore: %s\n", cmd->file[i].opr);
+        i++;
+    }
     // while (cmd->redirection)
     // {
     //     if (!ft_strncmp(cmd->redirection->opr, ">", ft_strlen(cmd->redirection->opr)))

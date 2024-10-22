@@ -15,7 +15,7 @@ void    print_env_var(t_env *env)
     }
 }
 
-int check_elements(char *var)
+int check_export_elements(char *var)
 {
     int i;
 
@@ -41,7 +41,7 @@ int elemnt_exist(t_env *var, t_env *env)
     i = 0;
     while (env)
     {
-        if (!ft_strncmp(var->content->var, env->content->var, ft_strlen(var->content->var)))
+        if (!ft_strcmp(var->content->var, env->content->var))
         {
             if (var->content->value)
                 env->content->value = var->content->value;
@@ -121,7 +121,7 @@ int ft_export(t_token *cmd, t_env *env)
     while (cmd->arg[i])
     {
         
-        if (!check_elements(cmd->arg[i]))
+        if (!check_export_elements(cmd->arg[i]))
         {
             new_node = create_new_elemnts(cmd->arg[i], env);\
             if (!elemnt_exist(new_node, env))    

@@ -6,7 +6,7 @@
 /*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 19:16:51 by asalmi            #+#    #+#             */
-/*   Updated: 2024/10/16 00:16:13 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/10/21 21:39:31 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ size_t count_node(t_env *env)
     }
     return (count);
 }
+// free memory in this function ----------------
 char **copy_env(t_env *env)
 {
     char **env_copy;
@@ -52,33 +53,6 @@ char **copy_env(t_env *env)
     env_copy[i] = NULL;
     return (env_copy);
 }
-// free memory in this function ----------------
-
-char *find_executable_file(char *command, char *path)
-{
-    char *executable_path;
-    char **dirs;
-    int i;
-
-    dirs = ft_split(path, ':');
-    i = 0;
-    while (dirs[i])
-    {
-        executable_path = ft_strjoin(ft_strjoin(dirs[i], "/"), command);
-        if (access(executable_path, F_OK | X_OK) == 0)
-            return (executable_path);
-        free(executable_path);
-        i++;
-    }
-	i = 0;
-	while (dirs[i])
-	{
-		free(dirs[i]);
-		i++;
-	}
-	free(dirs);
-    return (NULL);
-}
 
 // free memory in this function ----------------
 
@@ -88,7 +62,7 @@ char     *find_var_env(t_env *env, char *var)
 
     while (env)
     {
-        if (!ft_strncmp(env->content->var, var, ft_strlen(env->content->var)))
+        if (!ft_strcmp(env->content->var, var))
         {
             var_value = ft_substr(env->content->value, 0, ft_strlen(env->content->value));
             return (var_value);
