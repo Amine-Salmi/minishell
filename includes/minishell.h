@@ -6,7 +6,7 @@
 /*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 10:14:11 by bbadda            #+#    #+#             */
-/*   Updated: 2024/10/22 01:23:14 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/10/23 01:02:03 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,7 +167,6 @@ char    *find_var_env(t_env *env, char *var);
 char    *find_executable_file(char *command, char *path);
 char	*check_path(t_token *cmd, t_env *env);
 char	**copy_env(t_env *env);
-void	execute_piped_commands(t_token *cmd, t_env **env);
 
 void    redirection_handler(t_token *cmd);
 void    handle_heredoc(t_token *cmd);
@@ -180,10 +179,13 @@ int 	ft_pwd(t_token *cmd);
 void	ft_env(t_env *env);
 int		ft_export(t_token *cmd, t_env *env);
 int 	ft_unset(t_token *cmd, t_env **env);
+
 char	**split_first_eq(char const *s, char c);
 void	ft_execute(t_token *cmd, t_env **env);
+void	execute_piped_commands(t_token *cmd, t_env **env);
 
 void	free_double_pointer(char **env);
+void	print_error(char *error_mesage, char *command);
 
 // ------------------------------------------------------------ //
 // -------------------- executions functions ------------------ //
