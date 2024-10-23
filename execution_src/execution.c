@@ -6,7 +6,7 @@
 /*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/15 13:17:42 by asalmi            #+#    #+#             */
-/*   Updated: 2024/10/22 01:05:16 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/10/23 00:38:06 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,14 +33,14 @@ int execute_simple_command(t_token *cmd, t_env **env)
         // }
         // path = find_var_env(*env, "PATH");
         executable_path = check_path(cmd, *env);
-        // printf("------------- -------------> %s\n", executable_path);
+        if (!executable_path)
+            return 1;
         if (execve(executable_path, cmd->arg, copy_env(*env)) == -1)
         {
-			// should free(array in copy_env if execve is faild)
+		    // should free(array in copy_env if execve is faild)
             perror("execve");
             return 1;
         }
-        
     }
     else if (pid > 0)
         waitpid(pid, &status, 0);
@@ -53,8 +53,7 @@ void ft_execute(t_token *cmd, t_env **env)
     //     handle_heredoc(cmd);
     if (cmd->arg[0] && cmd->next == NULL)
     {
-        if (execute_simple_command(cmd, env) != 0) // should free memory in find_executable_file and path.
-            exit(EXIT_FAILURE);
+        execute_simple_command(cmd, env);  // should free memory in find_executable_file and path
     }
     else if (cmd->next != NULL)
     {
