@@ -6,7 +6,7 @@
 /*   By: bbadda <bbadda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 10:15:23 by bbadda            #+#    #+#             */
-/*   Updated: 2024/10/15 16:06:37 by bbadda           ###   ########.fr       */
+/*   Updated: 2024/10/20 09:43:16 by bbadda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,9 @@
 
 int	cmp(const char *s1, const char *s2)
 {
-	int i = 0;
+	int	i;
+
+	i = 0;
 	if (parse_strlen(s1) != parse_strlen(s2))
 		return (0);
 	while (s1[i] && s2[i])
@@ -42,8 +44,8 @@ void	__error(char c, int i)
 	}
 	if (i == 2)
 	{
-			printf("42sh: syntax error near unexpected token ");
-			printf("`%c%c'\n", c,c);
+		printf("42sh: syntax error near unexpected token ");
+		printf("`%c%c'\n", c, c);
 	}
 }
 

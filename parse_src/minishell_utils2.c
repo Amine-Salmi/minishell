@@ -6,43 +6,43 @@
 /*   By: bbadda <bbadda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 11:04:33 by bbadda            #+#    #+#             */
-/*   Updated: 2024/10/16 12:27:44 by bbadda           ###   ########.fr       */
+/*   Updated: 2024/10/20 09:46:17 by bbadda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-t_token	*creat_list(char *command, char **arg, t_opr *file,int number_of_file )
+t_token	*creat_list(char *command, char **arg, t_opr *file, int number_of_file )
 {
 	t_token	*node;
 
 	node = malloc(sizeof(t_token));
-	if(!node)
+	if (!node)
 		return (NULL);
 	if (command)
 		node->command = parse_strdup(command);
 	node->number_of_file = number_of_file ;
 	node->arg = arg;
-	 if (file)
-	 {
-        node->file = malloc(sizeof(t_opr));
-        if (node->file)
+	if (file)
+	{
+		node->file = malloc(sizeof(t_opr));
+		if (node->file)
 			node->file = file;
 		else
 		{
 			free(node->command);
 			free(node);
-            return (NULL);
+			return (NULL);
 		}
-    } 
+	}
 	else
-        node->file = NULL;
+		node->file = NULL;
 	node->next = NULL;
 	node->prev = NULL;
 	return (node);
 }
 
-void	add_list_back(t_token **token, t_con c ,int number_of_file )
+void	add_list_back(t_token **token, t_con c ,int number_of_file)
 {
 	t_token	*tmp;
 	t_token	*new;
@@ -65,8 +65,10 @@ void	add_list_back(t_token **token, t_con c ,int number_of_file )
 
 char	*get_pipe(char *line)
 {
-	int i = 0;
 	char	**str;
+	int		i;
+
+	i = 0;
 	str = parse_split(line, ' ');
 	while (str[i])
 	{
@@ -76,6 +78,7 @@ char	*get_pipe(char *line)
 	}
 	return (NULL);
 }
+
 int	is_cmd(char *str)
 {
 	if (!cmp(str, "|") && cmp(str, ">") && cmp(str, "<") && 
@@ -83,4 +86,3 @@ int	is_cmd(char *str)
 		return (0);
 	return (1);
 }
-

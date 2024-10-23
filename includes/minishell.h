@@ -6,7 +6,7 @@
 /*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 10:14:11 by bbadda            #+#    #+#             */
-/*   Updated: 2024/10/23 01:02:03 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/10/23 01:39:27 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,6 +138,7 @@ t_index		max_files_args(char **s_command);
 char		*replace_env(t_env *e, char *s);
 int			check_env(char *cmd);
 char		*check_and_replace_env(char *s_command, t_env *e);
+char		*remove_q(char *s_command);
 
 // --------------------syntax_error_functions-----------------//
 int			syntax_error(char *command);
