@@ -16,7 +16,7 @@ int file_ok(char *exec_path, t_token *cmd)
     }
     if (S_IFDIR == (S_IFMT & stat_buf.st_mode))
     {
-        print_error("Is a directory\n", cmd->command);
+        print_error("is a directory\n", cmd->command);
         return (-1);
     }
     if (access(exec_path, X_OK) == -1)
