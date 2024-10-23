@@ -6,13 +6,10 @@
 /*   By: bbadda <bbadda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 10:14:11 by bbadda            #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2024/10/20 09:25:36 by bbadda           ###   ########.fr       */
-=======
-/*   Updated: 2024/10/22 01:23:14 by asalmi           ###   ########.fr       */
->>>>>>> 1080c3720d22ea5a76b1178fc1e515f15ab4a2ca
+/*   Updated: 2024/10/22 13:07:39 by bbadda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
@@ -137,8 +134,9 @@ void		*__calloc(size_t count, size_t size);
 int			is_special_char(char c);
 void		check_quotes(char c, bool in_quotes, bool in_single_quotes);
 // --------------------tokenization_functions-----------------//
-void		__token(char **s_command, t_con *c, t_env *e);
+void		__token(char **s_command, t_con *c, t_env *e, int j, int i);
 t_index		max_files_args(char **s_command);
+int			get_env_size(char *cmd, t_env *e);
 char		*replace_env(t_env *e, char *s);
 int			check_env(char *cmd);
 char		*check_and_replace_env(char *s_command, t_env *e);
