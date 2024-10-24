@@ -6,7 +6,7 @@
 /*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 00:05:51 by asalmi            #+#    #+#             */
-/*   Updated: 2024/10/21 13:18:57 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/10/24 21:35:17 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,28 @@ int execute_builtin(t_token *cmd, t_env **env)
     if (!ft_strcmp(cmd->command, "env"))
         ft_env(*env);
     if (!ft_strcmp(cmd->command, "export"))
-        ft_export(cmd, *env);
+        ft_export(cmd, env);
     if (!ft_strcmp(cmd->command, "unset"))
         ft_unset(cmd, env);
     return (0);
+}
+
+// should free memmory in this function 
+void    update_pwd(t_env *env, char *old_pwd)
+{
+    char pwd[PATH_MAX];
+    
+    if(getcwd(pwd, sizeof(pwd)) == NULL)
+    {
+        perror("getcwd:");
+        return ;
+    } 
+    while (env)
+    {
+        if (!ft_strcmp(env->content->var, "OLDPWD"))
+            env->content->value = ft_strdup(old_pwd);
+        if (!ft_strcmp(env->content->var, "PWD"))
+            env->content->value = ft_strdup(pwd);
+        env = env->next;
+    }
 }

@@ -6,7 +6,7 @@
 /*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 22:46:38 by asalmi            #+#    #+#             */
-/*   Updated: 2024/10/21 13:20:26 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/10/24 21:28:07 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int ft_cd(t_token *cmd, t_env *env)
     i = 0;
     if (getcwd(oldpath, sizeof(oldpath)) == NULL)
     {
-        perror("pwd: ");
+        perror("pwd:");
         return (1);
     }
     if (!cmd->arg[1])
@@ -66,15 +66,7 @@ int ft_cd(t_token *cmd, t_env *env)
         perror("minishell-0.1: cd");
         return (1);
     }
-    // while (env)
-    // {
-    //     if (!ft_strcmp(env->content->var, "OLDPWD"))
-    //     {
-    //         env->content->value = oldpath;
-    //         return 0;
-    //     }
-    //     env = env->next;
-    // }
+    update_pwd(env, oldpath);
     return 0;
 }
 
