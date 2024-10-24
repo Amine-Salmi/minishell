@@ -6,7 +6,7 @@
 /*   By: bbadda <bbadda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 10:14:08 by bbadda            #+#    #+#             */
-/*   Updated: 2024/10/23 14:19:17 by bbadda           ###   ########.fr       */
+/*   Updated: 2024/10/24 13:14:51 by bbadda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,9 +53,11 @@ t_token	*toke_lexer(char **command, t_token *token, t_env *e)
 		s_command = parse_split(s, ' ');
 		free(s);
 		index = max_files_args(s_command);
-		printf("oo = %d\n", index.i + index.j);
-		if (index.i > 0 && index.j > 0)
+		if (index.i + index.j > 0)
 			c.file = malloc((index.i + index.j) * sizeof(t_opr));
+		c.file[i].del = NULL;
+		// c.file[i].file_name = NULL;
+		// c.file[i].opr = NULL;
 		if (index.k > 0)
 			c.arg = malloc((index.k + 1) * sizeof(char *));
 		if (!c.arg || !c.file)
@@ -65,7 +67,7 @@ t_token	*toke_lexer(char **command, t_token *token, t_env *e)
 		else
 			c.command = NULL;
 		__token(s_command, &c, e, index.j, index.i);
-		int size = index.i + index.j;
+		size = index.i + index.j;
 		add_list_back(&token, c, size);
 	}
 	return (token);
@@ -87,7 +89,7 @@ void	priiint(t_token *token)
 			i++;
 		}
 		j = 0;
-		printf("d=d====%d\n", token->number_of_file);
+		printf("d=d====   %d\n", token->number_of_file);
 		while (j < token->number_of_file)
 		{
 			printf("opr[%d] : %s\n", j, token->file[j].opr);
@@ -135,9 +137,15 @@ int main (int ac, char *av[], char **env)
 			continue ;
 		command = parse_split(full_command, '|');
 		token = toke_lexer(command, token, my_env);
+		// printf("=============================\n");
+		// printf("file: %p\n", token->file);
+		// printf("file name : %s\n", token->file->file_name);
+		// printf("opr : %s\n", token->file->opr);
+		// printf("del : %s\n", token->file->del);
+		// printf("=============================\n");
 		// if (token)
 			// ft_execute(token, &my_env);
-		// priiint(token);
+		priiint(token);
 		free(full_command);
 	}
 	return (0);

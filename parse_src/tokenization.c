@@ -6,7 +6,7 @@
 /*   By: bbadda <bbadda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 11:58:05 by bbadda            #+#    #+#             */
-/*   Updated: 2024/10/22 13:20:38 by bbadda           ###   ########.fr       */
+/*   Updated: 2024/10/23 17:09:32 by bbadda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,7 @@ char	*check_and_replace_env(char *cmd, t_env *e)
 
 void	__helper_token(t_con *c, t_env *e, char *s_command, int *index, int nbr_d)
 {
+	nbr_d = 0;
 	if (s_command)
 	{
 		if (cmp(c->file[*index].opr, "<<"))
@@ -115,10 +116,6 @@ void	__token(char **s_command, t_con *c, t_env *e, int nbr_d, int nbr_f)
 		}
 		index.j++;
 	}
-	printf("nbr_d %d and nbr_f %d\n", nbr_d, nbr_f);
 	c->arg[index.k] = NULL;
-	c->file[nbr_d].del = NULL;
-	c->file[nbr_f].file_name = NULL;
-	c->file[index.j].opr = NULL;
 	free (s_command);
 }

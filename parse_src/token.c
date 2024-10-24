@@ -6,7 +6,7 @@
 /*   By: bbadda <bbadda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 13:04:29 by bbadda            #+#    #+#             */
-/*   Updated: 2024/10/22 13:05:09 by bbadda           ###   ########.fr       */
+/*   Updated: 2024/10/23 17:04:21 by bbadda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ char	*add_token(char *buffer, int *buffer_index)
 {
 	char	*s;
 
+	s = NULL;
 	if (*buffer_index > 0)
 	{
 		buffer[*buffer_index] = '\0';
