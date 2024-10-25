@@ -6,7 +6,7 @@
 /*   By: bbadda <bbadda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 11:58:05 by bbadda            #+#    #+#             */
-/*   Updated: 2024/10/23 17:09:32 by bbadda           ###   ########.fr       */
+/*   Updated: 2024/10/24 13:38:13 by bbadda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ void	__helper_token(t_con *c, t_env *e, char *s_command, int *index, int nbr_d)
 	if (s_command)
 	{
 		if (cmp(c->file[*index].opr, "<<"))
-			c->file[*index].del = parse_strdup(check_and_replace_env(s_command, e));
+			c->herdoc[*index].del = parse_strdup(check_and_replace_env(s_command, e));
 		else
 			c->file[*index].file_name = parse_strdup(check_and_replace_env(s_command, e));
 		(*index)++;

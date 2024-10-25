@@ -6,7 +6,7 @@
 /*   By: bbadda <bbadda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 10:14:11 by bbadda            #+#    #+#             */
-/*   Updated: 2024/10/23 14:22:10 by bbadda           ###   ########.fr       */
+/*   Updated: 2024/10/24 13:36:54 by bbadda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,25 +63,31 @@ enum e_state
 
 typedef struct s_opr
 {
-	char	*file_name;
 	char	*opr;
+	char	*file_name;
+}t_opr;
+
+typedef struct s_herdoc
+{
+	char	*herdoc;
 	char	*del;
 	bool	expend;
-}t_opr;
+}t_herdoc;
 
 typedef struct s_con 
 {	
-	char	*command;
-	char	**arg;
-	t_opr	*file;
+	char		*command;
+	char		**arg;
+	t_opr		*file;
+	t_herdoc	*herdoc;
 }t_con;
-
 
 typedef struct s_token
 {
 	char				*command;
 	char				**arg;
 	t_opr				*file;
+	t_herdoc			*herdoc;
 	int					number_of_file;
 	pid_t				pid;
 	struct s_token		*next;

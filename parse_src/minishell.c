@@ -6,7 +6,7 @@
 /*   By: bbadda <bbadda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 10:14:08 by bbadda            #+#    #+#             */
-/*   Updated: 2024/10/24 13:14:51 by bbadda           ###   ########.fr       */
+/*   Updated: 2024/10/24 13:38:41 by bbadda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,11 +53,12 @@ t_token	*toke_lexer(char **command, t_token *token, t_env *e)
 		s_command = parse_split(s, ' ');
 		free(s);
 		index = max_files_args(s_command);
-		if (index.i + index.j > 0)
-			c.file = malloc((index.i + index.j) * sizeof(t_opr));
+		if (index.j > 0)
+			c.herdoc = malloc(index.j * sizeof(t_herdoc));
+		c.herdoc->del = NULL;
+		if (index.i > 0)
+			c.file = malloc(index.i * sizeof(t_opr));
 		c.file[i].del = NULL;
-		// c.file[i].file_name = NULL;
-		// c.file[i].opr = NULL;
 		if (index.k > 0)
 			c.arg = malloc((index.k + 1) * sizeof(char *));
 		if (!c.arg || !c.file)
@@ -67,8 +68,14 @@ t_token	*toke_lexer(char **command, t_token *token, t_env *e)
 		else
 			c.command = NULL;
 		__token(s_command, &c, e, index.j, index.i);
+		// printf("=============================\n");
+		// printf("file: %p\n", token->file);
+		// printf("file name : %s\n", token->file->file_name);
+		// printf("opr : %s\n", token->file->opr);
+		// printf("del : %s\n", token->file->del);
+		// printf("=============================\n");
 		size = index.i + index.j;
-		add_list_back(&token, c, size);
+		// add_list_back(&token, c, size);
 	}
 	return (token);
 }
