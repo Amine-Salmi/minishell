@@ -6,7 +6,7 @@
 /*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 19:16:46 by asalmi            #+#    #+#             */
-/*   Updated: 2024/10/24 22:37:28 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/10/25 00:02:41 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,11 +32,6 @@ void execute_piped_commands(t_token *cmd, t_env **env)
 		cmd->pid = fork();
 		if (cmd->pid == 0)
 		{
-			if (is_builtin(cmd->command))
-			{
-				execute_builtin(cmd, env);
-				// break ;
-			}
 			if (pipeLine != -1)
 			{
 				dup2(pipeLine, STDIN_FILENO);
@@ -51,9 +46,14 @@ void execute_piped_commands(t_token *cmd, t_env **env)
 			close(fd[1]);
 			// if (cmd->redirection)
 			// 	redirection_handler(cmd);
+			if (is_builtin(cmd->command))
+			{
+				execute_builtin(cmd, env);
+				exit(EXIT_SUCCESS);
+			}
 			executable_path = check_path(cmd, *env);
 			if (!executable_path)
-				break ;
+				exit(0) ;
 			if (execve(executable_path, cmd->arg, copy_env(*env)) == -1)
 			{
 				// should free(array in copy_env if execve is faild)
