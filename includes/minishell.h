@@ -6,7 +6,7 @@
 /*   By: bbadda <bbadda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 10:14:11 by bbadda            #+#    #+#             */
-/*   Updated: 2024/10/24 13:36:54 by bbadda           ###   ########.fr       */
+/*   Updated: 2024/10/25 16:13:48 by bbadda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -186,8 +186,9 @@ int		ft_echo(t_token *cmd);
 int 	ft_cd(t_token *cmd, t_env *env);
 int 	ft_pwd(t_token *cmd);
 void	ft_env(t_env *env);
-int		ft_export(t_token *cmd, t_env *env);
+int		ft_export(t_token *cmd, t_env **env);
 int 	ft_unset(t_token *cmd, t_env **env);
+void    update_pwd(t_env *env, char *old_pwd);
 
 char	**split_first_eq(char const *s, char c);
 void	ft_execute(t_token *cmd, t_env **env);

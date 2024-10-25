@@ -6,7 +6,7 @@
 /*   By: bbadda <bbadda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 19:16:46 by asalmi            #+#    #+#             */
-/*   Updated: 2024/10/23 17:06:29 by bbadda           ###   ########.fr       */
+/*   Updated: 2024/10/25 16:13:57 by bbadda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,14 @@ void execute_piped_commands(t_token *cmd, t_env **env)
 			close(fd[1]);
 			// if (cmd->redirection)
 			// 	redirection_handler(cmd);
-			path = find_var_env(*env, "PATH");
-			executable_path = find_executable_file(cmd->command, path);
+			if (is_builtin(cmd->command))
+			{
+				execute_builtin(cmd, env);
+				exit(EXIT_SUCCESS);
+			}
+			executable_path = check_path(cmd, *env);
+			if (!executable_path)
+				exit(0) ;
 			if (execve(executable_path, cmd->arg, copy_env(*env)) == -1)
 			{
 				// should free(array in copy_env if execve is faild)

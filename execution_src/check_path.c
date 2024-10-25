@@ -11,7 +11,7 @@ int file_ok(char *exec_path, t_token *cmd)
     }
     if (stat(exec_path, &stat_buf) == -1)
     {
-        perror("stat: ");
+        perror("stat:");
         return (-1);
     }
     if (S_IFDIR == (S_IFMT & stat_buf.st_mode))
@@ -33,7 +33,7 @@ char *find_executable_file(char *command, char *path)
     char *executable_path;
     char **dirs;
     int i;
-    int flg ;
+    int flg;
 
     dirs = ft_split(path, ':');
     i = 0;
@@ -52,7 +52,6 @@ char *find_executable_file(char *command, char *path)
         free(executable_path);
         i++;
     }
-	i = 0;
     if (!flg)
         print_error("command not found\n", command);
     free_double_pointer(dirs);
@@ -81,6 +80,7 @@ char *check_path(t_token *cmd, t_env *env)
         path = ft_strjoin(ft_strjoin(cwd_buff, "/"), cmd->command);
         if (!file_ok(path, cmd))
             return (path);
+        return (NULL);
     }
     return (find_executable_file(cmd->command, path));
 }
