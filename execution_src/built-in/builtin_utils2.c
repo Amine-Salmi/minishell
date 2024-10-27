@@ -6,7 +6,7 @@
 /*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 00:05:51 by asalmi            #+#    #+#             */
-/*   Updated: 2024/10/27 07:29:24 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/10/27 07:37:35 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,15 +61,6 @@ int    update_pwd(t_env *env, char *old_pwd)
 
     flg = 0;
     head = env;
-    new = malloc(sizeof(t_env));
-    if (!new)
-        return (1);
-    new->content = malloc(sizeof(t_content));
-    if (!new->content)
-    {
-        free(new);
-        return (1);
-    }
     if(getcwd(pwd, sizeof(pwd)) == NULL)
     {
         perror("getcwd:");
@@ -88,13 +79,21 @@ int    update_pwd(t_env *env, char *old_pwd)
         }
         env = env->next;
     }
-    env = head;
     if (flg == 0)
     {
+        new = malloc(sizeof(t_env));
+        if (!new)
+            return (1);
+        new->content = malloc(sizeof(t_content));
+        if (!new->content)
+        {
+            free(new);
+            return (1);
+        }
         new->content->var = ft_strdup("OLDPWD");
         new->content->value = ft_strdup(old_pwd);
         new->next = NULL;
-        add_to_env(&env, new);
+        add_to_env(&head, new);
     }
     return 0;
 }
