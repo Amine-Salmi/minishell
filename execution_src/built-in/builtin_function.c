@@ -6,7 +6,7 @@
 /*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 22:46:38 by asalmi            #+#    #+#             */
-/*   Updated: 2024/10/25 00:53:46 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/10/27 02:05:39 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,10 @@ int ft_echo(t_token *cmd)
 
     i = 1;
     newline = 1;
-    if (!ft_strcmp(cmd->arg[1], "-n"))
+    if (!ft_strcmp(cmd->arg[1], "-n")) 
     {
         i++;
         newline = 0;
-        // if (!cmd->arg[i])
-        //     break;
     }
     while (cmd->arg[i])
     {
@@ -49,7 +47,7 @@ int ft_cd(t_token *cmd, t_env *env)
     i = 0;
     if (getcwd(oldpath, sizeof(oldpath)) == NULL)
     {
-        perror("pwd:");
+        perror("getcwd:");
         return (1);
     }
     if (!cmd->arg[1])
@@ -75,10 +73,10 @@ int ft_cd(t_token *cmd, t_env *env)
 int ft_pwd(t_token *cmd)
 {
     char pwd_path[PATH_MAX];
-    
+
     if (getcwd(pwd_path, sizeof(pwd_path)) == NULL)
     {
-        perror("pwd: ");
+        perror("pwd:");
         return (1);
     }
     else
@@ -86,12 +84,12 @@ int ft_pwd(t_token *cmd)
     return (0);
 }
 
-void ft_env(t_env *env)
+int ft_env(t_token *cmd, t_env *env)
 {
+    // if (!env)
+    //     return 1;
     while (env)
     {
-        if (!env->content)
-            return ;
         if (env->content->value)
         {
             printf("%s=", env->content->var);
@@ -99,4 +97,5 @@ void ft_env(t_env *env)
         }
         env = env->next;
     }
+    return 0;
 }

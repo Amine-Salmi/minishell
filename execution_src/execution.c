@@ -6,7 +6,7 @@
 /*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/15 13:17:42 by asalmi            #+#    #+#             */
-/*   Updated: 2024/10/24 21:42:17 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/10/27 07:27:08 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,24 +32,26 @@ int execute_simple_command(t_token *cmd, t_env **env)
         // }
         executable_path = check_path(cmd, *env);
         if (!executable_path)
-            return 1;
+            exit(cmd->exit_status);
         if (execve(executable_path, cmd->arg, copy_env(*env)) == -1)
         {
 		    // should free(array in copy_env if execve is faild)
             perror("execve");
-            return 1;
+            exit(1);
         }
     }
     else if (pid > 0)
+    {
         waitpid(pid, &status, 0);
+        if (WIFEXITED(status))
+           cmd->exit_status = WEXITSTATUS(status);
+    }
     return 0;
 }
 
 void ft_execute(t_token *cmd, t_env **env)
 {
-    // if (cmd->file->del)
-    //     handle_heredoc(cmd);
-    if (cmd->arg[0] && cmd->next == NULL)
+    if (cmd->command && cmd->next == NULL)
     {
         execute_simple_command(cmd, env);  // should free memory in find_executable_file and path
     }
