@@ -6,7 +6,7 @@
 /*   By: bbadda <bbadda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 11:58:05 by bbadda            #+#    #+#             */
-/*   Updated: 2024/10/24 13:38:13 by bbadda           ###   ########.fr       */
+/*   Updated: 2024/10/26 16:05:20 by bbadda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,43 +79,61 @@ char	*check_and_replace_env(char *cmd, t_env *e)
 	return (remove_q(buffer));
 }
 
-void	__helper_token(t_con *c, t_env *e, char *s_command, int *index, int nbr_d)
+void	__helper_token(t_con *c, t_env *e, char *s_command, int *index)
 {
-	nbr_d = 0;
 	if (s_command)
 	{
-		if (cmp(c->file[*index].opr, "<<"))
-			c->herdoc[*index].del = parse_strdup(check_and_replace_env(s_command, e));
-		else
-			c->file[*index].file_name = parse_strdup(check_and_replace_env(s_command, e));
+		c->file[*index].file_name = parse_strdup(check_and_replace_env(s_command, e));
 		(*index)++;
 	}
+}
+
+void	fill_arg(t_con *c, char *s_command, int *index)
+{
+	if (s_command)
+	{
+		c->arg[*index] =  parse_strdup(s_command);
+		(*index)++;
+	}
+}
+
+void	fill_herdoc(t_con *c, t_env *e, char *s_command, int *index, int *i)
+{
+	
 }
 
 void	__token(char **s_command, t_con *c, t_env *e, int nbr_d, int nbr_f)
 {
 	t_index	index;
-
+	int 	i;
+	
 	index.i = 0;
 	index.j = 0;
 	index.k = 0;
+	i = 0;
 	while (s_command[index.j])
 	{
 		s_command[index.j] = check_and_replace_env(s_command[index.j], e);
-		if (s_command[index.j] && (cmp(s_command[index.j], "<") || cmp(s_command[index.j], ">") 
-			|| cmp(s_command[index.j], "<<") || cmp(s_command[index.j], ">>")))
+		if (cmp(s_command[index.j], "<<"))
+		{
+			c->herdoc[i].herdoc = parse_strdup(s_command[index.j]);
+			index.j++;
+			c->herdoc[i].del = parse_strdup(check_and_replace_env(s_command[index.j], e));
+			i++;
+		}
+		else if ((cmp(s_command[index.j], "<") || cmp(s_command[index.j], ">") 
+			|| cmp(s_command[index.j], ">>")))
 		{
 			c->file[index.i].opr = parse_strdup(s_command[index.j]);
 			index.j++;
-			__helper_token(c, e, s_command[index.j], &index.i, nbr_d);
+			__helper_token(c, e, s_command[index.j], &index.i);
 		}
-		else if (s_command[index.j])
-		{
-			c->arg[index.k] =  parse_strdup(s_command[index.j]);
-			index.k++;
-		}
+		else
+			fill_arg(c, s_command[index.j], &index.k);
 		index.j++;
 	}
 	c->arg[index.k] = NULL;
+	c->herdoc[i].del = NULL;
+	c->herdoc[i].herdoc = NULL;
 	free (s_command);
 }

@@ -6,10 +6,9 @@
 /*   By: bbadda <bbadda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 10:14:11 by bbadda            #+#    #+#             */
-/*   Updated: 2024/10/25 16:13:48 by bbadda           ###   ########.fr       */
+/*   Updated: 2024/10/26 13:41:01 by bbadda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #ifndef MINISHELL_H
 # define MINISHELL_H

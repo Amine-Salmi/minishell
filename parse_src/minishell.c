@@ -6,7 +6,7 @@
 /*   By: bbadda <bbadda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 10:14:08 by bbadda            #+#    #+#             */
-/*   Updated: 2024/10/25 16:13:36 by bbadda           ###   ########.fr       */
+/*   Updated: 2024/10/26 16:12:24 by bbadda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,9 +45,10 @@ t_token	*toke_lexer(char **command, t_token *token, t_env *e)
 	t_index	index;
 	
 	token = NULL;
-	i = -1;
-	while (command[++i])
+	i = 0;
+	while (command[i])
 	{
+		printf("i =---=== %d\n", i);
 		s = add_spaces(command[i]);
 		syntax_error(s);
 		s_command = parse_split(s, ' ');
@@ -55,10 +56,10 @@ t_token	*toke_lexer(char **command, t_token *token, t_env *e)
 		index = max_files_args(s_command);
 		if (index.j > 0)
 			c.herdoc = malloc(index.j * sizeof(t_herdoc));
-		c.herdoc->del = NULL;
+		// c.herdoc[i].herdoc = NULL;
+		// c.herdoc[i].del = NULL;
 		if (index.i > 0)
 			c.file = malloc(index.i * sizeof(t_opr));
-		c.file[i].del = NULL;
 		if (index.k > 0)
 			c.arg = malloc((index.k + 1) * sizeof(char *));
 		if (!c.arg || !c.file)
@@ -68,15 +69,27 @@ t_token	*toke_lexer(char **command, t_token *token, t_env *e)
 		else
 			c.command = NULL;
 		__token(s_command, &c, e, index.j, index.i);
-		// printf("=============================\n");
-		// printf("file: %p\n", token->file);
-		// printf("file name : %s\n", token->file->file_name);
-		// printf("opr : %s\n", token->file->opr);
-		// printf("del : %s\n", token->file->del);
-		// printf("=============================\n");
-		size = index.i + index.j;
+		// exit (0);
+		printf("=============================\n");
+		for (int p = 0; c.arg[p] ; p++)
+			printf("c.arg[%d] : %s\n", p, c.arg[p]);
+		// printf("file: %p\n", c.file);
+		// printf("file->file_name : %s\n", c.file->file_name);
+		// printf("file->opr : %s\n", c.file->opr);
+		for (int g = 0; c.herdoc[g].herdoc ; g++)
+		{
+			printf("herdoc->herdoc: %s\n", c.herdoc[g].herdoc);
+			printf("herdoc->del: %s\n", c.herdoc[g].del);
+		}
+		// exit (0);
+		printf("=============================\n");
+		i++;
+		// free (c.herdoc[i].del);
+		// free (c.herdoc[i].herdoc);
+		// size = index.i + index.j;
 		// add_list_back(&token, c, size);
 	}
+	exit (0);
 	return (token);
 }
 
@@ -100,13 +113,13 @@ void	priiint(t_token *token)
 		while (j < token->number_of_file)
 		{
 			printf("opr[%d] : %s\n", j, token->file[j].opr);
-			if (token->file[j].del)
-			{
-				printf("in del :: j = %d\n", j);
-				printf("and------ %s\n",token->file[j].del);
-				printf("del[%d] : %s\n", j, token->file[j].del);
+			// if (token->file[j].del)
+			// {
+			// 	printf("in del :: j = %d\n", j);
+			// 	printf("and------ %s\n",token->file[j].del);
+			// 	printf("del[%d] : %s\n", j, token->file[j].del);
 				
-			}
+			// }
 			if (token->file[j].file_name)
 			{
 				printf("in f name :: j = %d\n", j);
