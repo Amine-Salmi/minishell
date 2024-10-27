@@ -6,7 +6,7 @@
 /*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 00:05:51 by asalmi            #+#    #+#             */
-/*   Updated: 2024/10/27 05:17:32 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/10/27 07:29:24 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,11 @@ int    update_pwd(t_env *env, char *old_pwd)
 {
     char pwd[PATH_MAX];
     t_env *new;
+    t_env *head;
+    int flg;
 
+    flg = 0;
+    head = env;
     new = malloc(sizeof(t_env));
     if (!new)
         return (1);
@@ -78,8 +82,19 @@ int    update_pwd(t_env *env, char *old_pwd)
         if (!ft_strcmp(env->content->var, "PWD"))
             env->content->value = ft_strdup(pwd);
         if (!ft_strcmp(env->content->var, "OLDPWD"))
+        {
             env->content->value = ft_strdup(old_pwd);
+            flg = 1;
+        }
         env = env->next;
+    }
+    env = head;
+    if (flg == 0)
+    {
+        new->content->var = ft_strdup("OLDPWD");
+        new->content->value = ft_strdup(old_pwd);
+        new->next = NULL;
+        add_to_env(&env, new);
     }
     return 0;
 }
