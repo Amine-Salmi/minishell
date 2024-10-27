@@ -6,7 +6,7 @@
 /*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 14:43:30 by asalmi            #+#    #+#             */
-/*   Updated: 2024/10/21 13:18:57 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/10/27 05:13:28 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,5 @@ int ft_unset(t_token *cmd, t_env **env)
         }
         i++;
     }
-    // printf("%s\n", (*env)->content->value);
     return (0);
 }

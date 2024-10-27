@@ -6,7 +6,7 @@
 /*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 00:05:51 by asalmi            #+#    #+#             */
-/*   Updated: 2024/10/24 21:35:17 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/10/27 05:17:32 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,39 +29,57 @@ int is_builtin(const char *cmd)
     return (0);
 }
 
-int execute_builtin(t_token *cmd, t_env **env)
+void execute_builtin(t_token *cmd, t_env **env)
 {
+    int res;
+
     if (!ft_strcmp(cmd->command, "echo"))
-        ft_echo(cmd);
+        res = ft_echo(cmd);
     if (!ft_strcmp(cmd->command, "cd"))
-        ft_cd(cmd, *env);
+        res = ft_cd(cmd, *env);
     if (!ft_strcmp(cmd->command, "pwd"))
-        ft_pwd(cmd);
+        res = ft_pwd(cmd);
     if (!ft_strcmp(cmd->command, "env"))
-        ft_env(*env);
+        res = ft_env(cmd, *env);
     if (!ft_strcmp(cmd->command, "export"))
-        ft_export(cmd, env);
+        res = ft_export(cmd, env);
     if (!ft_strcmp(cmd->command, "unset"))
-        ft_unset(cmd, env);
-    return (0);
+        res = ft_unset(cmd, env);
+    if (res == 0)
+        cmd->exit_status = 0;
+    else
+        cmd->exit_status = 1;
 }
 
 // should free memmory in this function 
-void    update_pwd(t_env *env, char *old_pwd)
+int    update_pwd(t_env *env, char *old_pwd)
 {
     char pwd[PATH_MAX];
-    
+    t_env *new;
+
+    new = malloc(sizeof(t_env));
+    if (!new)
+        return (1);
+    new->content = malloc(sizeof(t_content));
+    if (!new->content)
+    {
+        free(new);
+        return (1);
+    }
     if(getcwd(pwd, sizeof(pwd)) == NULL)
     {
         perror("getcwd:");
-        return ;
+        free(new);
+        free(new->content);
+        return 1;
     } 
     while (env)
     {
-        if (!ft_strcmp(env->content->var, "OLDPWD"))
-            env->content->value = ft_strdup(old_pwd);
         if (!ft_strcmp(env->content->var, "PWD"))
             env->content->value = ft_strdup(pwd);
+        if (!ft_strcmp(env->content->var, "OLDPWD"))
+            env->content->value = ft_strdup(old_pwd);
         env = env->next;
     }
+    return 0;
 }

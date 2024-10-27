@@ -6,7 +6,7 @@
 /*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 10:14:08 by bbadda            #+#    #+#             */
-/*   Updated: 2024/10/23 01:51:03 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/10/27 06:27:32 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,14 @@ void	priiint(t_token *token)
 	}
 }
 
+void init_vars(t_token *token)
+{
+	token->command = NULL;
+	token->arg = NULL;
+	token->file = NULL;
+	token->next = NULL;
+}
+
 int main (int ac, char *av[], char **env)
 {
 	(void)av;
@@ -85,6 +93,7 @@ int main (int ac, char *av[], char **env)
 	my_env = NULL;
 	my_env = (t_env *)malloc(sizeof(t_env));
 	token = (t_token *)malloc(sizeof(t_token));
+	init_vars(token);
 	c = (t_con *)malloc(sizeof(t_con));
 	my_env = get_env(env);
 	while (1)
