@@ -6,7 +6,7 @@
 /*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/15 13:17:42 by asalmi            #+#    #+#             */
-/*   Updated: 2024/10/27 07:27:08 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/10/29 07:51:57 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,28 +23,38 @@ int execute_simple_command(t_token *cmd, t_env **env)
         execute_builtin(cmd, env);
         return 0;
     }
+    handler_signal(0);
     pid = fork();
     if (pid == 0)
     {
+        signal(SIGINT, SIG_DFL);
+        signal(SIGQUIT, SIG_DFL);
         // if (cmd->file)
         // {
         //     redirection_handler(cmd);
         // }
         executable_path = check_path(cmd, *env);
         if (!executable_path)
-            exit(cmd->exit_status);
+            exit((*env)->exit_status);
         if (execve(executable_path, cmd->arg, copy_env(*env)) == -1)
         {
 		    // should free(array in copy_env if execve is faild)
             perror("execve");
-            exit(1);
+            exit(EXIT_FAILURE);
         }
     }
     else if (pid > 0)
     {
         waitpid(pid, &status, 0);
+        handler_signal(1);
         if (WIFEXITED(status))
-           cmd->exit_status = WEXITSTATUS(status);
+           (*env)->exit_status = WEXITSTATUS(status);
+        if (WIFSIGNALED(status))
+        {
+           (*env)->exit_status = 128 + WTERMSIG(status);
+           if ((*env)->exit_status == 131)
+                printf("Quit: 3\n");
+        }
     }
     return 0;
 }
@@ -53,7 +63,7 @@ void ft_execute(t_token *cmd, t_env **env)
 {
     if (cmd->command && cmd->next == NULL)
     {
-        execute_simple_command(cmd, env);  // should free memory in find_executable_file and path
+        execute_simple_command(cmd, env);  // should free memory in find_executable_file and path.
     }
     else if (cmd->next != NULL)
     {

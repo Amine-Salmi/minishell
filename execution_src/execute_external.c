@@ -6,7 +6,7 @@
 /*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 19:16:46 by asalmi            #+#    #+#             */
-/*   Updated: 2024/10/27 06:27:19 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/10/29 07:44:32 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ void execute_piped_commands(t_token *cmd, t_env **env)
     {
 		if (cmd->next != NULL)
 			pipe(fd);
+		handler_signal(0);
 		cmd->pid = fork();
 		if (cmd->pid == 0)
 		{
@@ -52,10 +53,8 @@ void execute_piped_commands(t_token *cmd, t_env **env)
 				exit(EXIT_SUCCESS);
 			}
 			executable_path = check_path(cmd, *env);
-			if (!executable_path) 
-			{
-				exit(cmd->exit_status);
-			}
+			if (!executable_path)
+				exit((*env)->exit_status);
 			if (execve(executable_path, cmd->arg, copy_env(*env)) == -1)
 			{
 				// should free(array in copy_env if execve is faild)
@@ -79,8 +78,9 @@ void execute_piped_commands(t_token *cmd, t_env **env)
 		if (cmd->pid > 0)
 		{
 			waitpid(cmd->pid, &status, 0);
+			handler_signal(1);
 			if (WIFEXITED(status))
-				cmd->exit_status = WEXITSTATUS(status);
+				(*env)->exit_status = WEXITSTATUS(status);
 		}
 		cmd = cmd->next;
 	}

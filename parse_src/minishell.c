@@ -6,7 +6,7 @@
 /*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 10:14:08 by bbadda            #+#    #+#             */
-/*   Updated: 2024/10/27 06:27:32 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/10/29 08:01:02 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,14 +71,6 @@ void	priiint(t_token *token)
 	}
 }
 
-void init_vars(t_token *token)
-{
-	token->command = NULL;
-	token->arg = NULL;
-	token->file = NULL;
-	token->next = NULL;
-}
-
 int main (int ac, char *av[], char **env)
 {
 	(void)av;
@@ -93,9 +85,11 @@ int main (int ac, char *av[], char **env)
 	my_env = NULL;
 	my_env = (t_env *)malloc(sizeof(t_env));
 	token = (t_token *)malloc(sizeof(t_token));
-	init_vars(token);
 	c = (t_con *)malloc(sizeof(t_con));
 	my_env = get_env(env);
+	if (my_env)
+		my_env->exit_status = 0;
+	handler_signal(1);
 	while (1)
 	{
 		full_command = readline("\033[1;31m-\033[0m  \033[1;32mminishell-0.1$\033[0m ");
@@ -108,6 +102,7 @@ int main (int ac, char *av[], char **env)
 		token = toke_lexer(command, token, my_env);
 		if (token)
 			ft_execute(token, &my_env);
+		//printf("EXIT_STATUS ==> %d\n", my_env->exit_status);
 		// priiint(token);
 		free(full_command);
 	}

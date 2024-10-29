@@ -6,7 +6,7 @@
 /*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 10:14:11 by bbadda            #+#    #+#             */
-/*   Updated: 2024/10/27 07:21:58 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/10/29 07:25:05 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,10 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
-#include <readline/readline.h>
-#include <readline/history.h>
+// #include <readline/readline.h>
+// #include <readline/history.h>
+#include "/Users/asalmi/goinfre/homebrew/opt/readline/include/readline/history.h"
+#include "/Users/asalmi/goinfre/homebrew/opt/readline/include/readline/readline.h"
 #include <sys/types.h>
 #include <unistd.h>
 #include <limits.h>
@@ -41,7 +43,7 @@ enum e_token_type
 {
 	CMD = 1,
 	ARG = 2,
-	SPACE = 3,
+	SPACEE = 3,
 	NEW_LINE = 4,
 	QUOTES = 5,
 	DOUBLE_QUOTES = 6,
@@ -83,7 +85,6 @@ typedef struct s_token
 	t_opr				*file;
 	int					number_of_file;
 	pid_t				pid;
-	int					exit_status;
 	struct s_token		*next;
 	struct s_token		*prev;
 }t_token;
@@ -107,6 +108,7 @@ typedef struct s_content
 typedef struct s_env 
 {
 	t_content *content;
+	int exit_status;
 	struct s_env *next;
 }t_env;
 // for env
@@ -166,7 +168,7 @@ char		*parse_strdup(const char *src);
 // ------------------------------------------------------------ //
 
 char    *find_var_env(t_env *env, char *var);
-char    *find_executable_file(t_token *command, char *path);
+char    *find_executable_file(t_token *command, t_env *env, char *path);
 char	*check_path(t_token *cmd, t_env *env);
 char	**copy_env(t_env *env);
 void	add_to_env(t_env **env, t_env *new_node);
@@ -186,6 +188,8 @@ int		update_pwd(t_env *env, char *old_pwd);
 char	**split_first_eq(char const *s, char c);
 void	ft_execute(t_token *cmd, t_env **env);
 void	execute_piped_commands(t_token *cmd, t_env **env);
+
+void	handler_signal(int mode);
 
 void	free_double_pointer(char **env);
 void	print_error(char *error_mesage, char *command);

@@ -6,7 +6,7 @@
 /*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 00:05:51 by asalmi            #+#    #+#             */
-/*   Updated: 2024/10/27 07:37:35 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/10/27 17:20:46 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,9 +46,9 @@ void execute_builtin(t_token *cmd, t_env **env)
     if (!ft_strcmp(cmd->command, "unset"))
         res = ft_unset(cmd, env);
     if (res == 0)
-        cmd->exit_status = 0;
+        (*env)->exit_status = 0;
     else
-        cmd->exit_status = 1;
+        (*env)->exit_status = 1;
 }
 
 // should free memmory in this function 
