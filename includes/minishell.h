@@ -6,7 +6,7 @@
 /*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 10:14:11 by bbadda            #+#    #+#             */
-/*   Updated: 2024/10/30 21:26:38 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/10/30 23:58:41 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,18 +72,18 @@ typedef struct s_herdoc
 	char	*herdoc;
 	char	*del;
 	bool	expend;
+	t_opr	file;
 	struct s_herdoc *next;
 }t_herdoc;
 
-typedef struct s_con 
-{	
-	char		*command;
-	char		**arg;
-	t_opr		*file;
-	t_herdoc	*herdoc;
-	struct s_con *next;
-
-}t_con;
+// typedef struct s_con 
+// {	
+// 	char		*command;
+// 	char		**arg;
+// 	t_opr		*file;
+// 	t_herdoc	*herdoc;
+// 	struct s_con *next;
+// }t_con;
 
 typedef struct s_token
 {
@@ -91,22 +91,24 @@ typedef struct s_token
 	char				**arg;
 	t_opr				*file;
 	t_herdoc			*herdoc;
-	int					number_of_file;
 	pid_t				pid;
 	struct s_token		*next;
 	struct s_token		*prev;
 }t_token;
 
-// workiingg
+typedef struct s_lst
+{
+	t_token				*token;
+	struct s_lst		*next;
+	struct s_lst		*prev;
+}t_lst;
 
 typedef struct s_minishell
 {
 	char	**cmd;
 	t_opr	opr;
 }t_minishell;
-// workiingg
 
-// for env
 typedef struct s_content 
 {
 	char *var;
@@ -115,23 +117,17 @@ typedef struct s_content
 
 typedef struct s_env 
 {
-	t_content *content;
-	int exit_status;
-	struct s_env *next;
+	t_content 		*content;
+	int 			exit_status;
+	struct s_env 	*next;
 }t_env;
-// for env
+
 typedef struct s_split
 {
 	char	**list;
 	char		c;
 }t_split;
 
-// typedef struct s_list
-// {
-// 	t_token			*content;
-// 	struct s_list	*next;
-// 	struct s_list	*prev;
-// }t_list;
 
 
 int			cmp(const char *s1, const char *s2);
@@ -139,15 +135,16 @@ char		*get_pipe(char *line);
 int			is_special_char(char c);
 t_token		*creat_list(char *command, char **arg, t_opr *file, int i);
 t_herdoc	*creatlist_herdoc(char *herdoc, char *del);
-void		add_list_back(t_token **token, t_con *c, int i);
-void		__add_back(t_opr **token, char *file_name, char *opr);
+void		add_list_back(t_token **token, int i);
+void		__add_back_file(t_opr **token, char *file_name, char *opr);
 void		__add_back_herdoc(t_herdoc **token, char *herdoc, char *del);
+void		__ft_lstadd_back(t_lst **lst, t_token *content);
 void	    __error(char c, int i);
 void		*__calloc(size_t count, size_t size);
 int			is_special_char(char c);
-void		check_quotes(char c, bool in_quotes, bool in_single_quotes);
+// void		check_quotes(char c, bool in_quotes, bool in_single_quotes);
 // --------------------tokenization_functions-----------------//
-void		__token(char **s_command, t_con *c, t_env *e, int j, int i);
+void		__token(t_token *token, char **s_command, t_env *e, int j, int i);
 t_index		max_files_args(char **s_command);
 int			get_env_size(char *cmd, t_env *e);
 char		*replace_env(t_env *e, char *s);
