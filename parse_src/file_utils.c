@@ -6,7 +6,7 @@
 /*   By: bbadda <bbadda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 15:54:38 by bbadda            #+#    #+#             */
-/*   Updated: 2024/10/30 14:52:14 by bbadda           ###   ########.fr       */
+/*   Updated: 2024/10/30 19:21:28 by bbadda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,19 +25,21 @@ t_opr	*creatlist(char *file_name, char *opr)
 	return (node);
 }
 
-void	__add_back(t_opr **token, char *file_name, char *opr)
+void	__add_back_file(t_opr **file, char *file_name, char *opr)
 {
 	t_opr	*tmp;
 	t_opr	*new;
 
+
 	new = creatlist(file_name, opr);
-	if (new && token)
+	if (new && file)
 	{
-		if (*token == NULL)
-			*token = new;
+
+		if ((*file)->file_name == NULL)
+			*file = new;
 		else
 		{
-			tmp = *token;
+			tmp = *file;
 			while (tmp->next )
 				tmp = tmp->next;
 			tmp->next = new;
@@ -58,20 +60,20 @@ t_herdoc	*creatlist_herdoc(char *herdoc, char *del)
 	return (node);
 }
 
-void	__add_back_herdoc(t_herdoc **token, char *herdoc, char *del)
+void	__add_back_herdoc(t_herdoc **herdoc, char *her, char *del)
 {
 	t_herdoc	*tmp;
 	t_herdoc	*new;
 
-	new = creatlist_herdoc(herdoc, del);
-	if (new && token)
+	new = creatlist_herdoc(her, del);
+	if (new && herdoc)
 	{
-		if (*token == NULL)
-			*token = new;
+		if ((*herdoc)->herdoc == NULL)
+			*herdoc = new;
 		else
 		{
-			tmp = *token;
-			while (tmp->next )
+			tmp = *herdoc;
+			while (tmp->next)
 				tmp = tmp->next;
 			tmp->next = new;
 		}

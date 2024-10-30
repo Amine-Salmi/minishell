@@ -6,7 +6,7 @@
 /*   By: bbadda <bbadda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 11:58:05 by bbadda            #+#    #+#             */
-/*   Updated: 2024/10/30 14:54:37 by bbadda           ###   ########.fr       */
+/*   Updated: 2024/10/30 22:52:40 by bbadda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,59 +79,37 @@ char	*check_and_replace_env(char *cmd, t_env *e)
 	return (remove_q(buffer));
 }
 
-void	__helper_token(t_con *c, t_env *e, char *s_command, int *index)
+
+void	fill_arg(t_token *token, char *s_command, int *index)
 {
 	if (s_command)
 	{
-		c->file[*index].file_name = parse_strdup(check_and_replace_env(s_command, e));
+		token->arg[*index] =  parse_strdup(s_command);
 		(*index)++;
 	}
 }
 
-void	fill_arg(t_con *c, char *s_command, int *index)
-{
-	if (s_command)
-	{
-		c->arg[*index] =  parse_strdup(s_command);
-		(*index)++;
-	}
-}
-
-void	fill_herdoc(t_con *c, t_env *e, char *s_command, int *index, int *i)
-{
-	
-}
-
-void	__token(char **s_command, t_con *c, t_env *e, int nbr_d, int nbr_f)
+void	__token(t_token *token, char **s_command, t_env *e, int nbr_d, int nbr_f)
 {
 	t_index	index;
 	int 	i;
+	char	*str;
 	
 	index.i = 0;
 	index.j = 0;
 	index.k = 0;
 	while (s_command[index.j])
 	{
-		s_command[index.j] = check_and_replace_env(s_command[index.j], e);
-		if (cmp(s_command[index.j], "<<"))
-		{
-			__add_back_herdoc(&c->herdoc, s_command[index.j], check_and_replace_env(s_command[index.j + 1], e));
-			// c->herdoc->herdoc = parse_strdup(s_command[index.j]);
-			index.j++;
-			// c->herdoc->del = parse_strdup(check_and_replace_env(s_command[index.j], e));
-			// c->herdoc = c->herdoc->next;
-		}
-		if ((cmp(s_command[index.j], "<") || cmp(s_command[index.j], ">") 
-			|| cmp(s_command[index.j], ">>")))
-		{
-			__add_back(&c->file, s_command[index.j], check_and_replace_env(s_command[index.j + 1], e));
-			index.j++;
-		}
+		str = check_and_replace_env(s_command[index.j], e);
+		if (cmp(str, "<<"))
+			__add_back_herdoc(&token->herdoc, str, check_and_replace_env(s_command[++index.j], e));
+		else if ((cmp(str, "<") || cmp(str, ">") || cmp(str, ">>")))
+			__add_back_file(&token->file, check_and_replace_env(s_command[++index.j], e), str);
 		else
-			fill_arg(c, s_command[index.j], &index.k);
+			fill_arg(token, str, &index.k);
+		free(str);
 		index.j++;
 	}
-	
-	c->arg[index.k] = NULL;
+	token->arg[index.k] = NULL;
 	free (s_command);
 }

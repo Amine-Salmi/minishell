@@ -6,7 +6,7 @@
 /*   By: bbadda <bbadda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 10:14:08 by bbadda            #+#    #+#             */
-/*   Updated: 2024/10/30 14:58:41 by bbadda           ###   ########.fr       */
+/*   Updated: 2024/10/30 22:57:56 by bbadda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,11 +34,11 @@ t_index	max_files_args(char **s_command)
 	}
 	return (index);
 }
-void	__free2(t_con *c)
+void	__free2(t_token *token)
 {
 	int i = 0;
-	t_con *tmp;
-	tmp = c;
+	t_token *tmp;
+	tmp = token;
 	while (tmp)
 	{
 		 free(tmp->command);
@@ -63,107 +63,83 @@ void	__free2(t_con *c)
             free(herdoc_tmp);
             herdoc_tmp = next_herdoc;
         }
-        t_con *next_con = tmp->next;
+        t_token *next_con = tmp->next;
         free(tmp);
         tmp = next_con;
     }
 }
 
-t_token	*toke_lexer(char **command, t_token *token, t_env *e)
+t_lst	*toke_lexer(char **command, t_env *e)
 {
-	int		i;
-	int 	size;
-	t_con	*c = NULL;;
-	char	**s_command;
-	char	*s;
-	t_index	index;
-	
-	token = NULL;
+	t_token		*token;
+	t_index		index;
+	t_lst		*list;
+	int			i;
+	int 		size;
+	char		**s_command;
+	char		*s;
+
 	i = -1;
-	c = __calloc(1, sizeof(t_con));
-    if (!c)
-		return NULL;	
+	list = NULL;
+	token = malloc(sizeof(t_token));
+	token->file = NULL;
+	token->herdoc = NULL;
 	while (command[++i])
 	{
-
 		s = add_spaces(command[i]);
 		syntax_error(s);
 		s_command = parse_split(s, ' ');
 		free(s);
 		index = max_files_args(s_command);
 		if (index.j > 0)
-			c->herdoc = __calloc(index.j, sizeof(t_herdoc));
+		{
+			token->herdoc = malloc(index.j * sizeof(t_herdoc));
+			token->herdoc->del = NULL;
+			token->herdoc->herdoc = NULL;
+		}
 		if (index.i > 0)
-			c->file = __calloc(index.i, sizeof(t_opr));
+		{
+			token->file = malloc(index.i * sizeof(t_opr));
+			token->file->file_name = NULL;
+			token->file->opr = NULL;
+		}
 		if (index.k > 0)
-			c->arg = __calloc((index.k + 1), sizeof(char *));
-		// if (!c->arg || !c->file)
-		// 	return (NULL);
+			token->arg = (char **)malloc(index.k+1 * sizeof(char *));
 		if (!__is_herdoc(s_command[0]))
-			c->command = remove_q(s_command[0]);
+			token->command = remove_q(s_command[0]);
 		else
-			c->command = NULL;
-		__token(s_command, c, e, index.j, index.i);
-		// printf("=============================\n");
-		// for (int p = 0; c->arg[p] ; p++)
-		// 	printf("c.arg[%d] : %s\n", p, c->arg[p]);
-		// t_opr *tmp = c->file;
-		// while (tmp)
-		// {
-		// 	printf("file name : %s\n", tmp->file_name);
-		// 	printf("opr       : %s\n", tmp->opr);
-		// 	tmp = tmp->next;
-		// }
-		// t_herdoc *tmp1 = c->herdoc;
-		// while(tmp1)
-		// {
-		// 	printf("file name : %s\n", tmp1->herdoc);
-		// 	printf("opr       : %s\n", tmp1->del);
-		// 	tmp1 = tmp1->next;
-		// }
-		// printf("=============================\n");
-		// __free2(c);
-		size = index.i + index.j;
-		add_list_back(&token, c, size);
+			token->command = NULL;
+		__token(token, s_command, e, index.j, index.i);
+		__ft_lstadd_back(&list, token);
+		// __free2(token);
 	}
-	return (token);
+	return (list);
 }
 
-void	priiint(t_token *token)
+void	priiint(t_lst *lst)
 {
 	int	i;
 	int	j;
 
-	while (token)
+	while (lst)
 	{
-		i = 0;
-		if (token->command)
-			printf("command : %s\n", token->command);
-		while (token->arg[i])
+		for (int p = 0; lst->token->arg[p] ; p++)
+			printf("c.arg[%d] : %s\n", 0, lst->token->arg[p] );
+		t_opr *tmp2 = lst->token->file;
+		while (tmp2)
 		{
-			printf("arg[%d] : %s\n", i, token->arg[i]);
-			i++;
+			printf("file name : %s\n", tmp2->file_name);
+			printf("opr       : %s\n", tmp2->opr);
+			tmp2 = tmp2->next;
 		}
-		j = 0;
-		printf("d=d====   %d\n", token->number_of_file);
-		while (j < token->number_of_file)
+		t_herdoc *tmp1 = lst->token->herdoc;
+		while(tmp1)
 		{
-			printf("opr[%d] : %s\n", j, token->file[j].opr);
-			// if (token->file[j].del)
-			// {
-			// 	printf("in del :: j = %d\n", j);
-			// 	printf("and------ %s\n",token->file[j].del);
-			// 	printf("del[%d] : %s\n", j, token->file[j].del);
-				
-			// }
-			if (token->file[j].file_name)
-			{
-				printf("in f name :: j = %d\n", j);
-				printf("file name[%d] : %s\n", j, token->file[j].file_name);
-			}
-			j++;
+			printf("herdoc : %s\n", tmp1->herdoc);
+			printf("del       : %s\n", tmp1->del);
+			tmp1 = tmp1->next;
 		}
-		token = token->next;
+		lst = lst->next;
 	}
 }
 
@@ -174,14 +150,11 @@ int main (int ac, char *av[], char **env)
 
 	char		**command;
 	char		*full_command;
-	t_token		*token;
+	t_lst		*lst;
 	t_env		*my_env;
 
 	my_env = NULL;
 	my_env = (t_env *)malloc(sizeof(t_env));
-	token = (t_token *)malloc(sizeof(t_token));
-	init_vars(token);
-	c = (t_con *)malloc(sizeof(t_con));
 	my_env = get_env(env);
 	while (1)
 	{
@@ -192,10 +165,10 @@ int main (int ac, char *av[], char **env)
 		if (pipe_error(full_command, parse_strlen(full_command)))
 			continue ;
 		command = parse_split(full_command, '|');
-		token = toke_lexer(command, token, my_env);
+		token = toke_lexer(command, my_env);
 		if (token)
 			ft_execute(token, &my_env);
-		// priiint(token);
+		priiint(lst);
 		free(full_command);
 	}
 	return (0);
