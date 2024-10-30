@@ -6,7 +6,7 @@
 /*   By: bbadda <bbadda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 11:04:33 by bbadda            #+#    #+#             */
-/*   Updated: 2024/10/20 09:46:17 by bbadda           ###   ########.fr       */
+/*   Updated: 2024/10/30 14:57:37 by bbadda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,12 +42,12 @@ t_token	*creat_list(char *command, char **arg, t_opr *file, int number_of_file )
 	return (node);
 }
 
-void	add_list_back(t_token **token, t_con c ,int number_of_file)
+void	add_list_back(t_token **token, t_con *c ,int number_of_file)
 {
 	t_token	*tmp;
 	t_token	*new;
 
-	new = creat_list(c.command, c.arg, c.file, number_of_file );
+	new = creat_list(c->command, c->arg, c->file, number_of_file );
 	if (new && token)
 	{
 		if (*token == NULL)

@@ -6,7 +6,7 @@
 /*   By: bbadda <bbadda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 11:58:05 by bbadda            #+#    #+#             */
-/*   Updated: 2024/10/26 16:05:20 by bbadda           ###   ########.fr       */
+/*   Updated: 2024/10/30 14:54:37 by bbadda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,30 +110,28 @@ void	__token(char **s_command, t_con *c, t_env *e, int nbr_d, int nbr_f)
 	index.i = 0;
 	index.j = 0;
 	index.k = 0;
-	i = 0;
 	while (s_command[index.j])
 	{
 		s_command[index.j] = check_and_replace_env(s_command[index.j], e);
 		if (cmp(s_command[index.j], "<<"))
 		{
-			c->herdoc[i].herdoc = parse_strdup(s_command[index.j]);
+			__add_back_herdoc(&c->herdoc, s_command[index.j], check_and_replace_env(s_command[index.j + 1], e));
+			// c->herdoc->herdoc = parse_strdup(s_command[index.j]);
 			index.j++;
-			c->herdoc[i].del = parse_strdup(check_and_replace_env(s_command[index.j], e));
-			i++;
+			// c->herdoc->del = parse_strdup(check_and_replace_env(s_command[index.j], e));
+			// c->herdoc = c->herdoc->next;
 		}
-		else if ((cmp(s_command[index.j], "<") || cmp(s_command[index.j], ">") 
+		if ((cmp(s_command[index.j], "<") || cmp(s_command[index.j], ">") 
 			|| cmp(s_command[index.j], ">>")))
 		{
-			c->file[index.i].opr = parse_strdup(s_command[index.j]);
+			__add_back(&c->file, s_command[index.j], check_and_replace_env(s_command[index.j + 1], e));
 			index.j++;
-			__helper_token(c, e, s_command[index.j], &index.i);
 		}
 		else
 			fill_arg(c, s_command[index.j], &index.k);
 		index.j++;
 	}
+	
 	c->arg[index.k] = NULL;
-	c->herdoc[i].del = NULL;
-	c->herdoc[i].herdoc = NULL;
 	free (s_command);
 }

@@ -6,7 +6,7 @@
 /*   By: bbadda <bbadda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 10:14:11 by bbadda            #+#    #+#             */
-/*   Updated: 2024/10/27 13:04:31 by bbadda           ###   ########.fr       */
+/*   Updated: 2024/10/30 14:57:19 by bbadda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ typedef struct s_opr
 {
 	char	*opr;
 	char	*file_name;
+	struct s_opr *next;
 }t_opr;
 
 typedef struct s_herdoc
@@ -71,6 +72,7 @@ typedef struct s_herdoc
 	char	*herdoc;
 	char	*del;
 	bool	expend;
+	struct s_herdoc *next;
 }t_herdoc;
 
 typedef struct s_con 
@@ -79,6 +81,8 @@ typedef struct s_con
 	char		**arg;
 	t_opr		*file;
 	t_herdoc	*herdoc;
+	struct s_con *next;
+
 }t_con;
 
 typedef struct s_token
@@ -134,7 +138,10 @@ int			cmp(const char *s1, const char *s2);
 char		*get_pipe(char *line);
 int			is_special_char(char c);
 t_token		*creat_list(char *command, char **arg, t_opr *file, int i);
-void		add_list_back(t_token **token, t_con c, int i);
+t_herdoc	*creatlist_herdoc(char *herdoc, char *del);
+void		add_list_back(t_token **token, t_con *c, int i);
+void		__add_back(t_opr **token, char *file_name, char *opr);
+void		__add_back_herdoc(t_herdoc **token, char *herdoc, char *del);
 void	    __error(char c, int i);
 void		*__calloc(size_t count, size_t size);
 int			is_special_char(char c);
