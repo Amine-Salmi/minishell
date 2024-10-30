@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: bbadda <bbadda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 10:14:11 by bbadda            #+#    #+#             */
-/*   Updated: 2024/10/29 19:12:24 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/10/30 14:58:50 by bbadda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,25 +64,35 @@ enum e_state
 
 typedef struct s_opr
 {
-	char	*file_name;
 	char	*opr;
+	char	*file_name;
+	struct s_opr *next;
+}t_opr;
+
+typedef struct s_herdoc
+{
+	char	*herdoc;
 	char	*del;
 	bool	expend;
-}t_opr;
+	struct s_herdoc *next;
+}t_herdoc;
 
 typedef struct s_con 
 {	
-	char	*command;
-	char	**arg;
-	t_opr	*file;
-}t_con;
+	char		*command;
+	char		**arg;
+	t_opr		*file;
+	t_herdoc	*herdoc;
+	struct s_con *next;
 
+}t_con;
 
 typedef struct s_token
 {
 	char				*command;
 	char				**arg;
 	t_opr				*file;
+	t_herdoc			*herdoc;
 	int					number_of_file;
 	pid_t				pid;
 	struct s_token		*next;
@@ -130,14 +140,18 @@ int			cmp(const char *s1, const char *s2);
 char		*get_pipe(char *line);
 int			is_special_char(char c);
 t_token		*creat_list(char *command, char **arg, t_opr *file, int i);
-void		add_list_back(t_token **token, t_con c, int i);
+t_herdoc	*creatlist_herdoc(char *herdoc, char *del);
+void		add_list_back(t_token **token, t_con *c, int i);
+void		__add_back(t_opr **token, char *file_name, char *opr);
+void		__add_back_herdoc(t_herdoc **token, char *herdoc, char *del);
 void	    __error(char c, int i);
 void		*__calloc(size_t count, size_t size);
 int			is_special_char(char c);
 void		check_quotes(char c, bool in_quotes, bool in_single_quotes);
 // --------------------tokenization_functions-----------------//
-void		__token(char **s_command, t_con *c, t_env *e);
+void		__token(char **s_command, t_con *c, t_env *e, int j, int i);
 t_index		max_files_args(char **s_command);
+int			get_env_size(char *cmd, t_env *e);
 char		*replace_env(t_env *e, char *s);
 int			check_env(char *cmd);
 char		*check_and_replace_env(char *s_command, t_env *e);
