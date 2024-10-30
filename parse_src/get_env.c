@@ -6,7 +6,7 @@
 /*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 12:51:37 by bbadda            #+#    #+#             */
-/*   Updated: 2024/10/30 01:14:44 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/10/30 01:44:15 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ static t_env	*__creat_list(t_content *content)
 	if (node)
 	{
 		node->content = content;
+		node->exit_status = 0;
 		node->next = NULL;
 	}
 	return (node);
@@ -96,13 +97,6 @@ t_env	*get_env( char **env)
 
 		
 	re = NULL;
-	if (!*env)
-	{
-		content = (t_content *)malloc(sizeof(t_content));
-		content->var = ft_strdup("test");
-		content->value = ft_strdup("test/test/test");
-		__add_list_back(&re, __creat_list(content));
-	}
 	i = -1;
 	while (env[++i])
 	{
