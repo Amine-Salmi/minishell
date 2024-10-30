@@ -6,7 +6,7 @@
 /*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 10:14:08 by bbadda            #+#    #+#             */
-/*   Updated: 2024/10/29 08:01:02 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/10/30 01:01:19 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,8 +87,11 @@ int main (int ac, char *av[], char **env)
 	token = (t_token *)malloc(sizeof(t_token));
 	c = (t_con *)malloc(sizeof(t_con));
 	my_env = get_env(env);
-	if (my_env)
-		my_env->exit_status = 0;
+	my_env->exit_status = 0;
+	printf("var: ---->%s\n", my_env->content->var);
+	printf("value: ---->%s\n", my_env->content->value);
+	printf("----------> %p\n", my_env);
+	printf("----------> %d\n", my_env->exit_status);
 	handler_signal(1);
 	while (1)
 	{
@@ -102,7 +105,7 @@ int main (int ac, char *av[], char **env)
 		token = toke_lexer(command, token, my_env);
 		if (token)
 			ft_execute(token, &my_env);
-		//printf("EXIT_STATUS ==> %d\n", my_env->exit_status);
+		printf("EXIT_STATUS ==> %d\n", my_env->exit_status);
 		// priiint(token);
 		free(full_command);
 	}

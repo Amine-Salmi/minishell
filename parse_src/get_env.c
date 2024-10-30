@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_env.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bbadda <bbadda@student.42.fr>              +#+  +:+       +#+        */
+/*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 12:51:37 by bbadda            #+#    #+#             */
-/*   Updated: 2024/10/20 09:42:13 by bbadda           ###   ########.fr       */
+/*   Updated: 2024/10/30 01:14:44 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,15 @@ t_env	*get_env( char **env)
 	t_env		*re;
 	int			i;
 
+		
 	re = NULL;
+	if (!*env)
+	{
+		content = (t_content *)malloc(sizeof(t_content));
+		content->var = ft_strdup("test");
+		content->value = ft_strdup("test/test/test");
+		__add_list_back(&re, __creat_list(content));
+	}
 	i = -1;
 	while (env[++i])
 	{
