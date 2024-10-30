@@ -6,7 +6,7 @@
 /*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 12:51:37 by bbadda            #+#    #+#             */
-/*   Updated: 2024/10/30 01:44:15 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/10/30 22:22:02 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,15 @@ t_env	*get_env( char **env)
 
 		
 	re = NULL;
+	i = 0;
+	if (!env[i])
+	{
+		content = (t_content *)malloc(sizeof(t_content));
+		content->var = ft_strdup("OLDPWD");
+		content->value = ft_strdup("/ABDO/NIRMINE");;
+		__add_list_back(&re, __creat_list(content));
+		return (re);
+	}
 	i = -1;
 	while (env[++i])
 	{

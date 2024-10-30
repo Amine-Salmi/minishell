@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bbadda <bbadda@student.42.fr>              +#+  +:+       +#+        */
+/*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 10:14:11 by bbadda            #+#    #+#             */
-/*   Updated: 2024/10/30 14:58:50 by bbadda           ###   ########.fr       */
+/*   Updated: 2024/10/30 21:26:38 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,6 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
-// #include <readline/readline.h>
-// #include <readline/history.h>
 #include "/Users/asalmi/goinfre/homebrew/opt/readline/include/readline/history.h"
 #include "/Users/asalmi/goinfre/homebrew/opt/readline/include/readline/readline.h"
 #include <sys/types.h>
