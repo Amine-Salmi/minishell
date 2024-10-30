@@ -7,10 +7,14 @@
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 19:16:46 by asalmi            #+#    #+#             */
 <<<<<<< HEAD
+<<<<<<< HEAD
 /*   Updated: 2024/10/25 16:13:57 by bbadda           ###   ########.fr       */
 =======
 /*   Updated: 2024/10/27 06:27:19 by asalmi           ###   ########.fr       */
 >>>>>>> daec7412266d908346f2912244ea5c3a4c79933a
+=======
+/*   Updated: 2024/10/29 19:12:35 by asalmi           ###   ########.fr       */
+>>>>>>> e5ddf848b525aaadbafc2d758a4a0ac87bad6fcc
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +37,7 @@ void execute_piped_commands(t_token *cmd, t_env **env)
     {
 		if (cmd->next != NULL)
 			pipe(fd);
+		handler_signal(0);
 		cmd->pid = fork();
 		if (cmd->pid == 0)
 		{
@@ -56,10 +61,8 @@ void execute_piped_commands(t_token *cmd, t_env **env)
 				exit(EXIT_SUCCESS);
 			}
 			executable_path = check_path(cmd, *env);
-			if (!executable_path) 
-			{
-				exit(cmd->exit_status);
-			}
+			if (!executable_path)
+				exit((*env)->exit_status);
 			if (execve(executable_path, cmd->arg, copy_env(*env)) == -1)
 			{
 				// should free(array in copy_env if execve is faild)
@@ -83,8 +86,9 @@ void execute_piped_commands(t_token *cmd, t_env **env)
 		if (cmd->pid > 0)
 		{
 			waitpid(cmd->pid, &status, 0);
+			handler_signal(1);
 			if (WIFEXITED(status))
-				cmd->exit_status = WEXITSTATUS(status);
+				(*env)->exit_status = WEXITSTATUS(status);
 		}
 		cmd = cmd->next;
 	}

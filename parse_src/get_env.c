@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_env.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bbadda <bbadda@student.42.fr>              +#+  +:+       +#+        */
+/*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 12:51:37 by bbadda            #+#    #+#             */
-/*   Updated: 2024/10/20 09:42:13 by bbadda           ###   ########.fr       */
+/*   Updated: 2024/10/30 01:44:15 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ static t_env	*__creat_list(t_content *content)
 	if (node)
 	{
 		node->content = content;
+		node->exit_status = 0;
 		node->next = NULL;
 	}
 	return (node);
@@ -94,6 +95,7 @@ t_env	*get_env( char **env)
 	t_env		*re;
 	int			i;
 
+		
 	re = NULL;
 	i = -1;
 	while (env[++i])

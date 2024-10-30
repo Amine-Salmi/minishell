@@ -6,7 +6,7 @@
 /*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 14:43:30 by asalmi            #+#    #+#             */
-/*   Updated: 2024/10/27 05:13:28 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/10/30 01:21:31 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ void remove_elemnts(t_env **env, char *d_var)
     t_env *prev;
     
     tmp = *env;
+    prev = NULL;
     if (!env || !*env)
         return ;
     if (tmp && !ft_strcmp(tmp->content->var, d_var))
@@ -44,16 +45,17 @@ void remove_elemnts(t_env **env, char *d_var)
         free(tmp);
         return ;
     }
-    while (tmp && ft_strcmp(tmp->content->var, d_var))
+    while (tmp)
     {
-        prev = tmp;
-        tmp = tmp->next;
         if (!ft_strcmp(tmp->content->var, d_var))
         {
-            prev->next = tmp->next;
+            if (prev)
+                prev->next = tmp->next;
             free(tmp);
-            break;
+            return;
         }
+        prev = tmp;
+        tmp = tmp->next;
     } 
 }
 
