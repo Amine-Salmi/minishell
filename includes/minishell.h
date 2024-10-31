@@ -6,7 +6,7 @@
 /*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 10:14:11 by bbadda            #+#    #+#             */
-/*   Updated: 2024/10/30 23:58:41 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/10/31 01:43:49 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -182,7 +182,7 @@ char	*check_path(t_token *cmd, t_env *env);
 char	**copy_env(t_env *env);
 void	add_to_env(t_env **env, t_env *new_node);
 void    redirection_handler(t_token *cmd);
-void    handle_heredoc(t_token *cmd);
+// void    handle_heredoc(t_token *cmd);
 
 void		execute_builtin(t_token *cmd, t_env **env);
 int		is_builtin(const char *cmd);
@@ -195,7 +195,7 @@ int 	ft_unset(t_token *cmd, t_env **env);
 int		update_pwd(t_env *env, char *old_pwd);
 
 char	**split_first_eq(char const *s, char c);
-void	ft_execute(t_token *cmd, t_env **env);
+void	ft_execute(t_lst *cmd, t_env **env);
 void	execute_piped_commands(t_token *cmd, t_env **env);
 
 void	handler_signal(int mode);

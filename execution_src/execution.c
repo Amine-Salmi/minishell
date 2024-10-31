@@ -6,7 +6,7 @@
 /*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/15 13:17:42 by asalmi            #+#    #+#             */
-/*   Updated: 2024/10/29 19:12:45 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/10/31 01:44:14 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,14 +59,14 @@ int execute_simple_command(t_token *cmd, t_env **env)
     return 0;
 }
 
-void ft_execute(t_token *cmd, t_env **env)
+void ft_execute(t_lst *cmd, t_env **env)
 {
-    if (cmd->command && cmd->next == NULL)
+    if (cmd->token->command && cmd->next == NULL)
     {
-        execute_simple_command(cmd, env);  // should free memory in find_executable_file and path.
+        execute_simple_command(cmd->token, env);  // should free memory in find_executable_file and path.
     }
-    else if (cmd->next != NULL)
-    {
-        execute_piped_commands(cmd, env);  // should free memory in find_executable_file and path.
-    }
+    // else if (cmd->next != NULL)
+    // {
+    //     execute_piped_commands(cmd->token, env);  // should free memory in find_executable_file and path.
+    // }
 }

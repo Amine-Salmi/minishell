@@ -6,7 +6,7 @@
 /*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 10:14:08 by bbadda            #+#    #+#             */
-/*   Updated: 2024/10/31 00:00:38 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/10/31 01:48:51 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,10 +155,11 @@ int main (int ac, char *av[], char **env)
 	t_token		*token;
 
 	my_env = NULL;
+	lst = (t_lst *)malloc(sizeof(t_lst)); 
 	my_env = (t_env *)malloc(sizeof(t_env));
-	token = (t_token *)malloc(sizeof(t_token));
+	// token = (t_token *)malloc(sizeof(t_token));
 	my_env = get_env(env);
-	printf("----------> %d\n", my_env->exit_status);
+	// printf("----------> %d\n", my_env->exit_status);
 	handler_signal(1);
 	while (1)
 	{
@@ -170,11 +171,10 @@ int main (int ac, char *av[], char **env)
 			continue ;
 		command = parse_split(full_command, '|');
 		lst = toke_lexer(command, my_env);
-		
-		// if (token)
-		// 	ft_execute(lst->token, &my_env);
+		if (lst)
+			ft_execute(lst, &my_env);
 		// printf("EXIT_STATUS ==> %d\n", my_env->exit_status);
-		priiint(token);
+		// priiint(lst);
 		free(full_command);
 	}
 	return (0);
