@@ -6,7 +6,7 @@
 /*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 10:14:08 by bbadda            #+#    #+#             */
-/*   Updated: 2024/10/31 01:48:51 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/11/01 01:40:27 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,6 +159,7 @@ int main (int ac, char *av[], char **env)
 	my_env = (t_env *)malloc(sizeof(t_env));
 	// token = (t_token *)malloc(sizeof(t_token));
 	my_env = get_env(env);
+	printf("----> %p\n", my_env);
 	// printf("----------> %d\n", my_env->exit_status);
 	handler_signal(1);
 	while (1)

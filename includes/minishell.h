@@ -6,7 +6,7 @@
 /*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 10:14:11 by bbadda            #+#    #+#             */
-/*   Updated: 2024/10/31 01:43:49 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/10/31 22:27:00 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ enum e_token_type
 	ENV = 7,
 	PIPE = 8,
 	REDIR_IN = 9,
-	REDIR_OUT = 10,
+	REDIR_OUT = 10, 
 	HERE_DOC = 11,
 	DREDIR_OUT = 12,
 };

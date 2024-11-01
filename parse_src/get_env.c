@@ -6,7 +6,7 @@
 /*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 12:51:37 by bbadda            #+#    #+#             */
-/*   Updated: 2024/10/31 00:11:31 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/11/01 01:49:53 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ int	__lstsize(t_env *lst)
 	return (i);
 }
 
-t_env	*get_env( char **env)
+t_env	*get_env(char **env)
 {
 	t_content	*content;
 	t_env		*re;
@@ -97,22 +97,27 @@ t_env	*get_env( char **env)
 
 		
 	re = NULL;
-	i = 0;
-	if (!env[i])
+	// i = 0;
+	i = -1;
+	// printf("\n---------------> %p <---------------\n", *env);
+	if (!*env)
 	{
 		content = (t_content *)malloc(sizeof(t_content));
-		content->var = ft_strdup("OLDPWD");
-		content->value = ft_strdup("/ABDO/NIRMINE");;
+		content->var = ft_strdup("TEST");
+		content->value = ft_strdup("PATH/TEST");
 		__add_list_back(&re, __creat_list(content));
 		return (re);
 	}
-	i = -1;
-	while (env[++i])
+	else
 	{
-		content = (t_content *)malloc(sizeof(t_content));
-		content->var = __strchr(env[i], '=');
-		content->value = getenv(content->var);
-		__add_list_back(&re, __creat_list(content));
+		while (env[++i])
+		{
+			content = (t_content *)malloc(sizeof(t_content));
+			content->var = __strchr(env[i], '=');
+			content->value = getenv(content->var);
+			__add_list_back(&re, __creat_list(content));
+		}
 	}
+
 	return (re);
 }

@@ -6,7 +6,7 @@
 /*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 14:43:30 by asalmi            #+#    #+#             */
-/*   Updated: 2024/10/31 00:12:50 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/11/01 01:34:22 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,13 +38,19 @@ void remove_elemnts(t_env **env, char *d_var)
     if (!env || !*env)
         return ;
     tmp = *env;
-    prev = NULL;
+
     if (tmp && !ft_strcmp(tmp->content->var, d_var))
     {
-        (*env) = tmp->next;
-        free(tmp);
+        if (tmp->next != NULL)
+            env = &tmp->next;
+		else
+			env = NULL;
+     	printf("address has been freed: %p\n", tmp);
+	 	free(tmp);
+		printf("remove_env: %p\n", env);	
         return ;
     }
+    prev = NULL;
     while (tmp)
     {
         if (!ft_strcmp(tmp->content->var, d_var))
@@ -56,7 +62,7 @@ void remove_elemnts(t_env **env, char *d_var)
         }
         prev = tmp;
         tmp = tmp->next;
-    } 
+    }
 }
 
 int ft_unset(t_token *cmd, t_env **env)
@@ -72,6 +78,7 @@ int ft_unset(t_token *cmd, t_env **env)
         {
             if (find_var_env(*env, cmd->arg[i]))
                 remove_elemnts(env, cmd->arg[i]);
+			printf("unset_env: %p\n", env);
         }
         else
         {
