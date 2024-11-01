@@ -6,7 +6,7 @@
 /*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 00:05:51 by asalmi            #+#    #+#             */
-/*   Updated: 2024/11/01 01:08:42 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/11/01 19:57:26 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ int is_builtin(const char *cmd)
         return (1);
     if (!ft_strcmp(cmd, "unset"))
         return (1);
+    // printf("---------> %s\n", cmd);
     return (0);
 }
 

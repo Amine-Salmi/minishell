@@ -6,7 +6,7 @@
 /*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 12:51:37 by bbadda            #+#    #+#             */
-/*   Updated: 2024/11/01 01:49:53 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/11/01 19:40:58 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ t_env	*get_env(char **env)
 	if (!*env)
 	{
 		content = (t_content *)malloc(sizeof(t_content));
-		content->var = ft_strdup("TEST");
+		content->var = ft_strdup("AMINE");
 		content->value = ft_strdup("PATH/TEST");
 		__add_list_back(&re, __creat_list(content));
 		return (re);

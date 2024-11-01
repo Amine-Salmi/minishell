@@ -6,7 +6,7 @@
 /*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/15 13:17:42 by asalmi            #+#    #+#             */
-/*   Updated: 2024/10/31 01:44:14 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/11/01 19:58:49 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ int execute_simple_command(t_token *cmd, t_env **env)
         execute_builtin(cmd, env);
         return 0;
     }
+    printf("-------------> test <------------\n");
     handler_signal(0);
     pid = fork();
     if (pid == 0)
