@@ -6,7 +6,7 @@
 /*   By: bbadda <bbadda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 10:15:23 by bbadda            #+#    #+#             */
-/*   Updated: 2024/10/20 09:43:16 by bbadda           ###   ########.fr       */
+/*   Updated: 2024/11/02 19:57:32 by bbadda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,15 +64,6 @@ void	*__calloc(size_t count, size_t size)
 		return (0);
 	__bzero(res, size * count);
 	return (res);
-}
-
-// is redir function < > >> <<
-int	is_special_char(char c)
-{
-	if (c == '|' || c == '>' || c == '<'
-		|| c == '$' || c == '\'')
-		return (0);
-	return (1);
 }
 
 void	__free(t_list **lst)

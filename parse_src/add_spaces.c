@@ -6,11 +6,16 @@
 /*   By: bbadda <bbadda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 11:26:36 by bbadda            #+#    #+#             */
-/*   Updated: 2024/10/20 09:40:51 by bbadda           ###   ########.fr       */
+/*   Updated: 2024/11/02 22:00:48 by bbadda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+void	extraction_check()
+{
+	
+}
 
 char	*add_spaces(char *cmd)
 {
@@ -20,10 +25,10 @@ char	*add_spaces(char *cmd)
 	int		i;
 	int		j;
 
-	in_single_quotes = false;
-	in_quotes = false;
 	if (cmd == NULL)
 		return (NULL);
+	in_single_quotes = false;
+	in_quotes = false;
 	i = 0;
 	j = 0;
 	new_cmd = malloc(parse_strlen(cmd) * 3);
@@ -31,10 +36,7 @@ char	*add_spaces(char *cmd)
 		return (NULL);
 	while (cmd[i])
 	{
-		if (!in_quotes && cmd[i] == '\'')
-			in_single_quotes = !in_single_quotes;
-		else if (!in_single_quotes && cmd[i] == '\"')
-			in_quotes = !in_quotes;
+		quotes_status(cmd, &i, &in_single_quotes, &in_quotes);
 		if ((cmd[i] == '>' && cmd[i + 1] == '>') 
 			|| (cmd[i] == '<' && cmd[i + 1] == '<'))
 		{
@@ -62,3 +64,4 @@ char	*add_spaces(char *cmd)
 	new_cmd[j] = '\0';
 	return (new_cmd);
 }
+

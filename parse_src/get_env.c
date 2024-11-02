@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_env.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: bbadda <bbadda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 12:51:37 by bbadda            #+#    #+#             */
-/*   Updated: 2024/11/01 01:49:53 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/11/02 20:39:10 by bbadda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,32 +74,14 @@ static char	*__strchr(char *str, int c)
 	return (0);
 }
 
-int	__lstsize(t_env *lst)
-{
-	int	i;
-
-	if (!lst)
-		return (0);
-	i = 1;
-	while (lst->next)
-	{
-		lst = lst->next;
-		i++;
-	}
-	return (i);
-}
-
 t_env	*get_env(char **env)
 {
 	t_content	*content;
 	t_env		*re;
 	int			i;
 
-		
 	re = NULL;
-	// i = 0;
 	i = -1;
-	// printf("\n---------------> %p <---------------\n", *env);
 	if (!*env)
 	{
 		content = (t_content *)malloc(sizeof(t_content));
@@ -118,6 +100,5 @@ t_env	*get_env(char **env)
 			__add_list_back(&re, __creat_list(content));
 		}
 	}
-
 	return (re);
 }

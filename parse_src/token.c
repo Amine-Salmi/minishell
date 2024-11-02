@@ -6,7 +6,7 @@
 /*   By: bbadda <bbadda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 13:04:29 by bbadda            #+#    #+#             */
-/*   Updated: 2024/10/23 17:04:21 by bbadda           ###   ########.fr       */
+/*   Updated: 2024/11/02 19:05:04 by bbadda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	check_env(char *cmd)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	if (cmd[i] == '$')
@@ -35,6 +35,8 @@ int	check_env(char *cmd)
 
 char	*replace_env(t_env *e, char *s)
 {
+	if (cmp("?", s))
+		return (parse_strdup(ft_itoa(e->exit_status)));
 	while (e)
 	{
 		if (cmp(e->content->var, s))
@@ -50,11 +52,12 @@ char	*remove_q(char *s_command)
 	bool	in_quotes;
 	char	*buffer;
 	int		buffer_index;
+	int		i;
 
 	in_single_quotes = false;
 	in_quotes = false;
 	buffer = malloc(parse_strlen(s_command) + 1);
-	int i = -1;
+	i = -1;
 	buffer_index = 0;
 	while (s_command[++i])
 	{
@@ -80,7 +83,7 @@ char	*add_token(char *buffer, int *buffer_index)
 		s = parse_strdup(buffer);
 		*buffer_index = 0;
 	}
-	return(s);
+	return (s);
 }
 
 int	get_env_size(char *cmd, t_env *e)

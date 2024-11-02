@@ -6,7 +6,7 @@
 /*   By: bbadda <bbadda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 10:14:08 by bbadda            #+#    #+#             */
-/*   Updated: 2024/11/01 22:24:45 by bbadda           ###   ########.fr       */
+/*   Updated: 2024/11/02 22:53:28 by bbadda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,8 @@ t_index	max_files_args(char **s_command)
 	{
 		if (cmp(s_command[i], "<<"))
 			index.j++;
-		else if (s_command[i] &&(cmp(s_command[i], "<") || cmp(s_command[i], ">") 
-			|| cmp(s_command[i], ">>")))
+		else if (s_command[i] && (cmp(s_command[i], "<")
+				|| cmp(s_command[i], ">") || cmp(s_command[i], ">>")))
 			index.i++;
 		else if (s_command[i])
 			index.k++;
@@ -34,6 +34,7 @@ t_index	max_files_args(char **s_command)
 	}
 	return (index);
 }
+
 void	allocate_for_me(t_index index, t_token *token)
 {
 	if (index.j > 0)
@@ -49,34 +50,42 @@ void	allocate_for_me(t_index index, t_token *token)
 		token->file->opr = NULL;
 	}
 	if (index.k > 0)
-		token->arg = (char **)malloc((index.k + 1) * sizeof(char *));
+	{
+		token->arg = malloc(index.k  * sizeof(t_arg));
+		token->arg->arg = NULL;
+	}
 }
 
-void	fill_token(char	*command, t_token *token, t_env *e)
+int	fill_token(char	*command, t_token *token, t_env *e)
 {
 	char		*s;
 	t_index		index;
 	char		**s_command;
 	int			i;
-	
+
+	i = 0;
 	token->file = NULL; 
 	token->herdoc = NULL;
 	token->arg = NULL;
 	s = add_spaces(command);
-	syntax_error(s);
+	if (syntax_error(s))
+		return (1);
 	s_command = parse_split(s, ' ');
+	// an argument adding for no reason after pipe
+	// printf("k = %d\n", index.k);
+	// for (int y = 0; s_command[y]; y++)
+		// printf("s_command[%d] : '%s'\n", y, s_command[y]);
+	// i will fix it
 	free(s);
 	index = max_files_args(s_command);
 	allocate_for_me(index, token);
-	if (__is_herdoc(s_command[0]) == 0)
-		token->command = parse_strdup(remove_q(s_command[0]));
+	if (!__is_herdoc(s_command[0]))
+		token->command = check_and_replace_env(s_command[0], e);
 	else
 		token->command = NULL;
 	__token(token, s_command, e);
-	i = 0;
-	while (s_command[i])
-		free(s_command[i++]);
-	free (s_command);
+	simple_free(s_command);
+	return (0);
 }
 
 t_lst	*toke_lexer(char **command, t_env *e)
@@ -84,14 +93,15 @@ t_lst	*toke_lexer(char **command, t_env *e)
 	t_token		*token;
 	t_lst		*lst;
 	int			i;
-	int 		size;
+	int			size;
 
 	lst = NULL;
 	i = -1;
 	while (command[++i])
 	{
 		token = malloc(sizeof(t_token));
-		fill_token(command[i], token, e);
+		if (fill_token(command[i], token, e))
+			return (NULL);
 		__ft_lstadd_back(&lst, token);
 	}
 	return (lst);
@@ -101,15 +111,17 @@ void	priiint(t_lst *lst)
 {
 	int	i;
 	int	j;
+	int	p;
 
 	while (lst)
 	{
 		printf("cmd : %s\n", lst->token->command);
-		int p = 0;
-		while (lst->token->arg[p])
+		p = 0;
+		t_arg *t = lst->token->arg;
+		while (t)
 		{
-			printf("c.arg[%d] : %s\n", p, lst->token->arg[p]);
-			p++;
+			printf("c.arg[%d] : %s\n", p++, t->arg);
+			t = t->next;
 		}
 		t_opr *tmp2 = lst->token->file;
 		while (tmp2)
@@ -145,6 +157,7 @@ int main (int ac, char *av[], char **env)
 	// printf("----> %p\n", my_env);
 	// printf("----------> %d\n", my_env->exit_status);
 	// handler_signal(1);
+	i = 0;
 	while (1)
 	{
 		full_command = readline("\033[1;31m-\033[0m  \033[1;32mminishell-0.1$\033[0m ");
@@ -155,13 +168,11 @@ int main (int ac, char *av[], char **env)
 			continue ;
 		command = parse_split(full_command, '|');
 		lst = toke_lexer(command, my_env);
-		i = 0;
-		while (command[i])
-			free(command[i++]);
-		free (command);
+		simple_free(command);
 		// if (lst)
 			// ft_execute(lst, &my_env);
 		priiint(lst);
+		free_lst(lst);
 		free(full_command);
 	}
 	return (0);

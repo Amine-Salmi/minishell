@@ -6,62 +6,11 @@
 /*   By: bbadda <bbadda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 11:04:33 by bbadda            #+#    #+#             */
-/*   Updated: 2024/11/01 16:04:29 by bbadda           ###   ########.fr       */
+/*   Updated: 2024/11/02 19:56:39 by bbadda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-
-// t_token	*creat_list(char *command, char **arg, t_opr *file, int number_of_file )
-// {
-// 	t_token	*node;
-
-// 	node = malloc(sizeof(t_token));
-// 	if (!node)
-// 		return (NULL);
-// 	if (command)
-// 		node->command = parse_strdup(command);
-// 	node->number_of_file = number_of_file ;
-// 	node->arg = arg;
-// 	if (file)
-// 	{
-// 		node->file = malloc(sizeof(t_opr));
-// 		if (node->file)
-// 			node->file = file;
-// 		else
-// 		{
-// 			free(node->command);
-// 			free(node);
-// 			return (NULL);
-// 		}
-// 	}
-// 	else
-// 		node->file = NULL;
-// 	node->next = NULL;
-// 	node->prev = NULL;
-// 	return (node);
-// }
-
-// void	add_list_back(t_token **token, int number_of_file)
-// {
-// 	t_token	*tmp;
-// 	t_token	*new;
-
-// 	new = creat_list((*token)->command, (*token)->arg, (*token)->file, number_of_file );
-// 	if (new && token)
-// 	{
-// 		if (*token == NULL)
-// 			*token = new;
-// 		else
-// 		{
-// 			tmp = *token;
-// 			while (tmp->next )
-// 				tmp = tmp->next;
-// 			tmp->next = new;
-// 			new->prev = tmp;
-// 		}
-// 	}
-// }
 
 char	*get_pipe(char *line)
 {
