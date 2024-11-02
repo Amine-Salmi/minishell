@@ -6,7 +6,7 @@
 /*   By: bbadda <bbadda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 11:58:05 by bbadda            #+#    #+#             */
-/*   Updated: 2024/10/30 22:52:40 by bbadda           ###   ########.fr       */
+/*   Updated: 2024/11/01 22:22:24 by bbadda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ void	fill_arg(t_token *token, char *s_command, int *index)
 	}
 }
 
-void	__token(t_token *token, char **s_command, t_env *e, int nbr_d, int nbr_f)
+void	__token(t_token *token, char **s_command, t_env *e)
 {
 	t_index	index;
 	int 	i;
@@ -111,5 +111,4 @@ void	__token(t_token *token, char **s_command, t_env *e, int nbr_d, int nbr_f)
 		index.j++;
 	}
 	token->arg[index.k] = NULL;
-	free (s_command);
 }

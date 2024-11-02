@@ -6,7 +6,7 @@
 /*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 10:14:11 by bbadda            #+#    #+#             */
-/*   Updated: 2024/10/31 22:27:00 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/11/02 01:23:23 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
+// #include "readline/history.h"
+// #include "readline/readline.h"
 #include "/Users/asalmi/goinfre/homebrew/opt/readline/include/readline/history.h"
 #include "/Users/asalmi/goinfre/homebrew/opt/readline/include/readline/readline.h"
 #include <sys/types.h>
@@ -76,15 +78,6 @@ typedef struct s_herdoc
 	struct s_herdoc *next;
 }t_herdoc;
 
-// typedef struct s_con 
-// {	
-// 	char		*command;
-// 	char		**arg;
-// 	t_opr		*file;
-// 	t_herdoc	*herdoc;
-// 	struct s_con *next;
-// }t_con;
-
 typedef struct s_token
 {
 	char				*command;
@@ -92,8 +85,6 @@ typedef struct s_token
 	t_opr				*file;
 	t_herdoc			*herdoc;
 	pid_t				pid;
-	struct s_token		*next;
-	struct s_token		*prev;
 }t_token;
 
 typedef struct s_lst
@@ -144,7 +135,7 @@ void		*__calloc(size_t count, size_t size);
 int			is_special_char(char c);
 // void		check_quotes(char c, bool in_quotes, bool in_single_quotes);
 // --------------------tokenization_functions-----------------//
-void		__token(t_token *token, char **s_command, t_env *e, int j, int i);
+void		__token (t_token *token, char **s_command, t_env *e);
 t_index		max_files_args(char **s_command);
 int			get_env_size(char *cmd, t_env *e);
 char		*replace_env(t_env *e, char *s);

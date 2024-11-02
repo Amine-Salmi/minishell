@@ -6,7 +6,7 @@
 /*   By: bbadda <bbadda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 11:04:33 by bbadda            #+#    #+#             */
-/*   Updated: 2024/10/30 22:34:16 by bbadda           ###   ########.fr       */
+/*   Updated: 2024/11/01 16:04:29 by bbadda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,7 @@ int	is_cmd(char *str)
 		return (0);
 	return (1);
 }
+
 t_lst	*__ft_lstnew(t_token *content)
 {
 	t_lst	*node;

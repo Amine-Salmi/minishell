@@ -43,7 +43,7 @@ int elemnt_exist(t_env *var, t_env *env)
     {
         if (!ft_strcmp(var->content->var, env->content->var))
         {
-            if (var->content->value)
+            if (var->content->value && ft_strcmp("_", env->content->var))
                 env->content->value = var->content->value;
             return (1);
         }

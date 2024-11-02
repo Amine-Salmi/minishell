@@ -6,7 +6,7 @@
 /*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 12:51:37 by bbadda            #+#    #+#             */
-/*   Updated: 2024/11/01 19:40:58 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/11/02 01:53:18 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,22 +94,37 @@ t_env	*get_env(char **env)
 	t_content	*content;
 	t_env		*re;
 	int			i;
-
+	char pwd[PATH_MAX];
 		
 	re = NULL;
 	// i = 0;
-	i = -1;
 	// printf("\n---------------> %p <---------------\n", *env);
 	if (!*env)
 	{
 		content = (t_content *)malloc(sizeof(t_content));
-		content->var = ft_strdup("AMINE");
-		content->value = ft_strdup("PATH/TEST");
+		if(getcwd(pwd, sizeof(pwd)) == NULL)
+		{
+			perror("getcwd");
+			free(content);
+			return NULL;
+		}
+		content->var = ft_strdup("PWD");
+		content->value = ft_strdup(pwd);
 		__add_list_back(&re, __creat_list(content));
-		return (re);
+
+		content = (t_content *)malloc(sizeof(t_content));
+		content->var = ft_strdup("SHLVL");
+		content->value = ft_strdup("1");
+		__add_list_back(&re, __creat_list(content));
+	
+		content = (t_content *)malloc(sizeof(t_content));
+		content->var = ft_strdup("_");
+		content->value = ft_strdup("/usr/bin/env");
+		__add_list_back(&re, __creat_list(content));
 	}
 	else
 	{
+		i = -1;
 		while (env[++i])
 		{
 			content = (t_content *)malloc(sizeof(t_content));

@@ -6,7 +6,7 @@
 /*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 00:05:51 by asalmi            #+#    #+#             */
-/*   Updated: 2024/11/01 19:57:26 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/11/02 01:48:58 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,9 +64,7 @@ int    update_pwd(t_env *env, char *old_pwd)
     head = env;
     if(getcwd(pwd, sizeof(pwd)) == NULL)
     {
-        perror("getcwd:");
-        free(new);
-        free(new->content);
+        perror("getcwd");
         return 1;
     } 
     while (env)
