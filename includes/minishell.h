@@ -6,7 +6,7 @@
 /*   By: bbadda <bbadda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 10:14:11 by bbadda            #+#    #+#             */
-/*   Updated: 2024/11/02 22:20:35 by bbadda           ###   ########.fr       */
+/*   Updated: 2024/11/02 22:56:17 by bbadda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ typedef struct s_token
 	t_arg				*arg;
 	t_opr				*file;
 	t_herdoc			*herdoc;
-	// pid_t				pid;
+	// pid_t				pid;45wr
 }t_token;
 
 typedef struct s_lst

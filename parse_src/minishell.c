@@ -6,7 +6,7 @@
 /*   By: bbadda <bbadda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 10:14:08 by bbadda            #+#    #+#             */
-/*   Updated: 2024/11/02 22:53:28 by bbadda           ###   ########.fr       */
+/*   Updated: 2024/11/02 22:56:22 by bbadda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,10 +154,9 @@ int main (int ac, char *av[], char **env)
 	my_env = NULL;
 	my_env = (t_env *)malloc(sizeof(t_env));
 	my_env = get_env(env);
-	// printf("----> %p\n", my_env);
+	printf("----> %p\n", my_env);
 	// printf("----------> %d\n", my_env->exit_status);
 	// handler_signal(1);
-	i = 0;
 	while (1)
 	{
 		full_command = readline("\033[1;31m-\033[0m  \033[1;32mminishell-0.1$\033[0m ");
@@ -168,11 +167,13 @@ int main (int ac, char *av[], char **env)
 			continue ;
 		command = parse_split(full_command, '|');
 		lst = toke_lexer(command, my_env);
-		simple_free(command);
+		i = 0;
+		while (command[i])
+			free(command[i++]);
+		free (command);
 		// if (lst)
 			// ft_execute(lst, &my_env);
 		priiint(lst);
-		free_lst(lst);
 		free(full_command);
 	}
 	return (0);

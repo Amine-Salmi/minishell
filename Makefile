@@ -1,12 +1,11 @@
 NAME = minishell
 CC = cc
-CFLAGS = -Wall -Wextra -Werror #-L ~/goinfre/homebrew/opt/readline/lib/ #-fsanitize=address -g
+CFLAGS = -Wall -Wextra -Werror -L ~/goinfre/homebrew/opt/readline/lib/ -fsanitize=address -g
 RM = rm -rf
 
 LIBFT = lib/Libft/libft.a
 
-SRC =  $(wildcard parse_src/*.c) 
-# $(wildcard execution_src/*.c) $(wildcard execution_src/built-in/*.c)
+SRC =  $(wildcard parse_src/*.c)  $(wildcard execution_src/*.c) $(wildcard execution_src/built-in/*.c)
 OBJS = $(SRC:.c=.o)
 
 all : $(LIBFT) $(NAME)

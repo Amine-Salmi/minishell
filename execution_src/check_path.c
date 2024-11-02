@@ -81,7 +81,7 @@ char *check_path(t_token *cmd, t_env *env)
     {
         if (!getcwd(cwd_buff, sizeof(cwd_buff)))
         {
-            perror("getcwd:");
+            perror("getcwd");
             return (NULL);
         }
         path = ft_strjoin(ft_strjoin(cwd_buff, "/"), cmd->command);
