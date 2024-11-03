@@ -6,7 +6,7 @@
 /*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 10:14:11 by bbadda            #+#    #+#             */
-/*   Updated: 2024/11/02 01:23:23 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/11/02 13:23:12 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -187,7 +187,7 @@ int		update_pwd(t_env *env, char *old_pwd);
 
 char	**split_first_eq(char const *s, char c);
 void	ft_execute(t_lst *cmd, t_env **env);
-void	execute_piped_commands(t_token *cmd, t_env **env);
+void	execute_piped_commands(t_lst *cmd, t_env **env);
 
 void	handler_signal(int mode);
 

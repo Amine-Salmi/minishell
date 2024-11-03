@@ -6,7 +6,7 @@
 /*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 14:43:30 by asalmi            #+#    #+#             */
-/*   Updated: 2024/11/02 01:26:30 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/11/02 15:39:24 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,16 +38,12 @@ void remove_elemnts(t_env **env, char *d_var)
     if (!env || !*env)
         return ;
     tmp = *env;
-    
+
     if (tmp && !ft_strcmp(tmp->content->var, d_var))
     {
         if (tmp->next != NULL)
-            env = &tmp->next;
-		else
-            env = NULL;
-     	printf("address has been freed: %p\n", tmp);
+            *env = tmp->next;
 	 	free(tmp);
-		printf("remove_env: %p\n", env);
         return ;
     }
     prev = NULL;
@@ -75,17 +71,11 @@ int ft_unset(t_token *cmd, t_env **env)
     while (cmd->arg[i])
     {
         if (!ft_strcmp(cmd->arg[i], "_"))
-        {
-            printf("------------> %s\n", cmd->arg[i]);
             return 0;
-        }
         if (!check_unset_elements(cmd->arg[i]))
         {
             if (find_var_env(*env, cmd->arg[i]))
-            {
                 remove_elemnts(env, cmd->arg[i]);
-			    printf("unset_env: %p\n", *env);
-            }
         }
         else
         {

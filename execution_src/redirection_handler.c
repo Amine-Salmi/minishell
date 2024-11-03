@@ -6,7 +6,7 @@
 /*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 19:16:59 by asalmi            #+#    #+#             */
-/*   Updated: 2024/10/30 21:25:49 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/11/03 01:52:07 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,49 @@
 
 void redirection_handler(t_token *cmd)
 {
-    // int fd;
+    int fd;
     int i;
 
     i = 0;
+    while (cmd->file)
+    {
+        if (!ft_strncmp(cmd->file->opr, ">", ft_strlen(cmd->file->opr)))
+        {
+            fd = open(cmd->file->file_name, O_WRONLY | O_CREAT | O_TRUNC, 0666);
+            if (fd < 0)
+            {
+                perror("open");
+                exit(EXIT_FAILURE);
+            }
+            dup2(fd, STDOUT_FILENO);
+            close(fd);
+        }
+        if (!ft_strncmp(cmd->file->opr, "<", ft_strlen(cmd->file->opr)))
+        {
+            fd = open(cmd->file->file_name, O_RDONLY);
+            if (fd < 0)
+            {
+                perror("open");
+                exit(EXIT_FAILURE);
+            }
+            dup2(fd, STDIN_FILENO);
+            close(fd);
+        }
+        if (!ft_strncmp(cmd->file->opr, ">>", ft_strlen(cmd->file->opr)))
+        {
+            fd = open(cmd->file->file_name, O_WRONLY | O_CREAT | O_APPEND, 066);
+            if (fd < 0)
+            {
+                perror("open");
+                exit(EXIT_FAILURE);
+            }
+            dup2(fd, STDOUT_FILENO);
+            close(fd);
+        }
+        cmd->file = cmd->file->next;
+    }
+
+}
     // while (cmd->redirection)
     // {
     //     if (!ft_strncmp(cmd->redirection->opr, ">", ft_strlen(cmd->redirection->opr)))
@@ -70,4 +109,3 @@ void redirection_handler(t_token *cmd)
     //     }
     //     cmd->redirection = cmd->redirection->next;
     // }
-}

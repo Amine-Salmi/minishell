@@ -6,7 +6,7 @@
 /*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/15 13:17:42 by asalmi            #+#    #+#             */
-/*   Updated: 2024/11/01 23:29:59 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/11/03 01:35:59 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,28 @@ int execute_simple_command(t_token *cmd, t_env **env)
     pid_t pid;
     int status;
     char *executable_path;
-
+    int saved_stdout;
+    int saved_stdin;
+    
+    saved_stdout = -1;
+    saved_stdin = -1;
     if (is_builtin(cmd->command) != 0)
     {
+        if (cmd->file)
+        {
+            saved_stdout = dup(STDOUT_FILENO);
+            saved_stdin = dup(STDIN_FILENO);
+            redirection_handler(cmd);
+        }
         execute_builtin(cmd, env);
-        return 0;
+        if (saved_stdin != -1 && saved_stdin != -1)
+        {
+            dup2(saved_stdout, STDOUT_FILENO);
+            dup2(saved_stdin, STDIN_FILENO);
+            close(saved_stdout);
+            close(saved_stdin);
+        }
+        return (0);
     }
     handler_signal(0);
     pid = fork();
@@ -29,13 +46,12 @@ int execute_simple_command(t_token *cmd, t_env **env)
     {
         signal(SIGINT, SIG_DFL);
         signal(SIGQUIT, SIG_DFL);
-        // if (cmd->file)
-        // {
-        //     redirection_handler(cmd);
-        // }
+        if (cmd->file) 
+            redirection_handler(cmd);
         executable_path = check_path(cmd, *env);
         if (!executable_path)
             exit((*env)->exit_status);
+        // printf("------- test --------\n");
         if (execve(executable_path, cmd->arg, copy_env(*env)) == -1)
         {
 		    // should free(array in copy_env if execve is faild)
@@ -53,7 +69,7 @@ int execute_simple_command(t_token *cmd, t_env **env)
         {
            (*env)->exit_status = 128 + WTERMSIG(status);
            if ((*env)->exit_status == 131)
-                printf("Quit: 3\n");
+                ft_putstr_fd("Quit: 3\n", 1);
         }
     }
     return 0;
@@ -65,8 +81,8 @@ void ft_execute(t_lst *cmd, t_env **env)
     {
         execute_simple_command(cmd->token, env);  // should free memory in find_executable_file and path.
     }
-    // else if (cmd->next != NULL)
-    // {
-    //     execute_piped_commands(cmd->token, env);  // should free memory in find_executable_file and path.
-    // }
+    else if (cmd->next != NULL)
+    {
+        execute_piped_commands(cmd, env);  // should free memory in find_executable_file and path.
+    }
 }
