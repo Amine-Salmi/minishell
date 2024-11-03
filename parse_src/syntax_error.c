@@ -6,90 +6,61 @@
 /*   By: bbadda <bbadda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 14:12:57 by bbadda            #+#    #+#             */
-/*   Updated: 2024/10/15 16:07:03 by bbadda           ###   ########.fr       */
+/*   Updated: 2024/11/02 19:50:01 by bbadda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int __is_redir(char c)
+int	check_all_thing(char *command, int *i, int *j)
 {
-	if (c == '>' || c == '<')
-		return (1);
-	return (0);
-}
-
-int __is_herdoc(char *s)
-{
-	if (cmp(s, ">>")|| cmp(s, "<<") || cmp(s, ">") || cmp(s, "<"))
-		return (1);
-	return (0);
-}
-
-static int	check_end_of_command(int i, int j)
-{
-	if (i >= j)
+	(*i)++;
+	if (check_end_of_command(*i, *j))
 	{
-		__error('\n', 1);
 		return (1);
+	}
+	if (command[*i] && command[*i] == '>' && command[*i] != command[*i - 1])
+		return (__error(command[*i], 1), 1);
+	if (command[*i] && command[*i] == command[(*i) - 1])
+	{
+		if (redir_error_check(command, i, j))
+			return (1);
+	}
+	if (command[*i] == ' ')
+	{
+		while (command[*i] == ' ')
+			(*i)++;
+		if (check_end_of_command(*i, *j))
+			return (1);
+		if (__is_redir(command[*i]))
+			return (__error(command[*i], 1), 1);
 	}
 	return (0);
 }
 
 int	redir_error(char *command)
 {
-	bool in_quotes = false;
-	bool in_single_quotes = false;
-	int	i;
-	int	j;
+	bool	in_quotes;
+	bool	in_single_quotes;
+	int		i;
+	int		j;
 
-	i = -1;
+	in_quotes = false;
+	in_single_quotes = false;
 	j = parse_strlen(command);
-    while (++i < j)
-    {
+	i = -1;
+	while (++i < j)
+	{
 		if (!in_quotes && command[i] == '\'')
 			in_single_quotes = !in_single_quotes;
 		else if (!in_single_quotes && command[i] == '\"')
 			in_quotes = !in_quotes;
-        if (__is_redir(command[i]) && !in_quotes && !in_single_quotes)
-        {
-			i++;
-			if (check_end_of_command(i, j))
-					return (1);
-			if (command[i] && command[i] == '>' && command[i] != command[i - 1])
-			{
-                __error(command[i], 1);
+		if (__is_redir(command[i]) && !in_quotes && !in_single_quotes)
+		{
+			if (check_all_thing(command, &i, &j))
 				return (1);
-			}
-			if (command[i] && command[i] == command[i - 1])
-			{
-				i++;
-				if (check_end_of_command(i, j))
-					return (1);
-				if (__is_redir(command[i]))
-				{
-					i++;
-					if (command[i] && command[i] == command[i - 1])
-						__error(command[i] , 2);
-					else
-                		__error(command[i - 1], 1);
-					return (1);
-				}
-			}
-            if (command[i] == ' ')
-			{
-				while (command[i] == ' ')
-					i++;
-				if (check_end_of_command(i, j))
-					return (1);
-				if (__is_redir(command[i]))
-				{
-                	__error(command[i], 1);
-					return (1);
-				}
-			}
-        }
-    }
+		}
+	}
 	return (0);
 }
 
@@ -101,10 +72,7 @@ int	pipe_error(char *command, int j)
 	while (command && command[i] == ' ')
 		i++;
 	if (command && command[i] == '|')
-	{
-		__error('|', 1);
-		return (1);
-	}
+		return (__error('|', 1), 1);
 	else
 	{
 		while (i < j)
@@ -115,10 +83,7 @@ int	pipe_error(char *command, int j)
 				while (command[i] == ' ')
 					i++;
 				if (command[i] == '|' || i >= j)
-				{
-					__error('|', 1);
-					return (1);
-				}
+					return (__error('|', 1), 1);
 			}
 			i++;
 		}
@@ -128,11 +93,13 @@ int	pipe_error(char *command, int j)
 
 int	qoutes_error(char *command)
 {
-	bool in_quotes = false;
-	bool in_single_quotes = false;
-	int	i;
-	int	j;
+	bool	in_quotes;
+	bool	in_single_quotes;
+	int		i;
+	int		j;
 
+	in_single_quotes = false;
+	in_quotes = false;
 	j = parse_strlen(command);
 	i = -1;
 	while (++i < j)
@@ -143,15 +110,9 @@ int	qoutes_error(char *command)
 			in_quotes = !in_quotes;
 	}
 	if (in_single_quotes)
-	{
-		__error('\'', 1);
-		return (1);
-	}
+		return (__error('\'', 1), 1);
 	if (in_quotes)
-	{
-		__error('\"', 1);
-		return (1);
-	}
+		return (__error('\"', 1), 1);
 	return (0);
 }
 

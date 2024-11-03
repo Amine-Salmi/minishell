@@ -6,7 +6,7 @@
 /*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 10:14:11 by bbadda            #+#    #+#             */
-/*   Updated: 2024/11/02 13:23:12 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/11/03 16:26:25 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,10 +78,16 @@ typedef struct s_herdoc
 	struct s_herdoc *next;
 }t_herdoc;
 
+typedef struct s_arg
+{
+	char	*arg;
+	struct s_arg *next;
+}t_arg;
+
 typedef struct s_token
 {
 	char				*command;
-	char				**arg;
+	t_arg				*arg;
 	t_opr				*file;
 	t_herdoc			*herdoc;
 	pid_t				pid;
@@ -123,17 +129,13 @@ typedef struct s_split
 
 int			cmp(const char *s1, const char *s2);
 char		*get_pipe(char *line);
-int			is_special_char(char c);
-t_token		*creat_list(char *command, char **arg, t_opr *file, int i);
 t_herdoc	*creatlist_herdoc(char *herdoc, char *del);
-void		add_list_back(t_token **token, int i);
 void		__add_back_file(t_opr **token, char *file_name, char *opr);
 void		__add_back_herdoc(t_herdoc **token, char *herdoc, char *del);
+void		__add_back_arg(t_arg **arg, char *content);
 void		__ft_lstadd_back(t_lst **lst, t_token *content);
 void	    __error(char c, int i);
 void		*__calloc(size_t count, size_t size);
-int			is_special_char(char c);
-// void		check_quotes(char c, bool in_quotes, bool in_single_quotes);
 // --------------------tokenization_functions-----------------//
 void		__token (t_token *token, char **s_command, t_env *e);
 t_index		max_files_args(char **s_command);
@@ -142,10 +144,15 @@ char		*replace_env(t_env *e, char *s);
 int			check_env(char *cmd);
 char		*check_and_replace_env(char *s_command, t_env *e);
 char		*remove_q(char *s_command);
+void		quotes_status(char *cmd, int *i, bool *in_single_quotes, bool *in_quotes);
+int			__lstsize(t_env *lst);
 
 // --------------------syntax_error_functions-----------------//
 int			syntax_error(char *command);
 int			qoutes_error(char *command);
+int			check_all_thing(char *command, int *i, int *j);
+int			redir_error_check(char *command, int *i, int *j);
+int			check_end_of_command(int i, int j);
 void		__free(t_list **lst);
 // ---------------------get_env_function----------------------//
 t_env   	*get_env( char **env);
@@ -161,6 +168,11 @@ char		*parse_substr(char const *str,int start, int len);
 char		**parse_split(char const *s, char c);;
 char		*parse_strtrim(char const *str, char const *set);
 char		*parse_strdup(const char *src);
+// -------------------free_utils-----------------------------------//
+void		simple_free(char **command);
+void 		free_lst(t_lst *lst);
+void 		free_token(t_token *token);
+void    	free_list(char **list);
 
 // void 		print_full_command(int j, t_token *token);
 
