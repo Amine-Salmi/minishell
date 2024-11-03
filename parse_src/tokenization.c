@@ -6,7 +6,7 @@
 /*   By: bbadda <bbadda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 11:58:05 by bbadda            #+#    #+#             */
-/*   Updated: 2024/11/02 22:54:50 by bbadda           ###   ########.fr       */
+/*   Updated: 2024/11/03 16:23:28 by bbadda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,13 @@ void	__token(t_token *token, char **s_command, t_env *e)
 		else if ((cmp(str, "<") || cmp(str, ">") || cmp(str, ">>")))
 			__add_back_file(&token->file, check_and_replace_env(s_command[++index.j], e), str);
 		else
-			__add_back_arg(&token->arg, str);
+		{
+			if (!token->command)
+				token->command = check_and_replace_env(str, e);
+			token->arg[index.k] = parse_strdup(str);
+			index.k++;
+		}
+		token->arg[index.k] = NULL;
 		free(str);
 		index.j++;
 	}

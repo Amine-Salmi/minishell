@@ -6,7 +6,7 @@
 /*   By: bbadda <bbadda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 15:54:38 by bbadda            #+#    #+#             */
-/*   Updated: 2024/11/02 22:21:15 by bbadda           ###   ########.fr       */
+/*   Updated: 2024/11/03 16:22:19 by bbadda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,38 +71,6 @@ void	__add_back_herdoc(t_herdoc **herdoc, char *her, char *del)
 		else
 		{
 			tmp = *herdoc;
-			while (tmp->next)
-				tmp = tmp->next;
-			tmp->next = new;
-		}
-	}
-}
-
-t_arg	*creatlist_arg(char *arg)
-{
-	t_arg	*node;
-
-	node = malloc(sizeof(t_arg));
-	if (!node)
-		return (NULL);
-	node->arg = parse_strdup(arg);
-	node->next = NULL;
-	return (node);
-}
-
-void	__add_back_arg(t_arg **arg, char *content)
-{
-	t_arg	*tmp;
-	t_arg	*new;
-
-	new = creatlist_arg(content);
-	if (new && arg)
-	{
-		if ((*arg)->arg == NULL)
-			*arg = new;
-		else
-		{
-			tmp = *arg;
 			while (tmp->next)
 				tmp = tmp->next;
 			tmp->next = new;
