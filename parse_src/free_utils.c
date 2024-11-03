@@ -6,7 +6,7 @@
 /*   By: bbadda <bbadda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 15:47:24 by bbadda            #+#    #+#             */
-/*   Updated: 2024/11/02 22:24:36 by bbadda           ###   ########.fr       */
+/*   Updated: 2024/11/03 16:22:33 by bbadda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,6 @@ void	free_herdoc(t_herdoc *herdoc)
 
 void	free_token(t_token *token)
 {
-	t_arg	*arg;
-
 	// arg = arg;
 	// if (token) 
 	// {

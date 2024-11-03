@@ -6,7 +6,7 @@
 /*   By: bbadda <bbadda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 10:14:08 by bbadda            #+#    #+#             */
-/*   Updated: 2024/11/02 22:56:22 by bbadda           ###   ########.fr       */
+/*   Updated: 2024/11/03 16:22:52 by bbadda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,10 +50,8 @@ void	allocate_for_me(t_index index, t_token *token)
 		token->file->opr = NULL;
 	}
 	if (index.k > 0)
-	{
-		token->arg = malloc(index.k  * sizeof(t_arg));
-		token->arg->arg = NULL;
-	}
+		token->arg = malloc((index.k + 1)  * sizeof(char *));
+
 }
 
 int	fill_token(char	*command, t_token *token, t_env *e)
@@ -117,11 +115,10 @@ void	priiint(t_lst *lst)
 	{
 		printf("cmd : %s\n", lst->token->command);
 		p = 0;
-		t_arg *t = lst->token->arg;
-		while (t)
+		while (lst->token->arg[p])
 		{
-			printf("c.arg[%d] : %s\n", p++, t->arg);
-			t = t->next;
+			printf("c.arg[%d] : %s\n", p, lst->token->arg[p]);
+			p++;
 		}
 		t_opr *tmp2 = lst->token->file;
 		while (tmp2)

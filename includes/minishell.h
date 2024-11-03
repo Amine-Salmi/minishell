@@ -6,7 +6,7 @@
 /*   By: bbadda <bbadda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 10:14:11 by bbadda            #+#    #+#             */
-/*   Updated: 2024/11/02 22:56:17 by bbadda           ###   ########.fr       */
+/*   Updated: 2024/11/03 16:22:02 by bbadda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,10 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
-#include "readline/history.h"
-#include "readline/readline.h"
-// #include "/Users/asalmi/goinfre/homebrew/opt/readline/include/readline/history.h"
-// #include "/Users/asalmi/goinfre/homebrew/opt/readline/include/readline/readline.h"
+// #include "readline/history.h"
+// #include "readline/readline.h"
+#include "/Users/bbadda/goinfre/homebrew/opt/readline/include/readline/history.h"
+#include "/Users/bbadda/goinfre/homebrew/opt/readline/include/readline/readline.h"
 #include <sys/types.h>
 #include <unistd.h>
 #include <limits.h>
@@ -78,16 +78,10 @@ typedef struct s_herdoc
 	struct s_herdoc *next;
 }t_herdoc;
 
-typedef struct s_arg
-{
-	char	*arg;
-	struct s_arg *next;
-}t_arg;
-
 typedef struct s_token
 {
 	char				*command;
-	t_arg				*arg;
+	char				**arg;
 	t_opr				*file;
 	t_herdoc			*herdoc;
 	// pid_t				pid;45wr
@@ -132,7 +126,6 @@ char		*get_pipe(char *line);
 t_herdoc	*creatlist_herdoc(char *herdoc, char *del);
 void		__add_back_file(t_opr **token, char *file_name, char *opr);
 void		__add_back_herdoc(t_herdoc **token, char *herdoc, char *del);
-void		__add_back_arg(t_arg **arg, char *content);
 void		__ft_lstadd_back(t_lst **lst, t_token *content);
 void	    __error(char c, int i);
 void		*__calloc(size_t count, size_t size);
