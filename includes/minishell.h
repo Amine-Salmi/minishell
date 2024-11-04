@@ -6,7 +6,7 @@
 /*   By: bbadda <bbadda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 10:14:11 by bbadda            #+#    #+#             */
-/*   Updated: 2024/11/03 20:47:16 by bbadda           ###   ########.fr       */
+/*   Updated: 2024/11/04 12:14:15 by bbadda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ typedef struct s_token
 	char				**arg;
 	t_opr				*file;
 	t_herdoc			*herdoc;
-	// pid_t				pid;45wr
+	pid_t				pid;
 }t_token;
 
 typedef struct s_lst
@@ -177,10 +177,10 @@ char    *find_executable_file(t_token *command, t_env *env, char *path);
 char	*check_path(t_token *cmd, t_env *env);
 char	**copy_env(t_env *env);
 void	add_to_env(t_env **env, t_env *new_node);
-void    redirection_handler(t_token *cmd);
-// void    handle_heredoc(t_token *cmd);
+int    	redirection_handler(t_token *cmd, t_env *env);
+void    handle_heredoc(t_lst *cmd);
 
-void		execute_builtin(t_token *cmd, t_env **env);
+void	execute_builtin(t_token *cmd, t_env **env);
 int		is_builtin(const char *cmd);
 int		ft_echo(t_token *cmd);
 int 	ft_cd(t_token *cmd, t_env *env);
@@ -192,7 +192,7 @@ int		update_pwd(t_env *env, char *old_pwd);
 
 char	**split_first_eq(char const *s, char c);
 void	ft_execute(t_lst *cmd, t_env **env);
-void	execute_piped_commands(t_token *cmd, t_env **env);
+void	execute_piped_commands(t_lst *cmd, t_env **env);
 
 void	handler_signal(int mode);
 

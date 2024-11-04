@@ -6,12 +6,45 @@
 /*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 19:16:56 by asalmi            #+#    #+#             */
-/*   Updated: 2024/10/30 21:25:02 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/11/04 01:20:22 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
+void handle_heredoc(t_lst *cmd)
+{
+	char *input_line;
+	char *heredoc_file;
+	int pid;
+	int fd;
+	int status;
+	int i;
+	
+	heredoc_file = ft_strdup("/tmp/heredoc_file.txt");
+	i = 0;
+	pid = fork();
+	if (pid == 0)
+	{
+		fd = open(heredoc_file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+		if (fd < 0)
+		{
+			perror("open");
+			exit(EXIT_FAILURE);
+		}
+		while (cmd)
+		{
+			while (cmd->token->herdoc)
+			{
+				printf("del: %s\n", cmd->token->herdoc->del);
+				cmd->token->herdoc = cmd->token->herdoc->next;
+			}
+			printf("----------------\n");
+			cmd = cmd->next;
+		}
+	}
+}
+// }
 // void    handle_heredoc(t_token *cmd)
 // {
 //     int		fd;
