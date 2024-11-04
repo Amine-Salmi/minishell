@@ -44,7 +44,7 @@ char *find_executable_file(t_token *cmd, t_env *env, char *path)
     while (dirs[i])
     {
         executable_path = ft_strjoin(ft_strjoin(dirs[i], "/"), cmd->command);
-        if (access(executable_path, F_OK) == 0)
+        if (access(executable_path, F_OK) == 0 && cmd->command[0] != '\0')
         {
             if (access(executable_path, X_OK) == 0)
                 return (executable_path);

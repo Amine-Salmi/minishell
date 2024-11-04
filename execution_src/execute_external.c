@@ -6,7 +6,7 @@
 /*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 19:16:46 by asalmi            #+#    #+#             */
-/*   Updated: 2024/11/03 00:43:43 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/11/04 01:07:49 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,10 @@ void execute_piped_commands(t_lst *cmd, t_env **env)
 			close(fd[0]);
 			close(fd[1]);
 			if (cmd->token->file)
-            	redirection_handler(cmd->token);
+			{
+            	if (redirection_handler(cmd->token, *env) == -1)
+					exit((*env)->exit_status);
+			}
 			if (is_builtin(cmd->token->command))
 			{
 				execute_builtin(cmd->token, env);
