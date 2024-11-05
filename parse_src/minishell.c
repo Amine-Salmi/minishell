@@ -6,7 +6,7 @@
 /*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 10:14:08 by bbadda            #+#    #+#             */
-/*   Updated: 2024/11/04 01:31:57 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/11/04 17:52:55 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,7 +165,7 @@ int main (int ac, char *av[], char **env)
 		// priiint(lst);
 		if (lst)
 			ft_execute(lst, &my_env);
-		// printf("EXIT_STATUS ==> %d\n", my_env->exit_status);
+		printf("EXIT_STATUS ==> %d\n", my_env->exit_status);
 		free(full_command);
 	}
 	return (0);

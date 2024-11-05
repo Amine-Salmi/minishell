@@ -6,7 +6,7 @@
 /*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 19:16:46 by asalmi            #+#    #+#             */
-/*   Updated: 2024/11/04 01:07:49 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/11/05 01:50:37 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ void execute_piped_commands(t_lst *cmd, t_env **env)
 	char *executable_path;
 	int status;
 	t_lst *head;
+	int saved_stdout;
+	int saved_stdin;
 
 	head = cmd;
 	pipeLine = -1;
@@ -53,8 +55,10 @@ void execute_piped_commands(t_lst *cmd, t_env **env)
 			if (is_builtin(cmd->token->command))
 			{
 				execute_builtin(cmd->token, env);
-				exit(EXIT_SUCCESS);
+				exit((*env)->exit_status);
 			}
+			if (!cmd->token->command)
+				exit((*env)->exit_status);
 			executable_path = check_path(cmd->token, *env);
 			if (!executable_path)
 				exit((*env)->exit_status);
@@ -91,4 +95,3 @@ void execute_piped_commands(t_lst *cmd, t_env **env)
 		cmd = cmd->next;
 	}
 }
-
