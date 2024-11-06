@@ -6,7 +6,7 @@
 /*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 19:16:46 by asalmi            #+#    #+#             */
-/*   Updated: 2024/11/05 01:50:37 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/11/06 02:52:10 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,23 +16,20 @@ void execute_piped_commands(t_lst *cmd, t_env **env)
 {
     int fd[2];
     int pipeLine;
-	char *path;
 	char *executable_path;
 	int status;
 	t_lst *head;
-	int saved_stdout;
-	int saved_stdin;
-
 	head = cmd;
+	
 	pipeLine = -1;
 	while (cmd)
 	{
 		if (cmd->next != NULL)
 			pipe(fd);
-		handler_signal(0);
 		cmd->token->pid = fork();
 		if (cmd->token->pid == 0)
 		{
+			// handler_signal(0);
 			signal(SIGINT, SIG_DFL);
         	signal(SIGQUIT, SIG_DFL);
 			if (pipeLine != -1)
@@ -71,7 +68,7 @@ void execute_piped_commands(t_lst *cmd, t_env **env)
 		else if (cmd->token->pid > 0)
 		{
 			if (pipeLine != -1)
-				close(fd[0]);
+				close(fd[0]); 
 			pipeLine = dup(fd[0]);
 			close(fd[0]);
 			close(fd[1]);
@@ -83,7 +80,7 @@ void execute_piped_commands(t_lst *cmd, t_env **env)
 	{
 		if (cmd->token->pid > 0)
 		{
-			handler_signal(1);
+			handler_signal(0);
 			waitpid(cmd->token->pid, &status, 0);
 			if (WIFEXITED(status))
 				(*env)->exit_status = WEXITSTATUS(status);

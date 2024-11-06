@@ -6,7 +6,7 @@
 /*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/15 13:17:42 by asalmi            #+#    #+#             */
-/*   Updated: 2024/11/04 23:10:42 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/11/05 21:44:11 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,6 @@ int execute_simple_command(t_token *cmd, t_env **env)
     else if (pid > 0)
     {
         waitpid(pid, &status, 0);
-        handler_signal(1);
         if (WIFEXITED(status))
            (*env)->exit_status = WEXITSTATUS(status);
         if (WIFSIGNALED(status))

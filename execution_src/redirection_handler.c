@@ -6,7 +6,7 @@
 /*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 19:16:59 by asalmi            #+#    #+#             */
-/*   Updated: 2024/11/05 01:46:45 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/11/06 02:52:04 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,6 @@
 int redirection_handler(t_token *cmd, t_env *env)
 {
     int fd;
-    int i;
-
-    i = 0;
     while (cmd->file)
     {
         if (!ft_strncmp(cmd->file->opr, ">", ft_strlen(cmd->file->opr)))

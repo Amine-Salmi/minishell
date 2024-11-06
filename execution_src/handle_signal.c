@@ -6,7 +6,7 @@
 /*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 06:45:43 by asalmi            #+#    #+#             */
-/*   Updated: 2024/11/02 18:15:57 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/11/06 01:28:22 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	handle_ctrl_c_parent()
 	rl_redisplay();
 }
 
-void handle_ctrl_c_nor()
+void handle_ctrl_c_child()
 {
 	ft_putstr_fd("\n", 1);
 	rl_replace_line("", 0);
@@ -31,6 +31,6 @@ void	handler_signal(int mode)
 	if (mode == 1)
 		signal(SIGINT, handle_ctrl_c_parent);
 	else
-		signal(SIGINT, handle_ctrl_c_nor);
+		signal(SIGINT, handle_ctrl_c_child);
 	signal(SIGQUIT, SIG_IGN);
 }

@@ -6,7 +6,7 @@
 /*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 10:14:08 by bbadda            #+#    #+#             */
-/*   Updated: 2024/11/04 17:52:55 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/11/06 01:29:52 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,9 +151,9 @@ int main (int ac, char *av[], char **env)
 	my_env = NULL;
 	my_env = (t_env *)malloc(sizeof(t_env));
 	my_env = get_env(env);
-	handler_signal(1);
 	while (1)
 	{
+		handler_signal(1);
 		full_command = readline("\033[1;31m-\033[0m  \033[1;32mminishell-0.1$\033[0m ");
 		if (!full_command)
 			break;
