@@ -6,7 +6,7 @@
 /*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 06:45:43 by asalmi            #+#    #+#             */
-/*   Updated: 2024/11/06 01:28:22 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/11/07 22:49:37 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,12 @@ void handle_ctrl_c_child()
 void	handler_signal(int mode)
 {
 	if (mode == 1)
+	{
 		signal(SIGINT, handle_ctrl_c_parent);
+	}
 	else
+	{
 		signal(SIGINT, handle_ctrl_c_child);
+	}
 	signal(SIGQUIT, SIG_IGN);
 }

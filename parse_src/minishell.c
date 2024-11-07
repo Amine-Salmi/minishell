@@ -6,11 +6,13 @@
 /*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 10:14:08 by bbadda            #+#    #+#             */
-/*   Updated: 2024/11/06 22:17:05 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/11/07 23:38:33 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+bool g_signal = false;
 
 t_index	max_files_args(char **s_command)
 {
@@ -162,10 +164,10 @@ int main (int ac, char *av[], char **env)
 			continue ;
 		command = parse_split(full_command, '|');
 		lst = toke_lexer(command, my_env);
-		// priiint(lst);
 		if (lst)
 			ft_execute(lst, &my_env);
-		// printf("EXIT_STATUS ==> %d\n", my_env->exit_status);
+		// priiint(lst);
+		printf("EXIT_STATUS ==> %d\n", my_env->exit_status);
 		free(full_command);
 	}
 	return (0);
