@@ -6,7 +6,7 @@
 /*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 19:16:59 by asalmi            #+#    #+#             */
-/*   Updated: 2024/11/06 02:52:04 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/11/06 22:00:48 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,17 @@
 int redirection_handler(t_token *cmd, t_env *env)
 {
     int fd;
+    int saved_stdout;
+
+    saved_stdout = -1;
+    fd = -1;
     while (cmd->file)
     {
         if (!ft_strncmp(cmd->file->opr, ">", ft_strlen(cmd->file->opr)))
         {
+            if (saved_stdout == -1) saved_stdout = dup(STDOUT_FILENO);
             fd = open(cmd->file->file_name, O_WRONLY | O_CREAT | O_TRUNC, 0666);
-            if (fd < 0)
-            {
+            if (fd < 0) {
                 perror("open");
                 env->exit_status = 1;
                 return (-1);

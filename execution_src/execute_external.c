@@ -6,7 +6,7 @@
 /*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 19:16:46 by asalmi            #+#    #+#             */
-/*   Updated: 2024/11/06 02:52:10 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/11/06 20:29:26 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,12 @@ void execute_piped_commands(t_lst *cmd, t_env **env)
 	int status;
 	t_lst *head;
 	head = cmd;
+	int last_pid;
 	
 	pipeLine = -1;
+	last_pid = -1;
+	int saved_in = -1;
+	int saved_out = -1;
 	while (cmd)
 	{
 		if (cmd->next != NULL)
@@ -29,7 +33,6 @@ void execute_piped_commands(t_lst *cmd, t_env **env)
 		cmd->token->pid = fork();
 		if (cmd->token->pid == 0)
 		{
-			// handler_signal(0);
 			signal(SIGINT, SIG_DFL);
         	signal(SIGQUIT, SIG_DFL);
 			if (pipeLine != -1)
@@ -44,10 +47,9 @@ void execute_piped_commands(t_lst *cmd, t_env **env)
 			}
 			close(fd[0]);
 			close(fd[1]);
-			if (cmd->token->file)
+			if (cmd->token->file && redirection_handler(cmd->token, *env) == -1)
 			{
-            	if (redirection_handler(cmd->token, *env) == -1)
-					exit((*env)->exit_status);
+				exit((*env)->exit_status);
 			}
 			if (is_builtin(cmd->token->command))
 			{
@@ -67,6 +69,7 @@ void execute_piped_commands(t_lst *cmd, t_env **env)
 		}
 		else if (cmd->token->pid > 0)
 		{
+			last_pid = cmd->token->pid;
 			if (pipeLine != -1)
 				close(fd[0]); 
 			pipeLine = dup(fd[0]);
@@ -76,19 +79,17 @@ void execute_piped_commands(t_lst *cmd, t_env **env)
 		cmd = cmd->next;
 	}
 	cmd = head;
-	while (cmd)
+	if (last_pid > 0)
 	{
-		if (cmd->token->pid > 0)
-		{
-			handler_signal(0);
-			waitpid(cmd->token->pid, &status, 0);
-			if (WIFEXITED(status))
-				(*env)->exit_status = WEXITSTATUS(status);
-			if (WIFSIGNALED(status))
-				(*env)->exit_status = 128 + WTERMSIG(status);
-			if ((*env)->exit_status == 131)
-				ft_putstr_fd("Quit: 3\n", 1);
-		}
-		cmd = cmd->next;
+		handler_signal(0);
+		waitpid(last_pid, &status, 0);
+		if (WIFEXITED(status))
+			(*env)->exit_status = WEXITSTATUS(status);
+		if (WIFSIGNALED(status))
+			(*env)->exit_status = 128 + WTERMSIG(status);
+		if ((*env)->exit_status == 131)
+			ft_putstr_fd("Quit: 3\n", 1);
 	}
+	while (wait(NULL) > 0)
+		;
 }
