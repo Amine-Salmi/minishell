@@ -6,7 +6,7 @@
 /*   By: bbadda <bbadda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 10:14:11 by bbadda            #+#    #+#             */
-/*   Updated: 2024/11/08 20:47:57 by bbadda           ###   ########.fr       */
+/*   Updated: 2024/11/08 21:07:07 by bbadda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@
 #include "../lib/Libft/libft.h"
 
 # define ARGS_ERROR  "number of arguments"
+
+extern bool g_signal;
 
 typedef struct s_index
 {
@@ -182,7 +184,7 @@ char	*check_path(t_token *cmd, t_env *env);
 char	**copy_env(t_env *env);
 void	add_to_env(t_env **env, t_env *new_node);
 int    	redirection_handler(t_token *cmd, t_env *env);
-void    handle_heredoc(t_lst *cmd);
+void    handle_heredoc(t_lst *cmd, t_env *env);
 
 void	execute_builtin(t_token *cmd, t_env **env);
 int		is_builtin(const char *cmd);

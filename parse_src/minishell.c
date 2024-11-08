@@ -6,11 +6,13 @@
 /*   By: bbadda <bbadda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 10:14:08 by bbadda            #+#    #+#             */
-/*   Updated: 2024/11/08 21:01:48 by bbadda           ###   ########.fr       */
+/*   Updated: 2024/11/08 21:06:57 by bbadda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+bool g_signal = false;
 
 t_index	max_files_args(char **s_command)
 {
@@ -130,18 +132,10 @@ int	main(int ac, char *av[], char **env)
 	my_env = NULL;
 	my_env = (t_env *)malloc(sizeof(t_env));
 	my_env = get_env(env);
-	// printf("----> %p\n", my_env);
-	// system("leaks minishell");
-	// printf("----------> %d\n", my_env->exit_status);
-	// handler_signal(1);
-	// atexit(f);
+	handler_signal(1);
 	while (1)
 	{
-		line = readline("\033[1;31m-\033[0m  \033[1;32mminishell-0.1$\033[0m ");
-		if (!line)
-			break ;
-		add_history(line);
-		full_command = parse_strtrim(line, " ");
+		full_command = readline("\033[1;31m-\033[0m  \033[1;32mminishell-0.1$\033[0m ");
 		if (!full_command)
 			continue ;
 		free(line);
@@ -150,11 +144,11 @@ int	main(int ac, char *av[], char **env)
 		command = parse_split(full_command, '|');
 		free(full_command);
 		lst = toke_lexer(command, my_env);
-		simple_free(command);
-		// if (lst)
-			// ft_execute(lst, &my_env);
-		priiint(lst);
-		free_lst(lst);
+		// priiint(lst);
+		if (lst)
+			ft_execute(lst, &my_env);
+		// printf("EXIT_STATUS ==> %d\n", my_env->exit_status);
+		free(full_command);
 	}
 	free_env(my_env);
 	return (0);

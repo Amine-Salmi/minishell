@@ -6,7 +6,7 @@
 /*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/15 13:17:42 by asalmi            #+#    #+#             */
-/*   Updated: 2024/11/04 01:21:25 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/11/07 23:25:26 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,8 @@ int execute_simple_command(t_token *cmd, t_env **env)
         {
             saved_stdout = dup(STDOUT_FILENO);
             saved_stdin = dup(STDIN_FILENO);
-            redirection_handler(cmd, *env);
+            if (redirection_handler(cmd, *env) == -1)
+                return (-1);
         }
         execute_builtin(cmd, env);
         if (saved_stdin != -1 && saved_stdin != -1)
@@ -51,6 +52,8 @@ int execute_simple_command(t_token *cmd, t_env **env)
             if (redirection_handler(cmd, *env) == -1)
                 exit((*env)->exit_status);
         }
+        if (!cmd->command)
+            exit((*env)->exit_status);
         executable_path = check_path(cmd, *env);
         if (!executable_path)
             exit((*env)->exit_status);
@@ -64,7 +67,6 @@ int execute_simple_command(t_token *cmd, t_env **env)
     else if (pid > 0)
     {
         waitpid(pid, &status, 0);
-        handler_signal(1);
         if (WIFEXITED(status))
            (*env)->exit_status = WEXITSTATUS(status);
         if (WIFSIGNALED(status))
@@ -79,15 +81,15 @@ int execute_simple_command(t_token *cmd, t_env **env)
 
 void ft_execute(t_lst *cmd, t_env **env)
 {
-    // if (cmd->token->herdoc)
-    // {
-    //     handle_heredoc(cmd);
-    // }
-    if (cmd->token->command && cmd->next == NULL)
+    if (g_signal)
+        return ;
+    if (cmd->token->herdoc)
+        handle_heredoc(cmd, *env);
+    if (cmd->next == NULL)
     {
         execute_simple_command(cmd->token, env);  // should free memory in find_executable_file and path.
     }
-    else if (cmd->token->command && cmd->next != NULL)
+    else if (cmd->next != NULL)
     {
         execute_piped_commands(cmd, env);  // should free memory in find_executable_file and path.
     }
