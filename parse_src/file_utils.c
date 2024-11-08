@@ -6,7 +6,7 @@
 /*   By: bbadda <bbadda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 15:54:38 by bbadda            #+#    #+#             */
-/*   Updated: 2024/11/03 16:22:19 by bbadda           ###   ########.fr       */
+/*   Updated: 2024/11/08 17:00:07 by bbadda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,9 +43,11 @@ void	__add_back_file(t_opr **file, char *file_name, char *opr)
 			tmp->next = new;
 		}
 	}
+	free(opr);
+	free(file_name);
 }
 
-t_herdoc	*creatlist_herdoc(char *herdoc, char *del)
+static t_herdoc	*creatlist_herdoc(char *herdoc, char *del, bool expend)
 {
 	t_herdoc	*node;
 
@@ -54,16 +56,17 @@ t_herdoc	*creatlist_herdoc(char *herdoc, char *del)
 		return (NULL);
 	node->herdoc = parse_strdup(herdoc);
 	node->del = parse_strdup(del);
+	node->expend = expend;
 	node->next = NULL;
 	return (node);
 }
 
-void	__add_back_herdoc(t_herdoc **herdoc, char *her, char *del)
+void	__add_back_herdoc(t_herdoc **herdoc, char *her, char *del, bool expend)
 {
 	t_herdoc	*tmp;
 	t_herdoc	*new;
 
-	new = creatlist_herdoc(her, del);
+	new = creatlist_herdoc(her, del, expend);
 	if (new && herdoc)
 	{
 		if ((*herdoc)->herdoc == NULL)
@@ -76,4 +79,6 @@ void	__add_back_herdoc(t_herdoc **herdoc, char *her, char *del)
 			tmp->next = new;
 		}
 	}
+	free(del);
+	free(her);
 }

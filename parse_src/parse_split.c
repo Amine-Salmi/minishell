@@ -6,7 +6,7 @@
 /*   By: bbadda <bbadda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/04 15:27:02 by bbadda            #+#    #+#             */
-/*   Updated: 2024/11/02 22:41:32 by bbadda           ###   ########.fr       */
+/*   Updated: 2024/11/08 13:02:26 by bbadda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,15 +29,12 @@ static int	count_word(char *s, char set)
 
 	in_quotes = false;
 	in_single_quotes = false;
-	i = -1;
+	i = 0;
 	count = 0;
 	helper_function(s, &i, set, &count);
-	while (s[++i])
+	while (s[i])
 	{
-		if (!in_quotes && s[i] == '\'')
-			in_single_quotes = !in_single_quotes;
-		else if (!in_single_quotes && s[i] == '\"')
-			in_quotes = !in_quotes;
+		quotes_status(s, &i, &in_single_quotes, &in_quotes);
 		if (s[i] && s[i] == set && !in_single_quotes && !in_quotes)
 		{
 			while (s[i + 1] && s[i + 1] == set)
@@ -45,6 +42,7 @@ static int	count_word(char *s, char set)
 			if (s[i + 1])
 				count++;
 		}
+		i++;
 	}
 	return (count);
 }
@@ -88,10 +86,7 @@ static char	**str_alloc(char const *s, char c, int fix_c, char **list)
 		end = len_word((char *)s, c, start);
 		list[i] = parse_substr(s, start, end);
 		if (!list[i])
-		{
-			free_list(list);
-			return (NULL);
-		}
+			return (free_list(list), NULL);
 		start = start + end;
 		i++;
 	}

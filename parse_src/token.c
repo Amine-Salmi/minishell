@@ -6,45 +6,11 @@
 /*   By: bbadda <bbadda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 13:04:29 by bbadda            #+#    #+#             */
-/*   Updated: 2024/11/02 19:05:04 by bbadda           ###   ########.fr       */
+/*   Updated: 2024/11/08 20:28:45 by bbadda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-
-int	check_env(char *cmd)
-{
-	int	i;
-
-	i = 0;
-	if (cmd[i] == '$')
-	{
-		if (cmd[i])
-			i++;
-		if (cmd[i] == '$')
-			return (0);
-		if (ft_isdigit(cmd[i]))
-			return (2);
-		if (cmd[i] == '\'' || cmd[i] == '\"')
-			return (3);
-		return (1);
-	}
-	else
-		return (-1);
-}
-
-char	*replace_env(t_env *e, char *s)
-{
-	if (cmp("?", s))
-		return (parse_strdup(ft_itoa(e->exit_status)));
-	while (e)
-	{
-		if (cmp(e->content->var, s))
-			return (parse_strdup(e->content->value));
-		e = e->next;
-	}
-	return (parse_strdup(""));
-}
 
 char	*remove_q(char *s_command)
 {
@@ -69,6 +35,7 @@ char	*remove_q(char *s_command)
 			buffer[buffer_index++] = s_command[i];
 	}
 	buffer[buffer_index] = '\0';
+	free(s_command);
 	return (buffer);
 }
 
@@ -86,28 +53,54 @@ char	*add_token(char *buffer, int *buffer_index)
 	return (s);
 }
 
+int	get_lenth(char *cmd, int x)
+{
+	int	lenth;
+
+	lenth = 0;
+	while (cmd[x] && (ft_isalnum(cmd[x]) || cmd[x] == '_' || cmd[x] == '?'))
+	{
+		x++;
+		lenth++;
+	}
+	return (lenth);
+}
+
+char	*init_and_alloc(char *cmd, int *i, int *j)
+{
+	int	x;
+
+	*j = 0;
+	x = *i;
+	return ((char *)malloc(get_lenth(cmd, x) + 1));
+}
+
 int	get_env_size(char *cmd, t_env *e)
 {
-	int		i;
-	int		j;
-	int		size;
-	char	var_name[256];
+	t_index		index;
+	int			size;
+	int			x;
+	char		*var_name;
 
 	size = 0;
-	i = 0;
-	j = 0;
-	while (cmd[i])
+	index.i = -1;
+	while (cmd[++index.i])
 	{
-		if (cmd[i] == '$')
+		if (cmd[index.i] == '$')
 		{
-			i++;
-			j = 0;
-			while (cmd[i] && (ft_isalnum(cmd[i]) || cmd[i] == '_'))
-				var_name[j++] = cmd[i++];
-			size += parse_strlen(replace_env(e, var_name));
+			index.i++;
+			if (!cmd[index.i] || cmd [index.i] == ' ')
+				return (1);
+			var_name = init_and_alloc(cmd, &index.i, &index.j);
+			while (cmd[index.i] && (ft_isalnum(cmd[index.i])
+					|| cmd[index.i] == '_' || cmd[index.i] == '?'))
+				var_name[index.j++] = cmd[index.i++];
+			var_name[index.j] = '\0';
+			size += parse_strlen(replace_env(e, (var_name)));
+			index.i--;
 		}
-		i++;
-		size++;
+		else
+			size++;
 	}
 	return (size);
 }
