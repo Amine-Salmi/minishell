@@ -6,7 +6,7 @@
 /*   By: bbadda <bbadda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 10:14:11 by bbadda            #+#    #+#             */
-/*   Updated: 2024/11/09 12:59:02 by bbadda           ###   ########.fr       */
+/*   Updated: 2024/11/09 16:39:45 by bbadda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -172,7 +172,6 @@ void 		free_lst(t_lst *lst);
 void 		free_token(t_token *token);
 void    	free_list(char **list);
 void		free_env(t_env **env);
-
 void			priiint(t_lst *lst);
 
 // -------------------- executions functions ------------------ //

@@ -6,7 +6,7 @@
 /*   By: bbadda <bbadda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 11:58:05 by bbadda            #+#    #+#             */
-/*   Updated: 2024/11/08 22:14:30 by bbadda           ###   ########.fr       */
+/*   Updated: 2024/11/09 19:31:13 by bbadda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ void	handle_dollar_sign(char *cmd, int *i, t_env *e, char *buffer, int *buffer_i
 	bool	pair;
 	char	var_name[256];
 	char	*value;
+	int		j;
 
 	in_the_first = true;
 	pair = true;
@@ -54,8 +55,9 @@ void	handle_dollar_sign(char *cmd, int *i, t_env *e, char *buffer, int *buffer_i
 		value = replace_env(e, var_name);
 		if (value)
 		{
-			strcpy(&buffer[*buffer_index], value);
-			*buffer_index += parse_strlen(value);
+			j = 0;
+			while (value[j])
+				buffer[(*buffer_index)++] = value[j++];
 			free(value);
 		}
 	}
@@ -78,7 +80,7 @@ char	*__env(char *cmd, t_env *e)
 	{
 		quotes_status(cmd, &i, &in_single_quotes, &in_quotes);
 		if (cmd[i + 1] && cmd[i] == '$'
-			&& cmd[i + 1] != ' ' && !in_single_quotes)
+			&& cmd[i + 1] != ' ' && !in_single_quotes && cmd[i + 1] != '\"')
 			handle_dollar_sign(cmd, &i, e, buffer, &buffer_index);
 		else
 			buffer[buffer_index++] = cmd[i++];
@@ -90,9 +92,8 @@ char	*__env(char *cmd, t_env *e)
 void	__token(t_token *token, char **cmd, t_env *e)
 {
 	t_index		index;
-	int			i;
 	char		*str;
-	bool		expend;
+	bool		b;
 
 	index.i = 0;
 	index.j = 0;
@@ -101,7 +102,7 @@ void	__token(t_token *token, char **cmd, t_env *e)
 	{
 		str = __env(cmd[index.j], e);
 		if (cmp(str, "<<"))
-			__add_back_herdoc(&token->herdoc, str, __env(cmd[++index.j], e), expend);
+			__add_back_herdoc(&token->herdoc, str, __env(cmd[++index.j], e), b);
 		else if ((cmp(str, "<") || cmp(str, ">") || cmp(str, ">>")))
 			__add_back_file(&token->file, __env(cmd[++index.j], e), str);
 		else
@@ -110,7 +111,7 @@ void	__token(t_token *token, char **cmd, t_env *e)
 				token->command = __env(str, e);
 			token->arg[index.k] = parse_strdup(str);
 			index.k++;
-			// free(str);
+			free(str);
 		}
 		token->arg[index.k] = NULL;
 		index.j++;

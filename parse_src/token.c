@@ -6,7 +6,7 @@
 /*   By: bbadda <bbadda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 13:04:29 by bbadda            #+#    #+#             */
-/*   Updated: 2024/11/08 20:28:45 by bbadda           ###   ########.fr       */
+/*   Updated: 2024/11/09 19:28:46 by bbadda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,6 @@ int	get_env_size(char *cmd, t_env *e)
 {
 	t_index		index;
 	int			size;
-	int			x;
 	char		*var_name;
 
 	size = 0;

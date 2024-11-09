@@ -6,14 +6,13 @@
 /*   By: bbadda <bbadda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 10:14:08 by bbadda            #+#    #+#             */
-/*   Updated: 2024/11/09 13:40:38 by bbadda           ###   ########.fr       */
+/*   Updated: 2024/11/09 19:32:45 by bbadda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-bool g_signal = false;
-
+// bool g_signal = false;
 t_index	max_files_args(char **s_command)
 {
 	t_index	index;
@@ -101,26 +100,6 @@ t_lst	*toke_lexer(char **command, t_env *e)
 	return (lst);
 }
 
-// char	**check_trim_split(char *line)
-// {
-// 	char	*full_command;
-
-// 	full_command = parse_strtrim(line, " ");
-// 	if (!full_command)
-// 		return NULL ;
-// 	free(line);
-// 	if (pipe_error(full_command, parse_strlen(full_command)))
-// 		return NULL ;
-// 	free(full_command);
-// 	return (parse_split(full_command, '|'));
-// }
-
-void	f()
-{
-	// printf("Checking for memory leaks...\n");
-	system("leaks minishell");
-}
-
 int	main(int ac, char *av[], char **env)
 {
 	t_lst		*lst;
@@ -132,29 +111,26 @@ int	main(int ac, char *av[], char **env)
 	(void)av;
 	(void)ac;
 	my_env = NULL;
-	my_env = (t_env *)malloc(sizeof(t_env));
 	my_env = get_env(env);
-	// handler_signal(1);
-	// atexit(f);
-	// while (1)
-	// {
-	// 	line = readline("\033[1;31m-\033[0m  \033[1;32mminishell-0.1$\033[0m ");
-	// 	if (!line)
-	// 		continue ;
-	// 	add_history(line);
-	// 	full_command = parse_strtrim(line, " ");
-	// 	free(line);
-	// 	if (pipe_error(full_command, parse_strlen(full_command)))
-	// 		continue ;
-	// 	command = parse_split(full_command, '|');
-	// 	free(full_command);
-	// 	lst = toke_lexer(command, my_env);
-	// 	// if (lst)
-	// 		// ft_execute(lst, &my_env);
-	// 	// printf("EXIT_STATUS ==> %d\n", my_env->exit_status);
-	// 	// priiint(lst);
-	// 	free_lst(lst);
-	// }
+	handler_signal(1);
+	while (1)
+	{
+		line = readline("\033[1;31m-\033[0m  \033[1;32mminishell-0.1$\033[0m ");
+		if (!line)
+			continue ;
+		add_history(line);
+		full_command = parse_strtrim(line, " ");
+		free(line);
+		if (pipe_error(full_command, parse_strlen(full_command)))
+			continue ;
+		command = parse_split(full_command, '|');
+		free(full_command);
+		lst = toke_lexer(command, my_env);
+		simple_free(command);
+		if (lst)
+			ft_execute(lst, &my_env);
+		free_lst(lst);
+	}
 	free_env(&my_env);
 	return (0);
 }
