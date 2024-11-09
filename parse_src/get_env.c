@@ -6,7 +6,7 @@
 /*   By: bbadda <bbadda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 12:51:37 by bbadda            #+#    #+#             */
-/*   Updated: 2024/11/08 20:46:39 by bbadda           ###   ########.fr       */
+/*   Updated: 2024/11/09 13:44:57 by bbadda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ static char	*__strchr(char *str, int c)
 		if (str[i] == (char)c)
 			return (get_var(str, size));
 	}
-	return (0);
+	return (NULL);
 }
 
 t_env	*get_env(char **env)
@@ -90,6 +90,7 @@ t_env	*get_env(char **env)
 	i = -1;
 	if (!*env)
 	{
+		printf("if\n");
 		content = (t_content *)malloc(sizeof(t_content));
 		if(getcwd(pwd, sizeof(pwd)) == NULL)
 		{
@@ -114,13 +115,15 @@ t_env	*get_env(char **env)
 	}
 	else
 	{
-		i = -1;
-		while (env[++i])
+		printf("else\n");
+		i = 0;
+		while (env[i])
 		{
 			content = malloc(sizeof(t_content));
 			content->var = __strchr(env[i], '=');
 			content->value = getenv(content->var);
 			__add_list_back(&re, content);
+			i++;
 		}
 	}
 	return (re);

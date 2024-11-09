@@ -13,7 +13,7 @@ all : $(LIBFT) $(NAME)
 $(LIBFT) :
 	make -C lib/Libft
 
-$(NAME) : $(LIBFT) $(OBJS) includes/minishell.h 
+$(NAME) : $(LIBFT) $(OBJS) includes/minishell.h
 	$(CC) $(CFLAGS) $(OBJS) $(LIBFT) -o $@ -lreadline
 
 %.o : %.c includes/minishell.h 

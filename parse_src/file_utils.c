@@ -6,7 +6,7 @@
 /*   By: bbadda <bbadda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 15:54:38 by bbadda            #+#    #+#             */
-/*   Updated: 2024/11/08 17:00:07 by bbadda           ###   ########.fr       */
+/*   Updated: 2024/11/08 22:13:16 by bbadda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,6 @@ void	__add_back_file(t_opr **file, char *file_name, char *opr)
 			tmp->next = new;
 		}
 	}
-	free(opr);
-	free(file_name);
 }
 
 static t_herdoc	*creatlist_herdoc(char *herdoc, char *del, bool expend)
@@ -79,6 +77,4 @@ void	__add_back_herdoc(t_herdoc **herdoc, char *her, char *del, bool expend)
 			tmp->next = new;
 		}
 	}
-	free(del);
-	free(her);
 }

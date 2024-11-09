@@ -6,7 +6,7 @@
 /*   By: bbadda <bbadda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 15:47:24 by bbadda            #+#    #+#             */
-/*   Updated: 2024/11/08 20:59:09 by bbadda           ###   ########.fr       */
+/*   Updated: 2024/11/09 13:38:24 by bbadda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,12 +89,12 @@ void	free_lst(t_lst *lst)
 	}
 }
 
-void	free_env(t_env *env)
+void	free_env(t_env **env)
 {
 	t_env	*tmp;
 	t_env	*next_add;
 
-	tmp = env;
+	tmp = *env;
 	while (tmp)
 	{
 		free(tmp->content->var);

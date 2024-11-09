@@ -6,7 +6,7 @@
 /*   By: bbadda <bbadda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 10:14:11 by bbadda            #+#    #+#             */
-/*   Updated: 2024/11/08 21:07:07 by bbadda           ###   ########.fr       */
+/*   Updated: 2024/11/09 12:59:02 by bbadda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,10 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
-// #include "readline/history.h"
-// #include "readline/readline.h"
-#include "/Users/bbadda/goinfre/homebrew/opt/readline/include/readline/history.h"
-#include "/Users/bbadda/goinfre/homebrew/opt/readline/include/readline/readline.h"
+#include "readline/history.h"
+#include "readline/readline.h"
+// #include "/Users/bbadda/goinfre/homebrew/opt/readline/include/readline/history.h"
+// #include "/Users/bbadda/goinfre/homebrew/opt/readline/include/readline/readline.h"
 #include <sys/types.h>
 #include <unistd.h>
 #include <limits.h>
@@ -171,7 +171,7 @@ void		simple_free(char **command);
 void 		free_lst(t_lst *lst);
 void 		free_token(t_token *token);
 void    	free_list(char **list);
-void		free_env(t_env *env);
+void		free_env(t_env **env);
 
 void			priiint(t_lst *lst);
 
