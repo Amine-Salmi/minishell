@@ -6,13 +6,12 @@
 /*   By: bbadda <bbadda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 10:14:08 by bbadda            #+#    #+#             */
-/*   Updated: 2024/11/09 19:32:45 by bbadda           ###   ########.fr       */
+/*   Updated: 2024/11/09 21:39:33 by bbadda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-// bool g_signal = false;
 t_index	max_files_args(char **s_command)
 {
 	t_index	index;
