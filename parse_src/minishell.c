@@ -6,7 +6,7 @@
 /*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 10:14:08 by bbadda            #+#    #+#             */
-/*   Updated: 2024/11/07 23:38:33 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/11/09 14:23:05 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,7 +158,10 @@ int main (int ac, char *av[], char **env)
 		handler_signal(1);
 		full_command = readline("\033[1;31m-\033[0m  \033[1;32mminishell-0.1$\033[0m ");
 		if (!full_command)
-			break;
+		{
+			printf("exit\n");
+		 	break;
+		}
 		add_history(full_command);
 		if (pipe_error(full_command, parse_strlen(full_command)))
 			continue ;
@@ -167,7 +170,7 @@ int main (int ac, char *av[], char **env)
 		if (lst)
 			ft_execute(lst, &my_env);
 		// priiint(lst);
-		printf("EXIT_STATUS ==> %d\n", my_env->exit_status);
+		// printf("EXIT_STATUS ==> %d\n", my_env->exit_status);
 		free(full_command);
 	}
 	return (0);

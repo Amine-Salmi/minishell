@@ -6,7 +6,7 @@
 /*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 19:16:46 by asalmi            #+#    #+#             */
-/*   Updated: 2024/11/06 20:29:26 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/11/08 01:18:50 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ void execute_piped_commands(t_lst *cmd, t_env **env)
 		{
 			last_pid = cmd->token->pid;
 			if (pipeLine != -1)
-				close(fd[0]); 
+				close(pipeLine); 
 			pipeLine = dup(fd[0]);
 			close(fd[0]);
 			close(fd[1]);

@@ -6,7 +6,7 @@
 /*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 00:05:51 by asalmi            #+#    #+#             */
-/*   Updated: 2024/11/02 01:48:58 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/11/09 01:02:52 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,8 @@ int is_builtin(const char *cmd)
         return (1);
     if (!ft_strcmp(cmd, "unset"))
         return (1);
-    // printf("---------> %s\n", cmd);
+    if (!ft_strcmp(cmd, "exit"))
+        return (1);
     return (0);
 }
 
@@ -46,6 +47,8 @@ void execute_builtin(t_token *cmd, t_env **env)
         res = ft_export(cmd, env);
     if (!ft_strcmp(cmd->command, "unset"))
         res = ft_unset(cmd, env);
+    if (!ft_strcmp(cmd->command, "exit"))
+        res = ft_exit(cmd, *env);
     if (res == 0)
         (*env)->exit_status = 0;
     else

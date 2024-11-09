@@ -6,7 +6,7 @@
 /*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 19:16:56 by asalmi            #+#    #+#             */
-/*   Updated: 2024/11/07 23:27:46 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/11/09 14:19:54 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,10 +31,6 @@ char *rename_file(char *str)
 	free(str);
 	return (new_str);
 
-}
-void signal_heredoc()
-{
-	
 }
 
 void handle_heredoc(t_lst *cmd, t_env *env)
@@ -89,22 +85,18 @@ void handle_heredoc(t_lst *cmd, t_env *env)
 	}
 	else if (pid > 0)
 	{	
+		handler_signal(0);
 		waitpid(pid, &status, 0);
 		if (fd != -1)
 			close(fd);
-		if (WIFSIGNALED(status))
+		if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
 		{
-			if (WTERMSIG(status) == SIGINT)
-			{
-				env->exit_status = 1;
-				g_signal = true;
-			}
+			env->exit_status = 1;
+			g_signal = true;
 		}
 	}
 	cmd->token->file = malloc(sizeof(t_opr));
 	cmd->token->file->opr = ft_strdup("<");
 	cmd->token->file->file_name = ft_strdup(heredoc_file);
 	cmd->token->file->next = NULL;
-	// printf("file name: %s\n", cmd->token->file->file_name);
-	// printf("opr : %s\n", cmd->token->file->opr);
 }

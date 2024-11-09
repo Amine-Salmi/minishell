@@ -6,7 +6,7 @@
 /*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/15 13:17:42 by asalmi            #+#    #+#             */
-/*   Updated: 2024/11/07 23:25:26 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/11/09 00:33:33 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,10 +81,20 @@ int execute_simple_command(t_token *cmd, t_env **env)
 
 void ft_execute(t_lst *cmd, t_env **env)
 {
+    t_lst *head;
+
+    head = cmd;
+    while (cmd)
+    {
+        if (cmd->token->herdoc)
+            handle_heredoc(cmd, *env);
+        cmd = cmd->next;
+    }
     if (g_signal)
+    {
         return ;
-    if (cmd->token->herdoc)
-        handle_heredoc(cmd, *env);
+    }
+    cmd = head;
     if (cmd->next == NULL)
     {
         execute_simple_command(cmd->token, env);  // should free memory in find_executable_file and path.

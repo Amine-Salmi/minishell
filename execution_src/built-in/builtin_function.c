@@ -6,7 +6,7 @@
 /*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 22:46:38 by asalmi            #+#    #+#             */
-/*   Updated: 2024/11/02 23:38:44 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/11/09 13:50:13 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,11 +86,8 @@ int ft_pwd(t_token *cmd)
 
 int ft_env(t_token *cmd, t_env *env)
 {
-	// printf("address: %p\n", env);
     if (!env)
-    {
         return 1;
-    }
     if (cmd->arg[1])
         return 1;
     while (env)
@@ -103,4 +100,29 @@ int ft_env(t_token *cmd, t_env *env)
         env = env->next;
     }
     return 0;
+}
+
+int ft_exit(t_token *cmd, t_env *env)
+{
+    if (cmd->arg[0] && !cmd->arg[1])
+        exit(env->exit_status);
+    if (cmd->arg[0] && cmd->arg[1])
+    {
+        if (ft_isalpha(cmd->arg[1][0]))
+        {
+            print_error("numeric argument required\n", cmd->arg[1]);
+            env->exit_status = 255;
+            exit(env->exit_status);
+        }
+    }
+    if (cmd->arg[0] && cmd->arg[1] && cmd->arg[2])
+    { 
+        print_error("too many arguments\n", cmd->command);
+        return (1);
+    }
+    if (cmd->arg[0] && cmd->arg[1] && !cmd->arg[2])
+    {
+        exit(ft_atoi(cmd->arg[1]));
+    }
+    return (0);
 }

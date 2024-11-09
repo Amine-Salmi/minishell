@@ -6,7 +6,7 @@
 /*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 12:51:37 by bbadda            #+#    #+#             */
-/*   Updated: 2024/11/03 16:32:22 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/11/09 14:46:44 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,9 +82,7 @@ t_env	*get_env(char **env)
 	char		pwd[PATH_MAX];
 		
 	re = NULL;
-	// i = 0;
 	i = -1;
-	// printf("\n---------------> %p <---------------\n", *env);
 	if (!*env)
 	{
 		content = (t_content *)malloc(sizeof(t_content));
