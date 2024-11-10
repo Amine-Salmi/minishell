@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: bbadda <bbadda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 10:14:08 by bbadda            #+#    #+#             */
-/*   Updated: 2024/11/10 18:51:52 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/11/10 19:07:26 by bbadda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,28 +116,29 @@ int	main(int ac, char *av[], char **env)
 	(void)av;
 	(void)ac;
 	my_env = NULL;
-	// my_env = (t_env *)malloc(sizeof(t_env));
 	my_env = get_env(env);
 	// atexit(f);
 	while (1)
 	{
 		handler_signal(1);
-		full_command = readline("\033[1;31m-\033[0m  \033[1;32mminishell-0.1$\033[0m ");
+		line = readline("\033[1;31m-\033[0m  \033[1;32mminishell-0.1$\033[0m ");
+		if (!line)
+			continue ;
+		add_history(line);
+		full_command = parse_strtrim(line, " ");
 		if (!full_command)
-		{
-			ft_putstr_fd("exit\n", 1);
-			break;
-		}
-		add_history(full_command);
+			continue ;
+		free(line);
 		if (pipe_error(full_command, parse_strlen(full_command)))
 			continue ;
 		command = parse_split(full_command, '|');
+		free(full_command);
 		lst = toke_lexer(command, my_env);
 		simple_free(command);
 		if (lst)
 			ft_execute(lst, &my_env);
+		// priiint(lst);
 		free_lst(lst);
-		free(full_command);
 	}
 	free_env(&my_env);
 	return (0);
