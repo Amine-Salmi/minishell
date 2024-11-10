@@ -6,7 +6,7 @@
 /*   By: bbadda <bbadda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 10:14:11 by bbadda            #+#    #+#             */
-/*   Updated: 2024/11/10 19:01:22 by bbadda           ###   ########.fr       */
+/*   Updated: 2024/11/10 19:54:57 by bbadda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,7 +146,7 @@ void		quotes_status(char *cmd, int *i, bool *in_single_quotes, bool *in_quotes);
 int			__lstsize(t_env *lst);
 
 // --------------------syntax_error_functions-----------------//
-int			syntax_error(char *command);
+int			syntax_error(char *command, t_env *env);
 int			qoutes_error(char *command);
 int			check_all_thing(char *command, int *i, int *j);
 int			redir_error_check(char *command, int *i, int *j);

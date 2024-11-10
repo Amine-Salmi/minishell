@@ -6,7 +6,7 @@
 /*   By: bbadda <bbadda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 10:14:08 by bbadda            #+#    #+#             */
-/*   Updated: 2024/11/10 19:07:26 by bbadda           ###   ########.fr       */
+/*   Updated: 2024/11/10 19:55:18 by bbadda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ int	fill_token(char	*command, t_token *token, t_env *e)
 	token->herdoc = NULL;
 	token->arg = NULL;
 	s = add_spaces(command);
-	if (syntax_error(s))
+	if (syntax_error(s, e))
 		return (1);
 	s_command = parse_split(s, ' ');
 	free(s);
@@ -123,7 +123,7 @@ int	main(int ac, char *av[], char **env)
 		handler_signal(1);
 		line = readline("\033[1;31m-\033[0m  \033[1;32mminishell-0.1$\033[0m ");
 		if (!line)
-			continue ;
+			break ;
 		add_history(line);
 		full_command = parse_strtrim(line, " ");
 		if (!full_command)
@@ -133,7 +133,7 @@ int	main(int ac, char *av[], char **env)
 			continue ;
 		command = parse_split(full_command, '|');
 		free(full_command);
-		lst = toke_lexer(command, my_env);
+		lst = toke_lexer(command, my_env);	
 		simple_free(command);
 		if (lst)
 			ft_execute(lst, &my_env);
