@@ -1,6 +1,6 @@
 NAME = minishell
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -L ~/goinfre/homebrew/opt/readline/lib/ -fsanitize=address -g
+CFLAGS = -Wall -Wextra -Werror -L ~/goinfre/homebrew/opt/readline/lib/ #-fsanitize=address -g
 RM = rm -rf
 
 LIBFT = lib/Libft/libft.a
@@ -13,7 +13,7 @@ all : $(LIBFT) $(NAME)
 $(LIBFT) :
 	make -C lib/Libft
 
-$(NAME) : $(LIBFT) $(OBJS) includes/minishell.h 
+$(NAME) : $(LIBFT) $(OBJS) includes/minishell.h
 	$(CC) $(CFLAGS) $(OBJS) $(LIBFT) -o $@ -lreadline
 
 %.o : %.c includes/minishell.h 

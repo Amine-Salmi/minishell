@@ -6,7 +6,7 @@
 /*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 10:14:11 by bbadda            #+#    #+#             */
-/*   Updated: 2024/11/09 01:01:24 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/11/10 16:48:29 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,13 +104,13 @@ typedef struct s_minishell
 
 typedef struct s_content 
 {
-	char *var;
-	char *value;
+	char			*var;
+	char			*value;
 }t_content;
 
 typedef struct s_env 
 {
-	t_content 		*content;
+	t_content		*content;
 	int 			exit_status;
 	struct s_env 	*next;
 }t_env;
@@ -121,13 +121,16 @@ typedef struct s_split
 	char		c;
 }t_split;
 
-
+typedef struct s_buffer
+{
+	char	*buffer;
+	int		buffer_index;
+}t_buffer;
 
 int			cmp(const char *s1, const char *s2);
 char		*get_pipe(char *line);
-t_herdoc	*creatlist_herdoc(char *herdoc, char *del);
 void		__add_back_file(t_opr **token, char *file_name, char *opr);
-void		__add_back_herdoc(t_herdoc **token, char *herdoc, char *del);
+void		__add_back_herdoc(t_herdoc **token, char *herdoc, char *del, bool expend);
 void		__ft_lstadd_back(t_lst **lst, t_token *content);
 void	    __error(char c, int i);
 void		*__calloc(size_t count, size_t size);
@@ -137,7 +140,7 @@ t_index		max_files_args(char **s_command);
 int			get_env_size(char *cmd, t_env *e);
 char		*replace_env(t_env *e, char *s);
 int			check_env(char *cmd);
-char		*check_and_replace_env(char *s_command, t_env *e);
+char		*__env(char *s_command, t_env *e);
 char		*remove_q(char *s_command);
 void		quotes_status(char *cmd, int *i, bool *in_single_quotes, bool *in_quotes);
 int			__lstsize(t_env *lst);
@@ -168,8 +171,9 @@ void		simple_free(char **command);
 void 		free_lst(t_lst *lst);
 void 		free_token(t_token *token);
 void    	free_list(char **list);
+void		free_env(t_env **env);
 
-// void 		print_full_command(int j, t_token *token);
+void			priiint(t_lst *lst);
 
 // -------------------- executions functions ------------------ //
 // ------------------------------------------------------------ //
@@ -199,7 +203,6 @@ void	execute_piped_commands(t_lst *cmd, t_env **env);
 
 void	handler_signal(int mode);
 
-void	free_double_pointer(char **env);
 void	print_error(char *error_mesage, char *command);
 // ------------------------------------------------------------ //
 // -------------------- executions functions ------------------ //

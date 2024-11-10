@@ -53,7 +53,6 @@ char *find_executable_file(t_token *cmd, t_env *env, char *path)
             env->exit_status = 126;
             break ;
         }
-        free(executable_path);
         i++;
     }
     if (!flg)
@@ -61,7 +60,6 @@ char *find_executable_file(t_token *cmd, t_env *env, char *path)
         print_error("command not found\n", cmd->command);
         env->exit_status = 127;
     }
-    free_double_pointer(dirs);
     return (NULL);
 }
 

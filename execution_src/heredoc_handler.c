@@ -6,7 +6,7 @@
 /*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 19:16:56 by asalmi            #+#    #+#             */
-/*   Updated: 2024/11/09 14:19:54 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/11/10 00:40:03 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,34 @@ char *rename_file(char *str)
 
 }
 
+void add_readirection(t_opr **file_list, char *opr, char *file_name)
+{
+	t_opr *new_opr;
+	t_opr *last;
+
+	last = *file_list;
+	new_opr = malloc(sizeof(t_opr));
+	if (!new_opr)
+	{
+		perror("malloc");
+		exit(EXIT_FAILURE);
+	}
+	new_opr->file_name = ft_strdup(file_name);
+	new_opr->opr = ft_strdup(opr);
+	new_opr->next = NULL;
+
+	if (!*file_list)
+	{
+		*file_list = new_opr;
+	}
+	else
+	{
+		while (last->next)
+			last = last->next;
+		last->next = new_opr;
+	}
+}
+
 void handle_heredoc(t_lst *cmd, t_env *env)
 {
 	char *input_line;
@@ -44,12 +72,12 @@ void handle_heredoc(t_lst *cmd, t_env *env)
 	
 	fd = -1;
 	heredoc_file = ft_strdup("/tmp/heredoc_file");
-	pid = fork();
-	if (pid == 0)
-	{
-		signal(SIGINT, SIG_DFL);
-		while (cmd)
-		{	
+	while (cmd)
+	{	
+		pid = fork();
+		if (pid == 0)
+		{
+			signal(SIGINT, SIG_DFL);
 			while (cmd->token->herdoc)
 			{
 				fd = open(heredoc_file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
@@ -74,29 +102,26 @@ void handle_heredoc(t_lst *cmd, t_env *env)
 					ft_putendl_fd(input_line, fd);
 					free(input_line);
 				}
+				close(fd);
 				cmd->token->herdoc = cmd->token->herdoc->next;
 			}
-			heredoc_file = rename_file(heredoc_file);
-			cmd = cmd->next;
+			env->exit_status = 0;
+			exit(EXIT_SUCCESS);
 		}
-		close(fd);
-		env->exit_status = 0;
-		exit(EXIT_SUCCESS);
-	}
-	else if (pid > 0)
-	{	
-		handler_signal(0);
-		waitpid(pid, &status, 0);
-		if (fd != -1)
-			close(fd);
-		if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
-		{
-			env->exit_status = 1;
-			g_signal = true;
+		else if (pid > 0)
+		{	
+			handler_signal(0);
+			waitpid(pid, &status, 0);
+			if (fd != -1)
+				close(fd);
+			if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
+			{
+				env->exit_status = 1;
+				g_signal = true;
+			}
 		}
+		add_readirection(&cmd->token->file, "<", heredoc_file);
+		heredoc_file = rename_file(heredoc_file);
+		cmd = cmd->next;
 	}
-	cmd->token->file = malloc(sizeof(t_opr));
-	cmd->token->file->opr = ft_strdup("<");
-	cmd->token->file->file_name = ft_strdup(heredoc_file);
-	cmd->token->file->next = NULL;
 }

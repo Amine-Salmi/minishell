@@ -6,7 +6,7 @@
 /*   By: bbadda <bbadda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 15:47:24 by bbadda            #+#    #+#             */
-/*   Updated: 2024/11/03 16:22:33 by bbadda           ###   ########.fr       */
+/*   Updated: 2024/11/09 13:38:24 by bbadda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,59 +25,85 @@ void	simple_free(char **command)
 void	free_opr(t_opr *opr)
 {
 	t_opr	*tmp;
-
-	while (opr)
+	t_opr	*next_add;
+	tmp = opr;
+	while (tmp)
 	{
-		tmp = opr;
-		opr = opr->next;
-		free(tmp->opr);
 		free(tmp->file_name);
+		free(tmp->opr);
+		next_add = tmp->next;
 		free(tmp);
+		tmp = NULL;
+		tmp = next_add;
 	}
 }
 
 void	free_herdoc(t_herdoc *herdoc)
 {
 	t_herdoc	*tmp;
+	t_herdoc	*next_add;
 
-	while (herdoc)
+	tmp = herdoc;
+	while (tmp)
 	{
-		tmp = herdoc;
-		herdoc = herdoc->next;
 		free(tmp->herdoc);
 		free(tmp->del);
-		free_opr(tmp->file.next);
+		next_add = tmp->next;
 		free(tmp);
+		tmp = NULL;
+		tmp = next_add;
 	}
 }
 
 void	free_token(t_token *token)
 {
-	// arg = arg;
-	// if (token) 
-	// {
-	// 	free(arg);
-	// 		free(token->command);
-	// 	while (arg && arg)
-	// 	{
-	// 		arg++;
-	// 	}
-	// 	free(token->arg);
+	int	i;
+
+	i = 0;
+	if (token) 
+	{
+		free(token->command);
+		while (token->arg[i])
+			free(token->arg[i++]);
+		free(token->arg);
 		free_opr(token->file);
 		free_herdoc(token->herdoc);
 		free(token);
-	// }
+		token = NULL;
+	}
 }
 
 void	free_lst(t_lst *lst)
 {
 	t_lst	*tmp;
+	t_lst	*next_add;
 
-	while (lst)
+	tmp = lst;
+	while (tmp)
 	{
-		tmp = lst;
-		lst = lst->next;
 		free_token(tmp->token);
+		next_add = tmp->next;
 		free(tmp);
+		tmp = NULL;
+		tmp = next_add;
 	}
+}
+
+void	free_env(t_env **env)
+{
+	t_env	*tmp;
+	t_env	*next_add;
+
+	tmp = *env;
+	while (tmp)
+	{
+		free(tmp->content->var);
+		free(tmp->content->value);
+		free(tmp->content);
+		next_add = tmp->next;
+		free(tmp);
+		tmp = NULL;
+		tmp = next_add;
+	}
+	free(tmp);
 }

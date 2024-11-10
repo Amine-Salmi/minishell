@@ -134,7 +134,7 @@ int ft_export(t_token *cmd, t_env **env)
         }
         else
         {
-            printf("mminishell-0.1: export: `%s': a not valid identifier\n", cmd->arg[i]);
+            printf("mminishell: export: `%s': not a valid identifier\n", cmd->arg[i]);
             return (1);
         }
         i++; 

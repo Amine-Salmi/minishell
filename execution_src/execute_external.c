@@ -6,7 +6,7 @@
 /*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 19:16:46 by asalmi            #+#    #+#             */
-/*   Updated: 2024/11/08 01:18:50 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/11/10 01:35:31 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,17 @@ void execute_piped_commands(t_lst *cmd, t_env **env)
 		if (cmd->next != NULL)
 			pipe(fd);
 		cmd->token->pid = fork();
+		if (cmd->token->pid < 0)
+		{
+			perror("fork");
+			while (wait(NULL) > 0); 
+			(*env)->exit_status = 1;
+			if (pipeLine != -1)
+				close(pipeLine);
+			close(fd[0]);
+			close(fd[1]);
+			return ;
+		}
 		if (cmd->token->pid == 0)
 		{
 			signal(SIGINT, SIG_DFL);

@@ -1,0 +1,103 @@
+cat t.txt | grep "h"ello > out
+cat t.txt | grep "hello c" | wc -l
+ls > out -l
+grep -l "t.txtk" out1
+grep out -e '[o,g]'
+grep out2  '[o,g]' -e 
+grep -l "t.txt"
+
+
+
+echo 1 000 > out2
+echo hello >> out
+cat < out1
+cat out > out1
+cat file > out >>out1 << out2 > out3 
+cat file > out >>out1 << stop out2 > out3 -e
+cat file > out >>out1 << stop out3 out2 > out4 -e
+cat file > out >> out1 << stop out2 out3
+
+
+toke[0] > 
+file[0] out 
+
+token[1] >>
+file[1] out1
+
+toke[2] < 
+file[3] out2 
+
+token[3] >
+file[3] out2
+________
+
+cat = cmd
+file = arg
+outfile[][] = {"out", false,  | "out1", true,  | "out3", false}
+infiles[][] = {"out2",  true}
+
+
+
+
+<"mini 2" "wc '-l'"
+
+ 
+export ARG="echo | ls' -l >  "
+
+echo "fkfk $ARG ff"
+echo 'fkfk $ARG ff'
+echo  $"ARG"
+echo  $'ARG'
+echo '$ARG'
+echo "$ARG"
+echo  $ARG'gg'
+echo "ddk'$ARG'"
+echo 'ddk"$ARG"'
+echo  "$ARG'gg'"
+
+
+cat | cat < in | << lim cat > ou | ls -la > > ou1
+
+grep 1 < out1 <out2
+cat file > out >>out1 >out2 | /bin/cat << stop > out3
+>123
+>123
+>12
+>stop
+
+echo hi >file | /bin/echo bye
+echo <file <out hh | /bin/echo 42
+
+echo "cat lol.c '|' cat > lol.c"
+echo "cat lol.c ""|"" cat > lol.c"  "   | " wc  -c
+
+echo '$USER' "$USER" "text  ' text"
+echo -n -nnnnnnn -n -nnn -nnnnn -n feel my pain
+cat file | cat > file
+ls | cat << stop | ls -la | cat << stop1
+ls | cat << stop | ls -la | cat << stop1 | ls | cat << stop2 | ls -la | cat << stop3
+ls | cat << stop | ls -la | cat << stop1 | ls | cat << stop2 | ls -la > out | cat << 'stop3'
+ls|cat file|cat<<"asd">out
+awk 'BEGIN{for(i=1;i<=1000000;i++)print int(i)}' | awk '{sum+=$1} END {print sum/NR}'
+cat < out1 > out1
+printf '#include <unistd.h>\nint main(){write(1, \"2\\n\", 2);}' > file.c
+gcc file.c -o  a.out
+
+\
+
+> out cat -e out1 ==>  cat -e out1 > out
+
+
+>  -e cat  -e> out1
+>  -e cat  > out1
+
+
+cat <<  out2  -e
+cat <<stop  out2   -e
+> out >> out1 cat -e > out2
+
+
+
+hello
+12345
+abcdef
