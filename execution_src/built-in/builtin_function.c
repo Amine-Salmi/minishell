@@ -6,7 +6,7 @@
 /*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 22:46:38 by asalmi            #+#    #+#             */
-/*   Updated: 2024/11/10 16:25:49 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/11/10 19:23:06 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,11 +105,15 @@ int ft_env(t_token *cmd, t_env *env)
 int ft_exit(t_token *cmd, t_env *env)
 {
     if (cmd->arg[0] && !cmd->arg[1])
+    {
+        ft_putstr_fd("exit\n", 1);
         exit(env->exit_status);
+    }
     if (cmd->arg[0] && cmd->arg[1])
     {
         if (ft_isalpha(cmd->arg[1][0]))
         {
+            ft_putstr_fd("exit\n", 1);
             print_error("numeric argument required\n", cmd->arg[1]);
             env->exit_status = 255;
             exit(env->exit_status);
@@ -122,6 +126,7 @@ int ft_exit(t_token *cmd, t_env *env)
     }
     if (cmd->arg[0] && cmd->arg[1] && !cmd->arg[2])
     {
+        ft_putstr_fd("exit\n", 1);
         exit(ft_atoi(cmd->arg[1]));
     }
     return (0);

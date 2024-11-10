@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bbadda <bbadda@student.42.fr>              +#+  +:+       +#+        */
+/*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 10:14:11 by bbadda            #+#    #+#             */
-/*   Updated: 2024/11/10 19:01:22 by bbadda           ###   ########.fr       */
+/*   Updated: 2024/11/10 19:17:55 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@
 #include <string.h>
 // #include "readline/history.h"
 // #include "readline/readline.h"
-#include "/Users/bbadda/goinfre/homebrew/opt/readline/include/readline/history.h"
-#include "/Users/bbadda/goinfre/homebrew/opt/readline/include/readline/readline.h"
+#include "/Users/asalmi/goinfre/homebrew/opt/readline/include/readline/history.h"
+#include "/Users/asalmi/goinfre/homebrew/opt/readline/include/readline/readline.h"
 #include <sys/types.h>
 #include <unistd.h>
 #include <limits.h>
