@@ -6,26 +6,17 @@
 /*   By: bbadda <bbadda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 15:47:24 by bbadda            #+#    #+#             */
-/*   Updated: 2024/11/09 13:38:24 by bbadda           ###   ########.fr       */
+/*   Updated: 2024/11/10 14:42:47 by bbadda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	simple_free(char **command)
-{
-	int	i;
-
-	i = 0;
-	while (command[i])
-		free(command[i++]);
-	free (command);
-}
-
 void	free_opr(t_opr *opr)
 {
 	t_opr	*tmp;
 	t_opr	*next_add;
+
 	tmp = opr;
 	while (tmp)
 	{

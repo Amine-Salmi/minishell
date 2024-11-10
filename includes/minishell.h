@@ -6,7 +6,7 @@
 /*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 10:14:11 by bbadda            #+#    #+#             */
-/*   Updated: 2024/11/10 16:48:29 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/11/10 18:20:51 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,7 +124,7 @@ typedef struct s_split
 typedef struct s_buffer
 {
 	char	*buffer;
-	int		buffer_index;
+	char 	*cmd;
 }t_buffer;
 
 int			cmp(const char *s1, const char *s2);
@@ -154,7 +154,7 @@ int			check_end_of_command(int i, int j);
 void		__free(t_list **lst);
 // ---------------------get_env_function----------------------//
 t_env   	*get_env( char **env);
-
+char		*__strchr(char *str, int c);
 // --------------------add_spaces----------------------------//
 char		*add_spaces(char *cmd);
 int 		__is_redir(char c);
@@ -172,7 +172,6 @@ void 		free_lst(t_lst *lst);
 void 		free_token(t_token *token);
 void    	free_list(char **list);
 void		free_env(t_env **env);
-
 void			priiint(t_lst *lst);
 
 // -------------------- executions functions ------------------ //

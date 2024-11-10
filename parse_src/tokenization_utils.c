@@ -6,7 +6,7 @@
 /*   By: bbadda <bbadda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 20:23:02 by bbadda            #+#    #+#             */
-/*   Updated: 2024/11/06 17:58:21 by bbadda           ###   ########.fr       */
+/*   Updated: 2024/11/10 14:10:04 by bbadda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,4 +35,14 @@ int	__lstsize(t_env *lst)
 		i++;
 	}
 	return (i);
+}
+
+void	simple_free(char **command)
+{
+	int	i;
+
+	i = 0;
+	while (command[i])
+		free(command[i++]);
+	free (command);
 }

@@ -6,7 +6,7 @@
 /*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 10:14:08 by bbadda            #+#    #+#             */
-/*   Updated: 2024/11/10 18:14:47 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/11/10 18:51:52 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ void	allocate_for_me(t_index index, t_token *token)
 		token->herdoc = malloc(index.j * sizeof(t_herdoc));
 		token->herdoc->del = NULL;
 		token->herdoc->herdoc = NULL;
+		token->herdoc->expend = 1;
 	}
 	if (index.i > 0)
 	{
@@ -100,27 +101,10 @@ t_lst	*toke_lexer(char **command, t_env *e)
 	}
 	return (lst);
 }
-
-// char	**check_trim_split(char *line)
-// {
-// 	char	*full_command;
-
-// 	full_command = parse_strtrim(line, " ");
-// 	if (!full_command)
-// 		return NULL ;
-// 	free(line);
-// 	if (pipe_error(full_command, parse_strlen(full_command)))
-// 		return NULL ;
-// 	free(full_command);
-// 	return (parse_split(full_command, '|'));
-// }
-
-void	f()
+void f()
 {
-	// printf("Checking for memory leaks...\n");
 	system("leaks minishell");
 }
-
 int	main(int ac, char *av[], char **env)
 {
 	t_lst		*lst;
@@ -149,10 +133,10 @@ int	main(int ac, char *av[], char **env)
 			continue ;
 		command = parse_split(full_command, '|');
 		lst = toke_lexer(command, my_env);
+		simple_free(command);
 		if (lst)
 			ft_execute(lst, &my_env);
-		// priiint(lst);
-		// printf("EXIT_STATUS ==> %d\n", my_env->exit_status);
+		free_lst(lst);
 		free(full_command);
 	}
 	free_env(&my_env);
