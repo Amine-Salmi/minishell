@@ -6,7 +6,7 @@
 /*   By: bbadda <bbadda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 11:58:05 by bbadda            #+#    #+#             */
-/*   Updated: 2024/11/09 19:31:13 by bbadda           ###   ########.fr       */
+/*   Updated: 2024/11/10 17:45:19 by bbadda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,17 @@ void	extract_var_name(char *cmd, int *i, char *var_name, bool *in_the_first)
 	var_name[j] = '\0';
 }
 
+bool	check_if_pair(char *cmd, int *i, bool *pair)
+{
+	(*i)++;
+	while (cmd[*i] && cmd[*i] == '$')
+	{
+		*pair = !*pair;
+		(*i)++;
+	}
+	return (*pair);
+}
+
 void	handle_dollar_sign(char *cmd, int *i, t_env *e, char *buffer, int *buffer_index)
 {
 	bool	in_the_first;
@@ -43,12 +54,7 @@ void	handle_dollar_sign(char *cmd, int *i, t_env *e, char *buffer, int *buffer_i
 
 	in_the_first = true;
 	pair = true;
-	(*i)++;
-	while (cmd[*i] && cmd[*i] == '$')
-	{
-		pair = !pair;
-		(*i)++;
-	}
+	check_if_pair(cmd, i, &pair);
 	if (pair)
 	{
 		extract_var_name(cmd, i, var_name, &in_the_first);
@@ -65,11 +71,11 @@ void	handle_dollar_sign(char *cmd, int *i, t_env *e, char *buffer, int *buffer_i
 
 char	*__env(char *cmd, t_env *e)
 {
-	char	*buffer;
-	int		buffer_index;
-	int		i;
-	bool	in_single_quotes;
-	bool	in_quotes;
+	char		*buffer;
+	int			buffer_index;
+	int			i;
+	bool		in_single_quotes;
+	bool		in_quotes;
 
 	in_single_quotes = false;
 	in_quotes = false;
@@ -89,12 +95,19 @@ char	*__env(char *cmd, t_env *e)
 	return (remove_q(buffer));
 }
 
+void	__check_herdoc_expend(char *cmd, bool *expend)
+{
+	if (cmd[0] == '\"' || cmd[0] == '\'')
+		*expend = false;
+}
+
 void	__token(t_token *token, char **cmd, t_env *e)
 {
 	t_index		index;
 	char		*str;
 	bool		b;
 
+	b = true;
 	index.i = 0;
 	index.j = 0;
 	index.k = 0;
@@ -102,17 +115,29 @@ void	__token(t_token *token, char **cmd, t_env *e)
 	{
 		str = __env(cmd[index.j], e);
 		if (cmp(str, "<<"))
-			__add_back_herdoc(&token->herdoc, str, __env(cmd[++index.j], e), b);
+		{
+			// char *sc = __env(cmd[++index.j], e);
+			index.j++;
+			char *tt = parse_strdup(cmd[index.j]);
+			__check_herdoc_expend(tt, &b);
+			char *f = remove_q(tt);
+			__add_back_herdoc(&token->herdoc, str, f, b);
+			free (f);
+		}
 		else if ((cmp(str, "<") || cmp(str, ">") || cmp(str, ">>")))
-			__add_back_file(&token->file, __env(cmd[++index.j], e), str);
+		{
+			char *scfae = __env(cmd[++index.j], e);
+			__add_back_file(&token->file, scfae, str);
+			free (scfae);
+		}
 		else
 		{
 			if (!token->command)
 				token->command = __env(str, e);
 			token->arg[index.k] = parse_strdup(str);
 			index.k++;
-			free(str);
 		}
+		free(str);
 		token->arg[index.k] = NULL;
 		index.j++;
 	}

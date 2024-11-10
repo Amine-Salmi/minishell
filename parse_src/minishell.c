@@ -6,7 +6,7 @@
 /*   By: bbadda <bbadda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 10:14:08 by bbadda            #+#    #+#             */
-/*   Updated: 2024/11/09 21:39:33 by bbadda           ###   ########.fr       */
+/*   Updated: 2024/11/10 17:59:06 by bbadda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ void	allocate_for_me(t_index index, t_token *token)
 		token->herdoc = malloc(index.j * sizeof(t_herdoc));
 		token->herdoc->del = NULL;
 		token->herdoc->herdoc = NULL;
+		token->herdoc->expend = 1;
 	}
 	if (index.i > 0)
 	{
@@ -98,7 +99,10 @@ t_lst	*toke_lexer(char **command, t_env *e)
 	}
 	return (lst);
 }
-
+void f()
+{
+	system("leaks minishell");
+}
 int	main(int ac, char *av[], char **env)
 {
 	t_lst		*lst;
@@ -111,7 +115,8 @@ int	main(int ac, char *av[], char **env)
 	(void)ac;
 	my_env = NULL;
 	my_env = get_env(env);
-	handler_signal(1);
+	// handler_signal(1);
+	atexit(f);
 	while (1)
 	{
 		line = readline("\033[1;31m-\033[0m  \033[1;32mminishell-0.1$\033[0m ");
@@ -119,15 +124,20 @@ int	main(int ac, char *av[], char **env)
 			continue ;
 		add_history(line);
 		full_command = parse_strtrim(line, " ");
+		if (!full_command)
+			continue ;
 		free(line);
 		if (pipe_error(full_command, parse_strlen(full_command)))
 			continue ;
 		command = parse_split(full_command, '|');
 		free(full_command);
 		lst = toke_lexer(command, my_env);
+		if (lst->token->herdoc)
+			printf("should expend: %d\n", lst->token->herdoc->expend);
 		simple_free(command);
-		if (lst)
-			ft_execute(lst, &my_env);
+		// if (lst)
+			// ft_execute(lst, &my_env);
+		priiint(lst);
 		free_lst(lst);
 	}
 	free_env(&my_env);

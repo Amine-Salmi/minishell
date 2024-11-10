@@ -6,7 +6,7 @@
 /*   By: bbadda <bbadda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 14:12:57 by bbadda            #+#    #+#             */
-/*   Updated: 2024/11/02 19:50:01 by bbadda           ###   ########.fr       */
+/*   Updated: 2024/11/10 17:14:49 by bbadda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,26 +66,30 @@ int	redir_error(char *command)
 
 int	pipe_error(char *command, int j)
 {
-	int	i;
+	bool	in_quotes;
+	bool	in_single_quotes;
+	int		i;
 
-	i = 0;
-	while (command && command[i] == ' ')
+	in_quotes = false;
+	in_single_quotes = false;
+	i = -1;
+	while (command[i] && command[i] == ' ')
 		i++;
-	if (command && command[i] == '|')
+	if (command[i] && command[i] == '|')
 		return (__error('|', 1), 1);
 	else
 	{
-		while (i < j)
+		while (++i < j)
 		{
+			quotes_status(command, &i, &in_single_quotes, &in_quotes);
 			if (command[i] == '|')
 			{
 				i++;
-				while (command[i] == ' ')
+				while (command[i] && command[i] == ' ')
 					i++;
-				if (command[i] == '|' || i >= j)
+				if ((command[i] == '|' || i >= j) && !in_single_quotes && !in_quotes)
 					return (__error('|', 1), 1);
 			}
-			i++;
 		}
 	}
 	return (0);
