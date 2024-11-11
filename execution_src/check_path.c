@@ -30,31 +30,54 @@ int file_ok(char *exec_path, t_token *cmd, t_env *env)
     return (0);
 }
 
+void free_split(char **dirs)
+{
+    int i;
+
+    i = 0;
+    while (dirs[i])
+    {
+        free(dirs[i]);
+        i++;
+    }
+    free(dirs);
+}
+
 // free memory in this function ---------------------
 char *find_executable_file(t_token *cmd, t_env *env, char *path)
 {
     char *executable_path;
+    char *tmp_path;
     char **dirs;
     int i;
     int flg;
 
     dirs = ft_split(path, ':');
+    free(path);
     i = 0;
     flg = 0;
     while (dirs[i])
     {
-        executable_path = ft_strjoin(ft_strjoin(dirs[i], "/"), cmd->command);
+        tmp_path = ft_strjoin(dirs[i], "/");
+        executable_path = ft_strjoin(tmp_path, cmd->command);
+        free(tmp_path);
         if (access(executable_path, F_OK) == 0 && cmd->command[0] != '\0')
         {
             if (access(executable_path, X_OK) == 0)
+            {
+                free_split(dirs);
                 return (executable_path);
+            }
             print_error("Permission denied\n", executable_path);
+            free(executable_path);
             flg = 1;
             env->exit_status = 126;
             break ;
         }
+        free(executable_path);
         i++;
     }
+    free_split(dirs);
     if (!flg)
     {
         print_error("command not found\n", cmd->command);
@@ -66,6 +89,7 @@ char *find_executable_file(t_token *cmd, t_env *env, char *path)
 char *check_path(t_token *cmd, t_env *env)
 {
     char *path;
+    char *tmp_path;
     char cwd_buff[PATH_MAX];
 
     if (ft_strchr(cmd->command, '/'))
@@ -82,9 +106,12 @@ char *check_path(t_token *cmd, t_env *env)
             perror("getcwd");
             return (NULL);
         }
-        path = ft_strjoin(ft_strjoin(cwd_buff, "/"), cmd->command);
+        tmp_path = ft_strjoin(cwd_buff, "/");
+        path = ft_strjoin(tmp_path, cmd->command);
+        free(tmp_path);
         if (!file_ok(path, cmd, env))
             return (path);
+        free(path);
         return (NULL);
     }
     return (find_executable_file(cmd, env, path));

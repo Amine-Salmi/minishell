@@ -6,7 +6,7 @@
 /*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 00:05:51 by asalmi            #+#    #+#             */
-/*   Updated: 2024/11/09 01:02:52 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/11/11 02:40:58 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,9 +73,13 @@ int    update_pwd(t_env *env, char *old_pwd)
     while (env)
     {
         if (!ft_strcmp(env->content->var, "PWD"))
+        {
+            free(env->content->value);
             env->content->value = ft_strdup(pwd);
+        }
         if (!ft_strcmp(env->content->var, "OLDPWD"))
         {
+            free(env->content->value);
             env->content->value = ft_strdup(old_pwd);
             flg = 1;
         }

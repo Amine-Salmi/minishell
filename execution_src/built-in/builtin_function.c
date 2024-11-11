@@ -6,7 +6,7 @@
 /*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 22:46:38 by asalmi            #+#    #+#             */
-/*   Updated: 2024/11/10 19:23:06 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/11/11 02:39:18 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,10 +63,14 @@ int ft_cd(t_token *cmd, t_env *env)
         path = cmd->arg[1];
     if (chdir(path) != 0)
     {
-        perror("minishell: cd");
+        perror("cd");
+        if (!cmd->arg[1])
+            free(path);
         return (1);
     }
     update_pwd(env, oldpath);
+    if (!cmd->arg[1])
+        free(path);
     return 0;
 }
 

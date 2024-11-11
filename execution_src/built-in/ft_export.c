@@ -44,7 +44,12 @@ int elemnt_exist(t_env *var, t_env *env)
         if (!ft_strcmp(var->content->var, env->content->var))
         {
             if (var->content->value && ft_strcmp("_", env->content->var))
-                env->content->value = var->content->value;
+            {
+                free(env->content->value);
+                env->content->value = ft_strdup(var->content->value);
+                if (!env->content->value)
+                    return (1);
+            }
             return (1);
         }
         env = env->next;
@@ -129,8 +134,18 @@ int ft_export(t_token *cmd, t_env **env)
         if (!check_export_elements(cmd->arg[i]))
         {
             new_node = create_new_elemnts(cmd->arg[i], *env);
+            if (!new_node)
+                return (1);
             if (!elemnt_exist(new_node, *env))
                 add_to_env(env, new_node);
+            else
+            {
+                free(new_node->content->var);
+                if (new_node->content->value)
+                    free(new_node->content->value);
+                free(new_node->content);
+                free(new_node);
+            }
         }
         else
         {
