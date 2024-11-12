@@ -6,7 +6,7 @@
 /*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 10:14:08 by bbadda            #+#    #+#             */
-/*   Updated: 2024/11/11 04:50:14 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/11/12 02:36:45 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,6 +125,7 @@ int	main(int ac, char *av[], char **env)
 		if (!line)
 		{
 			ft_putstr_fd("exit\n", 1);
+			exit(my_env->exit_status);
 			break ;
 		}
 		add_history(line);
@@ -141,6 +142,7 @@ int	main(int ac, char *av[], char **env)
 		if (lst)
 			ft_execute(lst, &my_env);
 		// priiint(lst);
+		remove_file();
 		free_lst(lst);
 	}
 	free_env(&my_env);

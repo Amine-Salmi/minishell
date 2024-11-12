@@ -6,26 +6,78 @@
 /*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 19:16:46 by asalmi            #+#    #+#             */
-/*   Updated: 2024/11/10 23:24:18 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/11/11 20:53:17 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void execute_piped_commands(t_lst *cmd, t_env **env)
+void	setup_and_execute(t_lst *cmd, t_env **env, int *pipeline, int *fd)
 {
-    int fd[2];
-    int pipeLine;
-	char *executable_path;
-	int status;
-	t_lst *head;
-	head = cmd;
-	int last_pid;
-	
-	pipeLine = -1;
-	last_pid = -1;
-	int saved_in = -1;
-	int saved_out = -1;
+	signal(SIGINT, SIG_DFL);
+	signal(SIGQUIT, SIG_DFL);
+	if (*pipeline != -1)
+	{
+		dup2(*pipeline, STDIN_FILENO);
+		close(*pipeline);
+	}
+	if (cmd->next != NULL)
+	{
+		dup2(fd[1], STDOUT_FILENO);
+		close(fd[1]);
+	}
+	close(fd[0]);
+	close(fd[1]);
+	if (cmd->token->file && redirection_handler(cmd->token, *env) == -1)
+	{
+		exit((*env)->exit_status);
+	}
+	if (is_builtin(cmd->token->command))
+	{
+		execute_builtin(cmd->token, env);
+		exit((*env)->exit_status);
+	}
+}
+
+void	execute_command(t_lst *cmd, t_env **env)
+{
+	char	*executable_path;
+	char	**env_copy;
+
+	if (!cmd->token->command)
+		exit((*env)->exit_status);
+	executable_path = check_path(cmd->token, *env);
+	if (!executable_path)
+		exit((*env)->exit_status);
+	env_copy = copy_env(*env);
+	if (execve(executable_path, cmd->token->arg, env_copy) == -1)
+	{
+		free_double_p(env_copy);
+		perror("execve");
+		exit(EXIT_FAILURE);
+	}
+}
+
+int	parent_setup(t_lst *cmd, int *pipeline, int *fd)
+{
+	pid_t	last_pid;
+
+	last_pid = cmd->token->pid;
+	if (*pipeline != -1)
+		close(*pipeline);
+	*pipeline = dup(fd[0]);
+	close(fd[0]);
+	close(fd[1]);
+	return (last_pid);
+}
+
+void	__process_command(t_lst *cmd, t_env **env, int *pipeline,
+		pid_t *last_pid)
+{
+	int	fd[2];
+
+	fd[0] = -1;
+	fd[1] = -1;
 	while (cmd)
 	{
 		if (cmd->next != NULL)
@@ -33,74 +85,30 @@ void execute_piped_commands(t_lst *cmd, t_env **env)
 		cmd->token->pid = fork();
 		if (cmd->token->pid < 0)
 		{
-			perror("fork");
-			while (wait(NULL) > 0); 
-			(*env)->exit_status = 1;
-			if (pipeLine != -1)
-				close(pipeLine);
-			close(fd[0]);
-			close(fd[1]);
+			handle_fork_error(fd, *pipeline, env);
 			return ;
 		}
 		if (cmd->token->pid == 0)
 		{
-			signal(SIGINT, SIG_DFL);
-        	signal(SIGQUIT, SIG_DFL);
-			if (pipeLine != -1)
-			{
-				dup2(pipeLine, STDIN_FILENO);
-				close(pipeLine);
-			}
-			if (cmd->next != NULL)
-			{
-				dup2(fd[1], STDOUT_FILENO);
-				close(fd[1]);
-			}
-			close(fd[0]);
-			close(fd[1]);
-			if (cmd->token->file && redirection_handler(cmd->token, *env) == -1)
-			{
-				exit((*env)->exit_status);
-			}
-			if (is_builtin(cmd->token->command))
-			{
-				execute_builtin(cmd->token, env);
-				exit((*env)->exit_status);
-			}
-			if (!cmd->token->command)
-				exit((*env)->exit_status);
-			executable_path = check_path(cmd->token, *env);
-			if (!executable_path)
-				exit((*env)->exit_status);
-			if (execve(executable_path, cmd->token->arg, copy_env(*env)) == -1)
-			{
-				perror("execve");
-				exit(EXIT_FAILURE);
-			}
+			setup_and_execute(cmd, env, pipeline, fd);
+			execute_command(cmd, env);
 		}
 		else if (cmd->token->pid > 0)
-		{
-			last_pid = cmd->token->pid;
-			if (pipeLine != -1)
-				close(pipeLine); 
-			pipeLine = dup(fd[0]);
-			close(fd[0]);
-			close(fd[1]);
-		}
+			*last_pid = parent_setup(cmd, pipeline, fd);
 		cmd = cmd->next;
 	}
-	cmd = head;
-	if (last_pid > 0)
-	{
-		handler_signal(0);
-		waitpid(last_pid, &status, 0);
-		if (WIFEXITED(status))
-			(*env)->exit_status = WEXITSTATUS(status);
-		if (WIFSIGNALED(status))
-			(*env)->exit_status = 128 + WTERMSIG(status);
-		if ((*env)->exit_status == 131)
-			ft_putstr_fd("Quit: 3\n", 1);
-	}
-	while (wait(NULL) > 0)
-		;
+	wait_last_child(env, *last_pid);
+}
+
+void	execute_piped_commands(t_lst *cmd, t_env **env)
+{
+	int		pipeline;
+	pid_t	last_pid;
+	int		fd[2];
+
+	pipeline = -1;
+	last_pid = -1;
+	fd[0] = -1;
+	fd[1] = -1;
+	__process_command(cmd, env, &pipeline, &last_pid);
 }

@@ -6,7 +6,7 @@
 /*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/19 17:30:10 by asalmi            #+#    #+#             */
-/*   Updated: 2024/10/19 23:34:36 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/11/11 22:22:57 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 size_t	count_word(const char *s)
 {
-	size_t count_word;
-	int found_eq;
-	int	i;
+	size_t	count_word;
+	int		found_eq;
+	int		i;
 
 	count_word = 1;
 	found_eq = 0;
@@ -26,7 +26,7 @@ size_t	count_word(const char *s)
 		if (s[i] == '=')
 		{
 			found_eq = 1;
-			break;
+			break ;
 		}
 		i++;
 	}
@@ -52,26 +52,27 @@ static char	**ft_alocated(char **array, char const *s, char c)
 
 	i = 0;
 	j = 0;
-    while (s[j] && s[j] != c)
-        j++;
-    array[i] = ft_substr(s, 0, j);
-    if (!(array[i]))
-    {
-        free_array_words(i, array);
-        return (NULL);
-    }
-    i++;
-    if (s[j] && s[j] == c)
-        j++;
+	while (s[j] && s[j] != c)
+		j++;
+	array[i] = ft_substr(s, 0, j);
+	if (!(array[i]))
+	{
+		free_array_words(i, array);
+		return (NULL);
+	}
+	i++;
+	if (s[j] && s[j] == c)
+		j++;
 	array[i] = ft_substr(s, j, (ft_strlen(s) - j));
-    if (!(array[i]))
-    {
-        free_array_words(i, array);
-        return (NULL);
-    }
+	if (!(array[i]))
+	{
+		free_array_words(i, array);
+		return (NULL);
+	}
 	array[++i] = 0;
 	return (array);
 }
+
 char	**split_first_eq(char const *s, char c)
 {
 	char	**list;
@@ -88,7 +89,7 @@ char	**split_first_eq(char const *s, char c)
 		list[0] = ft_strdup(s);
 		if (!list[0])
 			return (NULL);
-		list[1] = NULL; 
+		list[1] = NULL;
 	}
 	else
 		list = ft_alocated(list, s, c);

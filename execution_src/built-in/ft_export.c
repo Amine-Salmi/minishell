@@ -1,158 +1,111 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_export.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/12 00:20:12 by asalmi            #+#    #+#             */
+/*   Updated: 2024/11/12 00:20:13 by asalmi           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/minishell.h"
 
-void    print_env_var(t_env *env)
+int	check_export_elements(char *var)
 {
-    while (env)
-    {
-        if (!env->content)
-            return ;
-        printf("declare -x %s", env->content->var);
-        if (env->content->value)
-            printf("=\"%s\"\n", env->content->value);
-        else
-            printf("\n");
-        env = env->next; 
-    }
+	int	i;
+
+	if (!ft_isalpha(var[0]) && var[0] != '_')
+		return (1);
+	i = 1;
+	while (var[i])
+	{
+		if (var[i] == '=')
+			return (0);
+		if (!ft_isdigit(var[i]) && !ft_isalpha(var[i]) && var[i] != '_')
+			return (1);
+		i++;
+	}
+	return (0);
 }
 
-int check_export_elements(char *var)
+int	elemnt_exist(t_env *var, t_env *env)
 {
-    int i;
+	int		i;
+	char	*value;
 
-    if (!ft_isalpha(var[0]) && var[0] != '_')
-        return (1);
-    i = 1;
-    while (var[i])
-    {
-        if (var[i] == '=')
-            return (0);
-        if (!ft_isdigit(var[i]) && !ft_isalpha(var[i]) && var[i] != '_')
-            return (1);
-        i++;
-    }
-    return (0);
+	i = 0;
+	while (env)
+	{
+		if (!ft_strcmp(var->content->var, env->content->var))
+		{
+			if (var->content->value && ft_strcmp("_", env->content->var))
+			{
+				free(env->content->value);
+				env->content->value = ft_strdup(var->content->value);
+				if (!env->content->value)
+					return (1);
+			}
+			return (1);
+		}
+		env = env->next;
+	}
+	return (0);
 }
 
-int elemnt_exist(t_env *var, t_env *env)
+t_env	*allocate_new_node(void)
 {
-    int i;
-    char *value;
+	t_env	*new_node;
 
-    i = 0;
-    while (env)
-    {
-        if (!ft_strcmp(var->content->var, env->content->var))
-        {
-            if (var->content->value && ft_strcmp("_", env->content->var))
-            {
-                free(env->content->value);
-                env->content->value = ft_strdup(var->content->value);
-                if (!env->content->value)
-                    return (1);
-            }
-            return (1);
-        }
-        env = env->next;
-    }
-    return (0);
+	new_node = malloc(sizeof(t_env));
+	if (!new_node)
+		return (NULL);
+	new_node->content = malloc(sizeof(t_content));
+	if (!new_node->content)
+	{
+		free(new_node);
+		return (NULL);
+	}
+	new_node->next = NULL;
+	return (new_node);
 }
 
-t_env *create_new_elemnts(char *args, t_env *env)
+void	handle_export_arg(t_token *cmd, t_env **env, char *arg)
 {
-    t_env *new_node;
-    char **elemnts;
+	t_env	*new_node;
 
-    new_node = malloc(sizeof(t_env));
-    if (!new_node)
-        return (NULL);
-    new_node->content = malloc(sizeof(t_content));
-    if (!new_node->content)
-    {
-        free(new_node);
-        return (NULL);
-    }
-    elemnts = split_first_eq(args, '=');
-    if (!elemnts)
-    {
-        free(new_node);
-        free(new_node->content);
-        return (NULL);
-    }
-    new_node->content->var = ft_strdup(elemnts[0]);
-    if (elemnts[1])
-        new_node->content->value = ft_strdup(elemnts[1]);
-    else
-        new_node->content->value = NULL;
-    free(elemnts[0]);
-    if (elemnts[1])
-        free(elemnts[1]);
-    free(elemnts);
-    new_node->next = NULL;
-    return (new_node);
+	if (!check_export_elements(arg))
+	{
+		new_node = create_new_elemnts(arg, *env);
+		if (!new_node)
+			return ;
+		if (!elemnt_exist(new_node, *env))
+			add_to_env(env, new_node);
+		else
+		{
+			free_env_content(new_node);
+		}
+	}
+	else
+		print_identifier_error(cmd->command, arg);
 }
 
-t_env *lstlast(t_env *last)
+int	ft_export(t_token *cmd, t_env **env)
 {
-    while (last && last->next != NULL)
-        last = last->next;
-    return (last);
-}
+	int		i;
+	char	**content;
+	t_env	*new_node;
 
-void add_to_env(t_env **env, t_env *new_node)
-{
-    t_env *last;
-
-    if (!env)
-     return ;
-    if (env && !*env && new_node)
-    {
-        *env = new_node;
-        (*env)->next = NULL;
-    }
-    else
-    {
-        last = lstlast(*env);
-        last->next = new_node;
-    }
-}
-
-int ft_export(t_token *cmd, t_env **env)
-{
-    int i;
-    char **content;
-    t_env *new_node;
-
-    i = 1;
-    if (cmd->arg[i] == NULL)
-    {
-        print_env_var(*env);
-        return (0);
-    }
-    while (cmd->arg[i])
-    {
-        
-        if (!check_export_elements(cmd->arg[i]))
-        {
-            new_node = create_new_elemnts(cmd->arg[i], *env);
-            if (!new_node)
-                return (1);
-            if (!elemnt_exist(new_node, *env))
-                add_to_env(env, new_node);
-            else
-            {
-                free(new_node->content->var);
-                if (new_node->content->value)
-                    free(new_node->content->value);
-                free(new_node->content);
-                free(new_node);
-            }
-        }
-        else
-        {
-            printf("mminishell: export: `%s': not a valid identifier\n", cmd->arg[i]);
-            return (1);
-        }
-        i++; 
-    }
-    return 0;
+	if (cmd->arg[1] == NULL)
+	{
+		print_env_var(*env);
+		return (0);
+	}
+	i = 0;
+	while (cmd->arg[++i])
+	{
+		handle_export_arg(cmd, env, cmd->arg[i]);
+	}
+	return (0);
 }
