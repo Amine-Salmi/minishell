@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_strtrim.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bbadda <bbadda@student.42.fr>              +#+  +:+       +#+        */
+/*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/12 09:56:40 by bbadda            #+#    #+#             */
-/*   Updated: 2024/11/10 14:00:35 by bbadda           ###   ########.fr       */
+/*   Updated: 2024/11/16 23:51:56 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,8 @@ static int	getend(char *str, char *set)
 {
 	int	i;
 
-	i = strlen(str) - 1;
-	while (getcheck(str[i], set) == 1)
+	i = parse_strlen(str) - 1;
+	while (i >= 0 && getcheck(str[i], set) == 1)
 		i--;
 	return (i);
 }

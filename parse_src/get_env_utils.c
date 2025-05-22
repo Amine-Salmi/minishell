@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_env_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bbadda <bbadda@student.42.fr>              +#+  +:+       +#+        */
+/*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 14:41:39 by bbadda            #+#    #+#             */
-/*   Updated: 2024/11/10 14:07:18 by bbadda           ###   ########.fr       */
+/*   Updated: 2024/11/17 02:10:04 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int	check_env(char *cmd)
 char	*replace_env(t_env *e, char *s)
 {
 	if (cmp("?", s))
-		return (parse_strdup(ft_itoa(e->exit_status)));
+		return (ft_itoa(e->exit_status));
 	while (e)
 	{
 		if (cmp(e->content->var, s))
@@ -73,4 +73,13 @@ char	*__strchr(char *str, int c)
 			return (get_var(str, size));
 	}
 	return (NULL);
+}
+
+bool	special_char(char c, int index)
+{
+	if (c == 36 && index == 1)
+		return (false);
+	if ((c >= 58 && c <= 64) || (c >= 1 && c <= 57))
+		return (true);
+	return (false);
 }

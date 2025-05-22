@@ -6,7 +6,7 @@
 /*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 22:46:38 by asalmi            #+#    #+#             */
-/*   Updated: 2024/11/11 22:21:12 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/11/17 00:54:14 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,10 @@ int	ft_echo(t_token *cmd)
 
 	i = 1;
 	newline = 1;
-	if (!ft_strcmp(cmd->arg[i], "-n"))
+	while (cmd->arg[i] && is_valid_n(cmd->arg[i]))
 	{
-		i++;
 		newline = 0;
+		i++;
 	}
 	while (cmd->arg[i])
 	{
@@ -64,7 +64,7 @@ int	ft_cd(t_token *cmd, t_env *env)
 	return (0);
 }
 
-int	ft_pwd(t_token *cmd)
+int	ft_pwd(void)
 {
 	char	pwd_path[PATH_MAX];
 

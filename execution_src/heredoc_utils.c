@@ -6,16 +6,18 @@
 /*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 01:07:59 by asalmi            #+#    #+#             */
-/*   Updated: 2024/11/12 01:12:17 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/11/17 01:03:09 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	parent_process_logic(pid_t pid, int *status, t_env *env)
+void	parent_process_logic(pid_t pid, t_env *env)
 {
+	int	status;
+
 	handler_signal(0);
-	waitpid(pid, status, 0);
+	waitpid(pid, &status, 0);
 	if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
 	{
 		env->exit_status = 1;

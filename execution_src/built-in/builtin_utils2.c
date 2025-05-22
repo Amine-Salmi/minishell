@@ -6,7 +6,7 @@
 /*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 00:05:51 by asalmi            #+#    #+#             */
-/*   Updated: 2024/11/11 22:49:31 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/11/16 21:02:49 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	execute_builtin(t_token *cmd, t_env **env)
 	if (!ft_strcmp(cmd->command, "cd"))
 		res = ft_cd(cmd, *env);
 	if (!ft_strcmp(cmd->command, "pwd"))
-		res = ft_pwd(cmd);
+		res = ft_pwd();
 	if (!ft_strcmp(cmd->command, "env"))
 		res = ft_env(cmd, *env);
 	if (!ft_strcmp(cmd->command, "export"))
@@ -51,7 +51,7 @@ void	execute_builtin(t_token *cmd, t_env **env)
 		res = ft_exit(cmd, *env);
 	if (res == 0)
 		(*env)->exit_status = 0;
-	else
+	else if (res == 1)
 		(*env)->exit_status = 1;
 }
 
@@ -97,7 +97,6 @@ void	check_pwd_env(t_env *env, char *pwd, char *old_pwd, int *flg)
 int	update_pwd(t_env *env, char *old_pwd)
 {
 	char	pwd[PATH_MAX];
-	t_env	*new;
 	t_env	*head;
 	int		flg;
 

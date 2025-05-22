@@ -6,7 +6,7 @@
 /*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 14:43:30 by asalmi            #+#    #+#             */
-/*   Updated: 2024/11/12 00:08:38 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/11/17 01:44:05 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,10 +85,8 @@ void	remove_elemnts(t_env **env, char *d_var)
 
 int	ft_unset(t_token *cmd, t_env **env)
 {
-	int		i;
-	char	*remove_var;
+	int	i;
 
-	remove_var = NULL;
 	if (!cmd->arg[1])
 		return (0);
 	i = 0;
@@ -97,12 +95,7 @@ int	ft_unset(t_token *cmd, t_env **env)
 		if (!ft_strcmp(cmd->arg[i], "_"))
 			return (0);
 		if (!check_unset_elements(cmd->arg[i]))
-		{
-			remove_var = find_var_env(*env, cmd->arg[i]);
-			if (remove_var)
-				remove_elemnts(env, cmd->arg[i]);
-			free(remove_var);
-		}
+			remove_elemnts(env, cmd->arg[i]);
 		else
 		{
 			print_identifier_error(cmd->command, cmd->arg[i]);

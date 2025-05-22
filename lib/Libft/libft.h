@@ -6,7 +6,7 @@
 /*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 14:21:55 by asalmi            #+#    #+#             */
-/*   Updated: 2024/10/21 13:22:55 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/11/16 23:51:38 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 
 # include <unistd.h>
 # include <stdlib.h>
-# include <string.h>
 # include <stdio.h>
 
 int		ft_atoi(const char *str);

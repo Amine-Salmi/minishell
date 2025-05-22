@@ -6,7 +6,7 @@
 /*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/11 10:13:36 by asalmi            #+#    #+#             */
-/*   Updated: 2024/11/11 18:48:06 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/11/14 19:57:48 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,6 @@ char	*check_and_return_executable(t_token *cmd, t_env *env, char **dirs,
 char	*find_executable_file(t_token *cmd, t_env *env, char *path)
 {
 	char	*executable_path;
-	char	*tmp_path;
 	char	**dirs;
 	int		i;
 	int		flg;
@@ -76,8 +75,12 @@ char	*get_path_from_cwd(t_token *cmd, t_env *env)
 		return (NULL);
 	}
 	tmp_path = ft_strjoin(cwd_buff, "/");
+	if (!tmp_path)
+		return (NULL);
 	path = ft_strjoin(tmp_path, cmd->command);
 	free(tmp_path);
+	if (!path)
+		return (NULL);
 	if (!file_ok(path, cmd, env))
 		return (path);
 	free(path);
@@ -87,8 +90,6 @@ char	*get_path_from_cwd(t_token *cmd, t_env *env)
 char	*check_path(t_token *cmd, t_env *env)
 {
 	char	*path;
-	char	*tmp_path;
-	char	cwd_buff[PATH_MAX];
 
 	if (ft_strchr(cmd->command, '/'))
 	{

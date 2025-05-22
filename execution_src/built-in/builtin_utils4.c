@@ -6,7 +6,7 @@
 /*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 00:15:11 by asalmi            #+#    #+#             */
-/*   Updated: 2024/11/12 00:17:33 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/11/17 01:47:36 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	add_to_env(t_env **env, t_env *new_node)
 	}
 }
 
-t_env	*create_new_elemnts(char *args, t_env *env)
+t_env	*create_new_elemnts(char *args)
 {
 	t_env	*new_node;
 	char	**elemnts;

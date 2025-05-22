@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   file_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bbadda <bbadda@student.42.fr>              +#+  +:+       +#+        */
+/*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 15:54:38 by bbadda            #+#    #+#             */
-/*   Updated: 2024/11/08 22:13:16 by bbadda           ###   ########.fr       */
+/*   Updated: 2024/11/16 22:27:23 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,10 +31,13 @@ void	__add_back_file(t_opr **file, char *file_name, char *opr)
 	t_opr	*new;
 
 	new = creatlist(file_name, opr);
-	if (new && file)
+	if (new && file && *file)
 	{
 		if ((*file)->file_name == NULL)
+		{
+			free(*file);
 			*file = new;
+		}
 		else
 		{
 			tmp = *file;
@@ -68,7 +71,10 @@ void	__add_back_herdoc(t_herdoc **herdoc, char *her, char *del, bool expend)
 	if (new && herdoc)
 	{
 		if ((*herdoc)->herdoc == NULL)
+		{
+			free(*herdoc);
 			*herdoc = new;
+		}
 		else
 		{
 			tmp = *herdoc;
@@ -77,4 +83,14 @@ void	__add_back_herdoc(t_herdoc **herdoc, char *her, char *del, bool expend)
 			tmp->next = new;
 		}
 	}
+}
+
+void	simple_free(char **command)
+{
+	int	i;
+
+	i = 0;
+	while (command[i])
+		free(command[i++]);
+	free (command);
 }

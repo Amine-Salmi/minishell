@@ -6,7 +6,7 @@
 /*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 19:16:46 by asalmi            #+#    #+#             */
-/*   Updated: 2024/11/11 20:53:17 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/11/17 01:00:53 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,7 @@ void	setup_and_execute(t_lst *cmd, t_env **env, int *pipeline, int *fd)
 	close(fd[0]);
 	close(fd[1]);
 	if (cmd->token->file && redirection_handler(cmd->token, *env) == -1)
-	{
 		exit((*env)->exit_status);
-	}
 	if (is_builtin(cmd->token->command))
 	{
 		execute_builtin(cmd->token, env);

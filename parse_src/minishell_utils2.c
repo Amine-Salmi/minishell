@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell_utils2.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bbadda <bbadda@student.42.fr>              +#+  +:+       +#+        */
+/*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 11:04:33 by bbadda            #+#    #+#             */
-/*   Updated: 2024/11/10 14:48:58 by bbadda           ###   ########.fr       */
+/*   Updated: 2024/11/14 02:41:47 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,4 +66,15 @@ void	__ft_lstadd_back(t_lst **lst, t_token *content)
 			last = last->next;
 		last->next = new;
 	}
+}
+
+t_env	*init_and_get_env(char **av, int ac, char **env)
+{
+	t_env	*my_env;
+
+	(void)av;
+	(void)ac;
+	my_env = NULL;
+	my_env = get_env(env);
+	return (my_env);
 }

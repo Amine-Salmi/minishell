@@ -6,7 +6,7 @@
 /*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 00:20:12 by asalmi            #+#    #+#             */
-/*   Updated: 2024/11/12 00:20:13 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/11/13 23:26:12 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,7 @@ int	check_export_elements(char *var)
 
 int	elemnt_exist(t_env *var, t_env *env)
 {
-	int		i;
-	char	*value;
+	int	i;
 
 	i = 0;
 	while (env)
@@ -71,31 +70,31 @@ t_env	*allocate_new_node(void)
 	return (new_node);
 }
 
-void	handle_export_arg(t_token *cmd, t_env **env, char *arg)
+int	handle_export_arg(t_token *cmd, t_env **env, char *arg)
 {
 	t_env	*new_node;
 
 	if (!check_export_elements(arg))
 	{
-		new_node = create_new_elemnts(arg, *env);
+		new_node = create_new_elemnts(arg);
 		if (!new_node)
-			return ;
+			return (1);
 		if (!elemnt_exist(new_node, *env))
 			add_to_env(env, new_node);
 		else
-		{
 			free_env_content(new_node);
-		}
 	}
 	else
+	{
 		print_identifier_error(cmd->command, arg);
+		return (1);
+	}
+	return (0);
 }
 
 int	ft_export(t_token *cmd, t_env **env)
 {
-	int		i;
-	char	**content;
-	t_env	*new_node;
+	int	i;
 
 	if (cmd->arg[1] == NULL)
 	{
@@ -105,7 +104,8 @@ int	ft_export(t_token *cmd, t_env **env)
 	i = 0;
 	while (cmd->arg[++i])
 	{
-		handle_export_arg(cmd, env, cmd->arg[i]);
+		if (handle_export_arg(cmd, env, cmd->arg[i]) != 0)
+			return (1);
 	}
 	return (0);
 }

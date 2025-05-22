@@ -6,7 +6,7 @@
 /*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/11 21:40:06 by asalmi            #+#    #+#             */
-/*   Updated: 2024/11/12 00:07:09 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/11/16 22:57:50 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,4 +61,20 @@ void	print_identifier_error(char *command, char *identifier)
 		printf("mminishell: unset: `%s':not a valid identifier\n", identifier);
 	else if (!ft_strcmp(command, "export"))
 		printf("mminishell: export: `%s':not a valid identifier\n", identifier);
+}
+
+int	is_valid_n(const char *arg)
+{
+	int	i;
+
+	if (!arg || arg[0] != '-')
+		return (0);
+	i = 1;
+	while (arg[i])
+	{
+		if (arg[i] != 'n')
+			return (0);
+		i++;
+	}
+	return (1);
 }

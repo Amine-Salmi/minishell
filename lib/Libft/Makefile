@@ -18,7 +18,7 @@ OBJECT=$(src:.c=.o)
 OBJECT_BONUS=$(src_bonus:.c=.o)
 
 $(NAME): $(OBJECT) libft.h
-	ar rcs $(NAME) $(OBJECT)
+	ar rcs $(NAME)  $(OBJECT)
 
 %.o: %.c libft.h
 	$(CC) $(CFLAGS) -o $@ -c $<

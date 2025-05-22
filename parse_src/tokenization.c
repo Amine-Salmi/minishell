@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenization.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bbadda <bbadda@student.42.fr>              +#+  +:+       +#+        */
+/*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 11:58:05 by bbadda            #+#    #+#             */
-/*   Updated: 2024/11/10 17:45:19 by bbadda           ###   ########.fr       */
+/*   Updated: 2024/11/13 02:07:07 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,111 +33,59 @@ void	extract_var_name(char *cmd, int *i, char *var_name, bool *in_the_first)
 	var_name[j] = '\0';
 }
 
-bool	check_if_pair(char *cmd, int *i, bool *pair)
+static void	__create_herdoc_list(t_token *token, t_buffer str, bool *e, int *i)
 {
+	char	*s;
+	char	*s2;
+
 	(*i)++;
-	while (cmd[*i] && cmd[*i] == '$')
-	{
-		*pair = !*pair;
-		(*i)++;
-	}
-	return (*pair);
+	s = parse_strdup(str.cmd2[*i]);
+	if (s[0] == '\"' || s[0] == '\'')
+		*e = false;
+	s2 = remove_q(s);
+	__add_back_herdoc(&token->herdoc, str.str, s2, e);
+	free(s2);
 }
 
-void	handle_dollar_sign(char *cmd, int *i, t_env *e, char *buffer, int *buffer_index)
+static void	__create_file_list(t_token *token, t_buffer str, int *i, t_env *e)
 {
-	bool	in_the_first;
-	bool	pair;
-	char	var_name[256];
-	char	*value;
-	int		j;
+	char	*s;
 
-	in_the_first = true;
-	pair = true;
-	check_if_pair(cmd, i, &pair);
-	if (pair)
-	{
-		extract_var_name(cmd, i, var_name, &in_the_first);
-		value = replace_env(e, var_name);
-		if (value)
-		{
-			j = 0;
-			while (value[j])
-				buffer[(*buffer_index)++] = value[j++];
-			free(value);
-		}
-	}
+	s = __env(str.cmd2[++(*i)], e);
+	__add_back_file(&token->file, s, str.str);
+	free (s);
 }
 
-char	*__env(char *cmd, t_env *e)
+static void	init_data(int *j, int *k, bool *expend)
 {
-	char		*buffer;
-	int			buffer_index;
-	int			i;
-	bool		in_single_quotes;
-	bool		in_quotes;
-
-	in_single_quotes = false;
-	in_quotes = false;
-	i = 0;
-	buffer_index = 0;
-	buffer = __calloc(get_env_size(cmd, e) + 1, 1);
-	while (cmd[i])
-	{
-		quotes_status(cmd, &i, &in_single_quotes, &in_quotes);
-		if (cmd[i + 1] && cmd[i] == '$'
-			&& cmd[i + 1] != ' ' && !in_single_quotes && cmd[i + 1] != '\"')
-			handle_dollar_sign(cmd, &i, e, buffer, &buffer_index);
-		else
-			buffer[buffer_index++] = cmd[i++];
-		buffer[buffer_index] = '\0';
-	}
-	return (remove_q(buffer));
-}
-
-void	__check_herdoc_expend(char *cmd, bool *expend)
-{
-	if (cmd[0] == '\"' || cmd[0] == '\'')
-		*expend = false;
+	*expend = true;
+	*j = 0;
+	*k = 0;
 }
 
 void	__token(t_token *token, char **cmd, t_env *e)
 {
 	t_index		index;
-	char		*str;
-	bool		b;
+	bool		expend;
+	t_buffer	string;
 
-	b = true;
-	index.i = 0;
-	index.j = 0;
-	index.k = 0;
-	while (cmd[index.j] && parse_strlen(cmd[index.j]) > 0)
+	init_data(&index.j, &index.k, &expend);
+	string.cmd2 = cmd;
+	while (string.cmd2[index.j] && parse_strlen(string.cmd2 [index.j]) > 0)
 	{
-		str = __env(cmd[index.j], e);
-		if (cmp(str, "<<"))
-		{
-			// char *sc = __env(cmd[++index.j], e);
-			index.j++;
-			char *tt = parse_strdup(cmd[index.j]);
-			__check_herdoc_expend(tt, &b);
-			char *f = remove_q(tt);
-			__add_back_herdoc(&token->herdoc, str, f, b);
-			free (f);
-		}
-		else if ((cmp(str, "<") || cmp(str, ">") || cmp(str, ">>")))
-		{
-			char *scfae = __env(cmd[++index.j], e);
-			__add_back_file(&token->file, scfae, str);
-			free (scfae);
-		}
+		string.str = __env(string.cmd2 [index.j], e);
+		if (cmp(string.str, "<<"))
+			__create_herdoc_list(token, string, &expend, &index.j);
+		else if ((cmp(string.str, "<") || cmp(string.str, ">")
+				|| cmp(string.str, ">>")))
+			__create_file_list(token, string, &index.j, e);
 		else
 		{
 			if (!token->command)
-				token->command = __env(str, e);
-			token->arg[index.k] = parse_strdup(str);
-			index.k++;
+				token->command = __env(string.str, e);
+			token->arg[index.k++] = parse_strdup(string.str);
 		}
-		free(str);
+		free(string.str);
 		token->arg[index.k] = NULL;
 		index.j++;
 	}

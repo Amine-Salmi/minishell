@@ -3,40 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   syntax_error.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bbadda <bbadda@student.42.fr>              +#+  +:+       +#+        */
+/*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 14:12:57 by bbadda            #+#    #+#             */
-/*   Updated: 2024/11/10 19:54:09 by bbadda           ###   ########.fr       */
+/*   Updated: 2024/11/17 01:28:50 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-
-int	check_all_thing(char *command, int *i, int *j)
-{
-	(*i)++;
-	if (check_end_of_command(*i, *j))
-	{
-		return (1);
-	}
-	if (command[*i] && command[*i] == '>' && command[*i] != command[*i - 1])
-		return (__error(command[*i], 1), 1);
-	if (command[*i] && command[*i] == command[(*i) - 1])
-	{
-		if (redir_error_check(command, i, j))
-			return (1);
-	}
-	if (command[*i] == ' ')
-	{
-		while (command[*i] == ' ')
-			(*i)++;
-		if (check_end_of_command(*i, *j))
-			return (1);
-		if (__is_redir(command[*i]))
-			return (__error(command[*i], 1), 1);
-	}
-	return (0);
-}
 
 int	redir_error(char *command)
 {
@@ -64,30 +38,35 @@ int	redir_error(char *command)
 	return (0);
 }
 
+static void	__init_data(bool *in_q, bool *in_sq, int *i)
+{
+	*in_q = false;
+	*in_sq = false;
+	*i = 0;
+}
+
 int	pipe_error(char *command, int j)
 {
-	bool	in_quotes;
-	bool	in_single_quotes;
+	bool	in_q;
+	bool	in_sq;
 	int		i;
 
-	in_quotes = false;
-	in_single_quotes = false;
-	i = -1;
+	__init_data(&in_q, &in_sq, &i);
 	while (command[i] && command[i] == ' ')
 		i++;
 	if (command[i] && command[i] == '|')
 		return (__error('|', 1), 1);
 	else
 	{
-		while (++i < j)
+		while (i++ < j)
 		{
-			quotes_status(command, &i, &in_single_quotes, &in_quotes);
+			quotes_status(command, &i, &in_sq, &in_q);
 			if (command[i] == '|')
 			{
 				i++;
 				while (command[i] && command[i] == ' ')
 					i++;
-				if ((command[i] == '|' || i >= j) && !in_single_quotes && !in_quotes)
+				if ((command[i] == '|' || i >= j) && !in_sq && !in_q)
 					return (__error('|', 1), 1);
 			}
 		}

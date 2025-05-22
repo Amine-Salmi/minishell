@@ -6,7 +6,7 @@
 /*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 15:47:24 by bbadda            #+#    #+#             */
-/*   Updated: 2024/11/12 01:43:50 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/11/15 19:08:20 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,25 +57,27 @@ void	free_token(t_token *token)
 		while (token->arg[i])
 			free(token->arg[i++]);
 		free(token->arg);
-		free_opr(token->file);
-		free_herdoc(token->herdoc);
+		if (token->file)
+			free_opr(token->file);
+		if (token->herdoc)
+			free_herdoc(token->herdoc);
 		free(token);
 		token = NULL;
 	}
 }
 
-void	free_lst(t_lst *lst)
+void	free_lst(t_lst **lst)
 {
 	t_lst	*tmp;
 	t_lst	*next_add;
 
-	tmp = lst;
+	tmp = *lst;
 	while (tmp)
 	{
-		free_token(tmp->token);
+		if (tmp->token)
+			free_token(tmp->token);
 		next_add = tmp->next;
 		free(tmp);
-		tmp = NULL;
 		tmp = next_add;
 	}
 }

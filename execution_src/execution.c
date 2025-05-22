@@ -6,7 +6,7 @@
 /*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/15 13:17:42 by asalmi            #+#    #+#             */
-/*   Updated: 2024/11/11 07:58:08 by asalmi           ###   ########.fr       */
+/*   Updated: 2024/11/17 01:35:03 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,17 +26,13 @@ int	__exec_builtin(t_token *cmd, t_env **env)
 	}
 	execute_builtin(cmd, env);
 	if (saved_stdin != -1 && saved_stdin != -1)
-	{
 		restore_streams(saved_stdout, saved_stdin);
-	}
 	return (0);
 }
 
 pid_t	__execute_in_child(t_token *cmd, t_env **env)
 {
 	pid_t	pid;
-	char	*executable_path;
-	char	**env_copy;
 
 	pid = fork();
 	if (pid == -1)
@@ -78,9 +74,6 @@ void	wait_child(pid_t pid, t_env **env)
 int	execute_simple_command(t_token *cmd, t_env **env)
 {
 	pid_t	pid;
-	int		status;
-	char	*executable_path;
-	char	**env_copy;
 
 	if (is_builtin(cmd->command) != 0)
 	{
@@ -98,19 +91,28 @@ int	execute_simple_command(t_token *cmd, t_env **env)
 
 void	ft_execute(t_lst *cmd, t_env **env)
 {
-	if (cmd->token->herdoc)
-		handle_heredoc(cmd, *env);
-	if (g_signal == true)
+	t_lst	*head;
+	char	*heredoc_file;
+
+	head = cmd;
+	heredoc_file = ft_strdup("/tmp/heredoc_file");
+	while (cmd)
 	{
-		g_signal = false;
-		return ;
+		if (cmd->token->herdoc)
+			handle_heredoc(cmd, *env, heredoc_file);
+		heredoc_file = rename_file(heredoc_file);
+		cmd = cmd->next;
+		if (g_signal == true)
+		{
+			free(heredoc_file);
+			g_signal = false;
+			return ;
+		}
 	}
+	free(heredoc_file);
+	cmd = head;
 	if (cmd->next == NULL)
-	{
 		execute_simple_command(cmd->token, env);
-	}
 	else if (cmd->next != NULL)
-	{
 		execute_piped_commands(cmd, env);
-	}
 }
