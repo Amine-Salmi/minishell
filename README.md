@@ -79,7 +79,7 @@ Execute the minishell:
 ---
 
 ### Resources
-[Bash Manual][https://www.gnu.org/software/bash/manual/]
+Bash Manual: https://www.gnu.org/software/bash/manual/
 
 ---
 ## **License**
