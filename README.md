@@ -25,6 +25,3 @@ Minishell is a simple shell implementation inspired by Bash. This project demons
 1. Clone the repository:  
   ```bash
   git clone https://github.com/Amine-Salmi/minishell.git
-### Build the Project:
-```bash
-make
