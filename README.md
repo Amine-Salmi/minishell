@@ -81,7 +81,7 @@ Execute the minishell:
 ## Resources
 
 - **Learning Resources Used During Development**
-  - [**The Linux Programming Interface**] by Michael Kerrisk - Comprehensive guide to system programming
+  - [**The Linux Programming Interface**](#) by Michael Kerrisk - Comprehensive guide to system programming
 
 - **Additional References**
   - [Bash Manual](https://www.gnu.org/software/bash/manual/)
