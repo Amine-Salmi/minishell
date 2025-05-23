@@ -78,11 +78,12 @@ Execute the minishell:
 
 ---
 
-### Resources
-**Learning Resources Used During Development**
-  - **The Linux Programming Interface** by Michael Kerrisk - Comprehensive guide to system programming\
+## Resources
 
-**Additional References**
+- **Learning Resources Used During Development**
+  - [**The Linux Programming Interface**](#) by Michael Kerrisk - Comprehensive guide to system programming
+
+- **Additional References**
   - [Bash Manual](https://www.gnu.org/software/bash/manual/)
   - [Unix System Calls](https://man7.org/linux/man-pages/)
 
