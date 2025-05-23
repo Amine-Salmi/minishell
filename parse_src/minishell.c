@@ -6,7 +6,7 @@
 /*   By: asalmi <asalmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 10:14:08 by bbadda            #+#    #+#             */
-/*   Updated: 2024/11/17 01:49:37 by asalmi           ###   ########.fr       */
+/*   Updated: 2025/05/23 13:17:01 by asalmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ int	main(int ac, char *av[], char **env)
 	while (1)
 	{
 		handler_signal(1);
-		line = readline("\033[1;31m-\033[0m  \033[1;32mminishell-0.1$\033[0m ");
+		line = readline("\033[1;31m-\033[0m  \033[1;32mminishell$\033[0m ");
 		if (!line)
 			__put_and_exit(my_env);
 		add_history(line);

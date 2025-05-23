@@ -28,7 +28,7 @@ Clone the repository:
   cd minishell
   ```
 ### 2. Build the Project  
-Build the project:
+Compile the shell:
   ```bash
   make
   ```
@@ -36,4 +36,42 @@ Build the project:
 Execute the minishell:
   ```bash
   ./minishell
+  ```
+
+---
+
+## **Usage Examples**
+###  Basic Commands
+  ```bash
+  -  minishell$ pwd
+  /home/user/minishell
+  -  minishell$ echo "Hello world"
+  Hello world
+  -  minishell$ ls -la
+  ```
+### Pipes and Redirection
+  ```bash
+  -  minishell$ ls | grep .c
+  -  minishell$ echo "test" > output.txt
+  -  minishell$ cat < input.txt
+  -  minishell$ ls >> log.txt
+  ```
+
+### Pipes and Redirection
+  ```bash
+  -  minishell$ export MY_VAR=hello
+  -  minishell$ echo $MY_VAR
+  hello
+  -  minishell$ echo $?
+  0
+  ```
+
+### Heredoc
+  ```bash
+  -  minishell$ cat << EOF
+  > This is a heredoc
+  > Multiple lines supported
+  > EOF
+  This is a heredoc
+  Multiple lines supported
   ```
