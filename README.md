@@ -9,28 +9,20 @@ Minishell is a simple shell implementation inspired by Bash. This project demons
 ---
 
 ## **Features**  
-### **Mandatory**  
-- Custom shell prompt that waits for user input.
-- Command execution:
-  - Executes binaries using relative, absolute paths, or the PATH variable.
-  - Supports environment variables and `$?` for the last command's exit status.
-- Quote handling:
-  - Single quotes (`'`) prevent interpretation of special characters.
-  - Double quotes (`"`) allow interpretation of `$` for variable expansion.
-- Redirections:
-  - `<` redirects input.
-  - `>` redirects output.
-  - `<<` handles heredoc with a delimiter.
-  - `>>` appends output to a file.
-- Pipes (`|`):
-  - Implements piping between multiple commands.
-- Built-in commands:
-  - `echo` (supports `-n` option).
-  - `cd` (handles relative/absolute paths).
-  - `pwd` (prints the current directory).
-  - `export` (manages environment variables).
-  - `unset` (removes environment variables).
-  - `env` (displays environment variables).
-  - `exit` (exits the shell).
-- Signal handling:
-  - `Ctrl-C`, `Ctrl-D`, and `Ctrl-\` behave like in Bash.
+- **Interactive Shell Prompt**: Customizable and ready for user input.  
+- **Command Execution**: Runs binaries using paths or the `PATH` variable.  
+- **Redirection Support**: Includes `<`, `>`, `>>`, and heredoc (`<<`).  
+- **Pipes**: Chains multiple commands seamlessly.  
+- **Environment Variables**: Supports `$VARIABLE` and `$?`.  
+- **Built-in Commands**:  
+  - `echo`, `cd`, `pwd`, `export`, `unset`, `env`, `exit`.  
+- **Signal Handling**: Reacts to `Ctrl+C`, `Ctrl+D`, and `Ctrl+\` like Bash.  
+
+---
+
+## **Getting Started**  
+### Installation  
+1. Clone the repository:  
+   ```bash
+   git clone https://github.com/YourUsername/minishell.git
+   cd minishell
