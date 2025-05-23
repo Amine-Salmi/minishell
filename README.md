@@ -80,7 +80,7 @@ Execute the minishell:
 
 ### Resources
 [Bash Manual](https://www.gnu.org/software/bash/manual/)
-<span style="color: blue;">The Linux Programming Interface</span> by Michael Kerrisk - Comprehensive guide to system programming
+[**The Linux Programming Interface**](#) by Michael Kerrisk - Comprehensive guide to system programming
 
 ---
 ## **License**
