@@ -79,8 +79,13 @@ Execute the minishell:
 ---
 
 ### Resources
-[Bash Manual](https://www.gnu.org/software/bash/manual/)
-[**The Linux Programming Interface**](#) by Michael Kerrisk - Comprehensive guide to system programming
+- **Learning Resources Used During Development**
+  - **The Linux Programming Interface** by Michael Kerrisk - Comprehensive guide to system programming
+  - [Your learning resource 2](link)
+
+- **Additional References**
+  - [Bash Manual](https://www.gnu.org/software/bash/manual/)
+  - [Unix System Calls](https://man7.org/linux/man-pages/)
 
 ---
 ## **License**
