@@ -75,3 +75,8 @@ Execute the minishell:
   This is a heredoc
   Multiple lines supported
   ```
+
+---
+
+## **License**
+This project is part of the 42 School curriculum.
