@@ -78,5 +78,9 @@ Execute the minishell:
 
 ---
 
+### Resources
+[Bash Manual][https://www.gnu.org/software/bash/manual/]
+
+---
 ## **License**
 This project is part of the 42 School curriculum.
